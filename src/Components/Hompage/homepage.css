@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.homepage{
+    background: linear-gradient(rgb(207, 231, 255), rgb(126, 222, 182));
+    background-size: cover;
+    height: 100vh;
+    font-family: "Montserrat Alternates", serif !important;
+}
+/* Navbar styles */
+.homepage .navbar {
+    position: relative;
+    color: rgb(0, 0, 0);
+    display: flex;
+     /* Centers the navbar horizontally */
+    align-items: center;
+    padding: 8px 0; /* Add vertical padding for spacing */
+    margin-left: 20%;
+}
+.homepage .navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Set position relative for underline alignment */
+}
+/* Nav items */
+.homepage .nav-item {
+    position: relative; /* Allows the underline to align with this element */
+    margin: 0 20px; /* Uniform horizontal spacing between nav items */ 
+}
+.homepage .nav-item.active .nav-link {
+    color: #667EEA; /* Highlight active nav item */
+    font-family: "Montserrat Alternates", serif !important;
+}
+/* Nav links */
+.homepage .nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    padding: 5px 0; /* Add vertical padding for better alignment */
+    display: inline-block; /* Ensure consistent sizing */
+    text-align: center; /* Center text inside nav items */   
+}
+/* Sliding underline */
+.homepage .active-underline {
+    position: absolute;
+    bottom: -6px; /* Position the underline just below the nav items */
+    height: 6px;
+    background-color: #667EEA; /* Underline color */
+    transition: all 0.3s ease-in-out;
+    left: 0; /* Default left value (will be dynamically updated) */
+    width: 0; /* Default width value (will be dynamically updated) */
+    margin-left: 10px;
+    border-radius: 5px;
+}
+/* Static underline below the navbar */
+.homepage .navbar-line {
+    position: static;
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin-top: 5px; /* Add spacing between navbar and static line */
+}
+.homepage .container{
+    background-color: #DCFFA8;
+    height: 71% !important ;
+    width: 60% !important;
+    margin-top: 1% !important;
+    position:absolute;
+    border-radius: 5px;
+    box-shadow: 1px 4px 4px  #525252;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    margin-left: 20%;
+}
+.homepage .maincon::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.homepage .maincon::-webkit-scrollbar-thumb {
+    background-color:rgb(105, 105, 105)!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.homepage .concard{
+    margin-top: 4%;
+    margin-left: 10%;
+    height: 30%;
+    width: 80%;
+    box-shadow: 0px 2px 2px #6d6d6d;
+    flex-direction: column;
+    margin-bottom: 2%;
+}
+.homepage .cardimg{   
+    width: 48%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    margin-left: 52.2%;
+}
+.homepage .title{
+    margin-top: 9%;
+    margin-left: 1%;
+    font-size: 30px;
+}
+.homepage .role{
+    margin-left: 85%;
+}
+.homepage .shortform{
+    margin-left: 1%;
+}
+
+@media (max-width: 768px) {
+    .cardimg {
+        display: none; /* Hide image on smaller screens */
+      }
+      .title {
+        font-size: 20px; /* Smaller title font size */
+      }
+    
+      .role {
+        font-size: 12px; /* Adjust role text size */
+      }
+      .shortform {
+        font-size: 16px; /* Adjust shortform size */
+      }
+}
+
+@media (max-width: 576px) {
+    .cardimg {
+        display: none; /* Hide image on smaller screens */
+      }
+      .title {
+        font-size: 25px; /* Smaller title font size */
+      }
+    
+      .role {
+        font-size: 16px; /* Adjust role text size */
+      }
+      .shortform {
+        font-size: 18px; /* Adjust shortform size */
+      }
+}
+
+.homepage .plusicon{
+    margin-right: 3%;
+    height: 25px;
+}
+.homepage .gearicon{
+    margin-right: 28%;
+    height: 25px;
+}
+.scl_img{
+    display: inline;
+    width: 20px;
+}

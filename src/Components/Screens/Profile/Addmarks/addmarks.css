@@ -1,0 +1,165 @@
+.addmarkspage{
+    background: #F7F5E6;
+    height: 100vh;  
+    font-family: "Montserrat Alternates", serif !important;  
+    overflow: hidden; 
+}
+.addmarks{
+    position: relative;
+    height: 80%;
+    width: 70%;
+    background-color: #E8E8E8;
+    margin-left: 25%;
+    margin-top: 2%;
+    box-shadow: 2px 2px 4px  #5252528a;
+    border-radius: 10px;
+    max-height:80%;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    margin-bottom: 2%;
+}
+.addmarks::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.addmarks::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.addmarks .add-btn{
+    flex-direction: row;
+    background-color: #DCFFA8;
+    height: 50px;
+    width: 200px;
+    position: absolute;
+    margin-left: 80%;
+    margin-top: -12%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+    border: none;
+    p{
+        font-size: 20px;
+        margin-left: 20%;
+        color: #000000;
+    }
+}
+.addmarks .add-btn:hover{
+    background-color: #fff;
+    p{
+        color: #ffffff;
+        text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
+    }
+    .cricon{
+        background-color: #DCFFA8;
+        color: gray;
+    }
+}
+.addmarks .cricon{
+    height: 50px;
+    width: 50px;
+    background-color: #fff;
+    position: absolute;
+    margin-left: -5%;
+    margin-top: -1%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.435);
+}
+.addmarks .createicon{
+    height: 30px;
+    margin-left: 2%;
+    margin-top: 20%;
+}
+ .htcon{
+    padding-top: 5%;
+    position: static;
+    margin-top: 2%;
+    text-shadow: 1px 1px 2px black;
+    width: 13%;
+    background-color: #DCFFA8;
+    font-family: "Montserrat Alternates", serif !important;  
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    box-shadow:  2px 4px 4px rgba(0, 0, 0, 0.333) !important;
+    justify-content: center;
+    border-bottom: none;
+    text-align: center;
+    color: #fff;
+    .headtext{
+        font-size: 24px;
+        position: absolute;
+        top: 7.5%;
+        left: 6%;
+        transform: translate(-50%, -50%);
+        font-weight: normal;
+    } 
+}
+.addmarks .subin{
+    width: 90%;
+    margin-left: 5%;   
+    border: none !important;
+    .box{
+        box-shadow:0.1px 1px 2px 2px  #525252;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius:25px;
+    }
+}
+.addmarks .entermarks{
+    height: 24%;
+    width: 90%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 5%;
+}
+.addmarks .remove-btn{
+    height: 25px;
+    margin-top: 0.5% !important;
+    margin-left: 78%;
+    display: flex;
+}
+.addmarks .subin1{
+    width: 90%;
+    margin-left: 5%;   
+    border: none !important;
+    .box{
+        box-shadow:0.1px 1px 2px 2px  #525252;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius:25px;
+    }
+}
+.addmarks .marksin{
+    width: 90%;
+    margin-left: 5%;   
+    border: none !important;
+    .box{
+        box-shadow:0.1px 1px 2px 2px  #525252;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius:25px;
+    }
+}
+.addmarks .sub1{
+    width: 14%;
+    height: 6%;
+    font-size: 18px;
+    margin-top: 6%;
+    margin-left: 42.5%;
+    margin-bottom: 6%;
+    border-radius: 50px !important;
+    border: 2px solid #ffffff !important;
+    background-color:transparent !important;
+    color: rgb(0, 0, 0) !important;
+    box-shadow:0.1px 1px 2px 2px  #525252;
+    transition: 0.2s ease;   
+}
+.addmarks .sub1:hover {
+    background-color: #F7A0A5 !important; 
+    border-color: #CFE7FF !important; 
+    color: #fff !important;
+    box-shadow:0.1px 1px 1px 1px  #52525270;
+    transform: scale(1.1);
+    border-right: 15px solid #CFE7FF !important;
+    border-left: 15px solid #CFE7FF !important;
+}

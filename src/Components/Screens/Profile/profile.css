@@ -1,0 +1,269 @@
+.profilepage{
+    background: #F7F5E6;
+    height: 100vh;  
+    font-family: "Montserrat Alternates", serif !important;  
+}
+.profilepage .contain{
+    position: absolute;
+    background-color: #E8E8E8;
+    height: 70%;
+    width: 70%;
+    margin-left: 25%;
+    margin-top: 8%;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.435);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.411);
+    label{
+        margin-left: 1%;
+    }
+}
+.profilepage .navbar {
+    position: relative;
+    color: rgb(0, 0, 0);
+    display: flex;
+     /* Centers the navbar horizontally */
+    align-items: center;
+    padding: 4px 0; /* Add vertical padding for spacing */
+    margin-left: 1%;
+}
+.profilepage .navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Set position relative for underline alignment */
+}
+/* Nav items */
+.profilepage .nav-item {
+    position: relative; /* Allows the underline to align with this element */
+    margin: 0 20px; /* Uniform horizontal spacing between nav items */   
+}
+.profilepage .nav-item.active .nav-link {
+    color: #667EEA; /* Highlight active nav item */
+    font-family: "Montserrat Alternates", serif !important;
+}
+/* Nav links */
+.profilepage .nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 25px;  
+    padding: 8px 0; /* Add vertical padding for better alignment */
+    display: inline-block; /* Ensure consistent sizing */
+    text-align: center; /* Center text inside nav items */ 
+}
+/* Sliding underline */
+.profilepage .active-underline {
+    position: absolute;
+    bottom: -6px; /* Position the underline just below the nav items */
+    height: 6px;
+    background-color: #667EEA; /* Underline color */
+    transition: all 0.3s ease-in-out;
+    left: 0; /* Default left value (will be dynamically updated) */
+    width: 0; /* Default width value (will be dynamically updated) */
+    margin-left: 10px;
+    border-radius: 5px;
+}
+/* Static underline below the navbar */
+.profilepage .navbar-line {
+    position: static;
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin-top: 5px; /* Add spacing between navbar and static line */
+    clip-path: polygon(0% 0%,100% 0%, 0% 100%, 00% 100%);  
+}
+.profilepage .heads{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+.profilepage .profile_img{
+    border-radius: 130px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
+    height: 100px;
+    margin-top: 5%;
+}
+.profilepage .info_container{
+    height: 45%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 1%;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
+    border-radius: 20px; 
+}
+.profilepage .info{
+    margin-left: 5%;
+    position: relative;
+    overflow: hidden; /* Hide content that goes out of bounds */
+    width: 90%;
+    height: 80%;   
+}
+.slide-content {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%; /* 100% for each section (Info, Attendance, Marks) */
+}
+/* Each section will take up 100% of the width */
+.slide-content > div {
+    flex: 0 0 100%;
+}
+/* Apply translateX to shift content based on active index */
+.slide-0 {
+    transform: translateX(0);
+}
+.slide-1 {
+    transform: translateX(-50%);
+}
+.slide-2 {
+    transform: translateX(-100%);
+}
+.profilepage .info_item{
+    display: flex;
+    font-size: 24px;
+    margin-top: 3%;
+    width: 100%;
+}
+.profilepage .pro_icon{
+    height: 40px;   
+}
+.profilepage .id_no{
+    margin-top: 0%;
+    margin-left: 100px;   
+}
+.profilepage .info_col{
+    margin-left: 30px !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
+    display: flex;
+    width: 80%;
+}
+.profilepage .attend_sec{
+    margin-left: 50%; 
+}
+.profilepage .recharts-legend-item {
+    margin-bottom: 20px; /* Adjust the spacing as needed */
+    font-size: 20px;
+    margin-left: -20%;
+  }
+.profilepage .attendtotal_text{
+    font-size: 20px;   
+    margin-top: -17%;
+    margin-left: 580px;
+    color: rgba(0, 0, 0, 1);
+    z-index: 100;
+}
+.profilepage .attendhistory_text{
+    font-size: 16px;
+    margin-top: 3%;
+    margin-left: 58%;
+    color: rgb(108, 108, 108);
+    z-index: 100;
+}
+.profilepage .tr_section{
+    max-height: 245px;
+    width: 100%;
+    background-color: transparent !important;
+    position:absolute !important; 
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    margin-left: 100%;
+    z-index: 100;
+}
+.profilepage .tr_section::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+
+.profilepage .tr_section::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.profilepage .li-item{
+    display: flex;
+    margin-top: 2%;
+}
+.profilepage .item-text{
+    font-size: 20px;
+    margin-left: 2%;
+    position: absolute;
+    max-width: 39%;
+    color: #000000;
+}
+.profilepage .sub_name{
+    margin-left: 75%;
+    font-size: 20px;
+    color: #827f7f;
+    max-width: 22%;
+}
+.profilepage .list-group {
+    background-color: transparent;
+}
+.profilepage .list-group-item {
+ background-color: transparent;  
+}
+.profilepage .item-line{
+    position: static;
+    width: 100%;
+    height: 1px;
+    background-color: #00000046;
+    margin-top: 10px; /* Add spacing between navbar and static line */  
+}
+.profilepage .addmarks_btn{
+    margin-left: 65%;
+    margin-top: 16%;
+}
+  .profilepage .createbg{
+    flex-direction: row;
+    background-color: #E8E8E8;
+    height: 50px;
+    width: 170px;
+    position: absolute;
+    margin-left: 77%;
+    margin-top: -2%;
+    border-radius: 50px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);   
+    transition: 0.2s;
+    border: none;
+    z-index: 100;
+    p{
+        font-size: 14px;
+        margin-left: 35%;
+        margin-top: 8%;
+    }
+}
+.profilepage .createbg:hover{
+    background-color: #52658F;
+    p{
+        color: #fff;
+    }
+    .cricon{
+        background-color: #E8E8E8;
+        
+    }
+    .cal_icon{
+        color:#000 !important;
+    }
+}
+.profilepage .cricon{
+    height: 50.5px;
+    width: 65px;
+    background-color: #52658F;
+   position: absolute;
+    margin-left: -5%;
+    margin-top: -0.5%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;   
+    clip-path: polygon(0% 0%,100% 0%, 70% 100%, 00% 100%);   
+}
+.profilepage .cal_icon{
+    height: 20px;
+    margin-left: -20%;
+    margin-top: 20%;
+    color: white;
+}

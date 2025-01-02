@@ -1,0 +1,27 @@
+.page-info {
+    position: fixed;
+    margin-top: 1%;
+    margin-left: 16%;
+    height: 10%;
+    width: 19%;
+    background-color: #52658F;
+    border-bottom: 2px solid #e0e0e0;
+    font-family: "Montserrat Alternates", serif !important;  
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+}
+.current-page {
+    margin-top: 4%;
+    font-size: 35px;
+    color: #ffffff;
+    margin-left: 27%;
+}
+.breadcrumb {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 5px 0 0;
+    margin-left: 27%;
+}
+.breadcrumb span {
+    color: #ffffff;
+}
+    

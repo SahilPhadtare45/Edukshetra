@@ -1,0 +1,98 @@
+.classworkpage{
+    background: #F7F5E6;
+    height: 100vh;  
+    font-family: "Montserrat Alternates", serif !important;  
+}
+.classwork{
+    margin-top: 7%;
+    margin-left: 23%;
+    height: 70%;
+    max-height:80%;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    margin-bottom: 2%;
+}
+.classwork::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classwork::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.work-container{
+    position: relative;
+    background-color: #E8E8E8;
+    margin-top: 2%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Full width relative to .classwork */
+}
+.classwork .head{
+    display:flex;
+}
+.classwork .con-title{
+    font-size: 24px;
+    margin-bottom: 8px;
+    word-wrap: break-word; /* Break long words if needed */
+    white-space: normal; /* Allow the text to wrap */
+    overflow: visible; /* Ensure no truncation */
+    max-width:80%;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+.classwork .timeposted{
+    font-size: 15px !important;
+    position: absolute;
+    margin-left: 88%;
+    margin-top: 1%;
+}
+.classwork .content{
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 1%;
+}
+.classwork .createbg{
+    flex-direction: row;
+    background-color: #fff;
+    height: 50px;
+    width: 150px;
+    position: absolute;
+    margin-left: 60%;
+    margin-top: -3%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+    border: none;
+    p{
+        font-size: 23px;
+        margin-left: 40%;
+    }
+}
+.classwork .createbg:hover{
+    background-color: #7EDEB6;
+    p{
+        color: #fff;
+    }
+    .cricon{
+        background-color: #fff;
+    }  
+}
+.classwork .cricon{
+    height: 50px;
+    width: 50px;
+    background-color: #5FB9A2;
+   position: absolute;
+    margin-left: -5%;
+    margin-top: -1%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.435);
+}
+.classwork .createicon{
+    height: 30px;
+    margin-left: 2%;
+    margin-top: 20%;
+}

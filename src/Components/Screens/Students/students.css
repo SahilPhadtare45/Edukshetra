@@ -1,0 +1,179 @@
+.studentscreen{
+    background: #F7F5E6;
+    height: 100vh;  
+    font-family: "Montserrat Alternates", serif !important;  
+    overflow: hidden; 
+}
+.studentscreen .contain{
+    position: absolute;
+    background-color: #E8E8E8;
+    height: 70%;
+    width: 70%;
+    margin-left: 25%;
+    margin-top: 8%;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.435);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.411);
+}
+.studentscreen .navbar {
+    position: relative;
+    color: rgb(0, 0, 0);
+    display: flex;
+     /* Centers the navbar horizontally */
+    align-items: center;
+    padding: 10px 0; /* Add vertical padding for spacing */
+    margin-left: 12%;
+}
+.studentscreen .navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Set position relative for underline alignment */
+}
+/* Nav items */
+.studentscreen .nav-item {
+    position: relative; /* Allows the underline to align with this element */
+    margin: 0 20px; /* Uniform horizontal spacing between nav items */  
+}
+.studentscreen .nav-item.active .nav-link {
+    color: #667EEA; /* Highlight active nav item */
+    font-family: "Montserrat Alternates", serif !important;
+}
+/* Nav links */
+.studentscreen .nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 25px;   
+    padding: 8px 0; /* Add vertical padding for better alignment */
+    display: inline-block; /* Ensure consistent sizing */
+    text-align: center; /* Center text inside nav items */   
+}
+/* Sliding underline */
+.studentscreen .active-underline {
+    position: absolute;
+    bottom: -6px; /* Position the underline just below the nav items */
+    height: 6px;
+    background-color: #667EEA; /* Underline color */
+    transition: all 0.3s ease-in-out;
+    left: 0; /* Default left value (will be dynamically updated) */
+    width: 0; /* Default width value (will be dynamically updated) */
+    margin-left: 10px;
+    border-radius: 5px;
+}
+/* Static underline below the navbar */
+.studentscreen .navbar-line {
+    position: static;
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin-top: 5px; /* Add spacing between navbar and static line */
+    clip-path: polygon(0% 0%,100% 0%, 0% 100%, 00% 100%);  
+}
+.studentscreen .tr{
+    position: relative;
+    margin-top: 2%;
+    height: 10%;
+    width: 15%;
+    background-color: #F7A0A5;
+    font-family: "Montserrat Alternates", serif !important;  
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    box-shadow:  2px 4px 4px rgba(0, 0, 0, 0.333) !important;
+    justify-content: center;
+    border-bottom: none;
+    text-align: center;
+    p{
+        font-size: 30px;
+        position: absolute;
+        top: 30%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        text-shadow: 1px 1px 2px black;
+
+    } 
+}
+.studentscreen .cricon{
+    height: 60px;
+    width: 60px;
+    background-color: #fff;
+   position: absolute;
+    margin-left: 90%;
+    margin-top: -5%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.435);
+    transition: ease 0.2s;
+}
+.studentscreen .cricon:hover{
+    background-color: #F7A0A5;
+    .adicon{
+        color:#fff ;
+    }
+}
+.studentscreen .adicon{
+    margin-left: 27%;
+    height: 25px;
+    position: absolute;
+    margin-top: 27%;
+    color: #000000;   
+}
+.studentscreen .tr_section{
+    max-height: 500px;
+    width: 100%;
+    background-color: transparent !important;
+    position:absolute !important;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+}
+.studentscreen .tr_section::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+
+.studentscreen .tr_section::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.studentscreen .li-item{
+    display: flex;
+    margin-top: 2%;
+}
+.studentscreen .item-text{
+    font-size: 20px;
+    margin-left: 4%;
+    position: absolute;
+    max-width: 40%;
+    color: #000000;
+}
+.studentscreen .sub_name{
+    margin-left: 54%;
+    font-size: 20px;
+    color: #827f7f;
+    max-width: 20%;
+}
+.studentscreen .list-group {
+    background-color: transparent;
+  }
+.studentscreen .list-group-item {
+    background-color: transparent;  
+  }
+.studentscreen .prof_icon{
+    margin-left: 85%;
+    position: absolute;
+    height: 20px;
+}
+.studentscreen .prof_icon:hover{
+    color: #5FB9A2;
+}
+.studentscreen .trash_icon{
+    margin-left: 91%;
+    position: absolute;
+    height: 20px;
+}
+.studentscreen .trash_icon:hover{
+    color: red;
+}

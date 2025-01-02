@@ -1,0 +1,88 @@
+.addstudentsbg{
+    height: 1000px;
+    width: 1870px;
+    background-color: rgba(0, 0, 0, 0.528) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -440px;
+    margin-left: -455px;
+    z-index: 1;
+}
+.addstudents{
+    height: 550px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 180px;
+    border: 1px solid black;
+}
+.addstudents .addstudentstitle{
+    font-size: 30px;
+    margin-left: 220px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+.addstudents .nameinsr{
+    border-radius: 50px;
+    border: none !important;
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    margin-top: 2%;
+}
+.addstudents .srbtn{
+    margin-top: -14.5%;
+    height: 59px;
+    width: 90px;
+    margin-left: 85%;
+    border: 2px solid gray;
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    border-radius: 50px;
+}
+.addstudents .sritems{
+    max-height: 180px;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+}
+.addstudents .sritems::-webkit-scrollbar {
+    width: 15px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.addstudents .sritems::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.addstudents .srrow{
+    display: flex;
+    max-width: 85%;
+    margin-top: 10px;
+}
+.addstudents .srimg{
+    height: 50px;
+    width: 50px;
+    margin-left: 15%;
+}
+.addstudents .srmail{
+    font-size: 22px;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+.addstudents .sradd{
+    width: 20%;
+    height: 8% !important;
+    font-size: 15px;
+    margin-top: 5%;
+    margin-left: 40%;
+    border-radius: 50px !important;
+    border: 2px solid rgb(0, 0, 0) !important;
+    background-color:cornflowerblue !important;
+    color: rgb(255, 255, 255) !important;
+    position: absolute;
+}
+.addstudents .sradd:hover {
+    background-color: #d41d1d !important; 
+    border-color: #d41d1d !important; 
+}

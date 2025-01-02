@@ -1,0 +1,47 @@
+.joinfrombg{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.34) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -265px;
+    margin-left: -1275px;
+}
+.joinform{
+    height: 500px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 180px;
+    border: 1px solid black;
+
+}
+.jointitle{
+    font-size: 30px;
+    margin-left: 195px;
+    margin-top: 10px;
+   
+}
+.xicon{
+    height: 25px;
+    margin-top: 1% !important;
+    margin-left: 95%;
+    display: flex;
+}
+.sub1{
+    width: 20%;
+    height: 8%;
+    font-size: 15px;
+    margin-top: 6%;
+    margin-left: 40%;
+    border-radius: 50px !important;
+    border: 2px solid rgb(0, 0, 0) !important;
+    background-color:cornflowerblue !important;
+    color: rgb(255, 255, 255) !important;
+}
+.sub1:hover {
+    background-color: #d41d1d !important; 
+    border-color: #d41d1d !important; 
+}

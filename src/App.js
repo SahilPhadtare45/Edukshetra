@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Homepage from './Components/Hompage/homepage';
+import Dashboard from "./Components/Screens/Dashboard/dashboard";
+import Teachers from './Components/Screens/Teachers/teachers';
+import Students from './Components/Screens/Students/students';
+import Classwork from './Components/Screens/Classwork/classwork';
+import Attendance from './Components/Screens/Attendance/attendance';
+import People from './Components/Screens/People/people';
+import Profile from './Components/Screens/Profile/profile';
+import LeaveSchool from './Components/Screens/Leave/leave';
 import './App.css';
-
+import Creatework from "./Components/Screens/Classwork/Creatework/creatework";
+import Addmarks from "./Components/Screens/Profile/Addmarks/addmarks";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+<>
+        <Router>
+                    <Routes>
+                        <Route path="/" element={<Homepage />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/teachers" element={<Teachers />} />
+                        <Route path="/students" element={<Students />} />
+                        <Route path="/classwork" element={<Classwork />} />
+                        <Route path="/attendance" element={<Attendance />} />
+                        <Route path="/people" element={<People />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/leave-school" element={<LeaveSchool />} />
+                        <Route path="/creatework" element={<Creatework />} />
+                        <Route path="/addmarks" element={<Addmarks />} />
+                    </Routes>
+        </Router>
+  
+</>
+  
+  )
 }
 
 export default App;
