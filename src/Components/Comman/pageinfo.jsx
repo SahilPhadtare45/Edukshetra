@@ -7,6 +7,7 @@ const PageInfo = () => {
 
   // Map route paths to page names
   const pageNames = {
+    
     '/teachers': 'Teachers',
     '/students': 'Students',
     '/dashboard': 'Class',

@@ -1,0 +1,187 @@
+.login{
+ height: 100vh;
+ transition: background-image 0.2s ease-in-out; /* Smooth background change */
+ z-index: 1;
+ background-repeat: no-repeat;
+ object-fit: fill;
+ background-size: cover;
+ font-family: 'montserrat alternates',serif;
+ overflow: hidden;
+}
+.login .tri{
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%); /* Downward triangle */
+  z-index: 2;
+  margin-top: -24.30%;
+  height: 8% !important;
+  position: absolute;
+  background-color: #F7F5E6;
+  width: 550px;
+  border-radius: 10px;
+}
+.login .header p {
+  margin-top: 5%;
+  font-size: 30px;
+  color: #333;
+} 
+.login .flip-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  
+    box-shadow: 0 0 5px rgba(244, 164, 96, 0.5) !important;
+  }
+  .login .flip-card {
+  width: 550px;
+  height: 550px;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;  
+}
+.login .back-container{
+  width: 550px;
+  height: 550px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  position:absolute;
+  background-color:#F7A0A5;
+  clip-path: polygon(0% 30%,100% 0%, 100% 100%, 00% 100%);
+  border-radius: 10px; 
+}
+.login .card-front{
+  position: absolute;
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #7edebd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  clip-path: polygon(0% 0%,100% 30%, 100% 100%, 00% 100%);
+  backface-visibility: hidden !important; /* Ensures only the container's backside is visible */
+  z-index: 2;
+}
+.login .card-back{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #F7A0A5;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  clip-path: polygon(0% 0%,100% 30%, 100% 100%, 00% 100%);
+  backface-visibility: hidden !important; /* Ensures only the container's backside is visible */
+}
+.login .card-back {
+  transform: rotateY(180deg);
+} 
+.login .form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  backface-visibility: hidden !important;
+  margin-top:15%;
+}
+.login .form1 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  backface-visibility: hidden !important;
+  margin-top:15%;
+}
+.login .middle{
+  transition: 0.6s ease;
+  position: absolute;
+  font-size: 40px !important;
+  font-weight: 700;
+  left: 10% !important; /* Move the text to the left */
+  top: 17% !important; /* Vertically center the text */
+  transform: translateY(-50%) !important; /* Adjust for accurate vertical centering */
+  text-align: left !important; /* Align the text to the left */
+  z-index: 12;
+  backface-visibility: hidden !important;
+  color: #DCFFA8;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+.rightmiddle:hover{
+  color: #7edebd !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+.login .rightmiddle{
+  position: absolute;
+  z-index: 20;
+  margin-left: 75%;
+  margin-top: 12%;
+  font-size: 30px;
+  border: none;
+  background-color: transparent;
+  font-size: 25px;
+  transition: 0.1s ease;
+}
+.login .flip-card.flipped {
+    transform: rotateY(180deg);
+    .card-back{
+      clip-path: polygon(0% 30%,100% 0%, 100% 100%, 00% 100%);
+    }
+    .back-container{
+      clip-path: polygon(0% 30%,100% 0%, 100% 100%, 00% 100%);
+      transition: transform 0.1s;
+      background-color: #7edebd;
+    }
+    .middle{
+      transition: 0.6s ease;
+      position: absolute;
+      font-size: 40px !important;
+      left: 70% !important; /* Move the text to the left */
+      top: 20% !important; /* Vertically center the text */
+      transform: translateY(-50%) !important; /* Adjust for accurate vertical centering */
+      text-align: left !important; /* Align the text to the left */
+    }
+    .rightmiddle{
+      transform: rotateY(180deg);
+      z-index: 100;
+      transition: 0.1s ease;
+    }
+    .rightmiddle:hover{
+      color: #F7A0A5 !important;
+      
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+      transform: rotateY(180deg);
+    }
+  }
+  .login .subin{
+    width: 90%;
+    margin-left: 5%;   
+    border: none !important;
+    .box{
+        box-shadow:0.1px 1px 2px 2px  #525252;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius:25px;
+    }
+}
+.login .submit-button{
+  width: 130px !important;
+  height: 50px;
+  font-size: 15px;
+  margin-top: 5%;
+  margin-left: 37%;
+  border-radius: 50px !important;
+  border: 2px solid rgb(255, 255, 255) !important;
+  background-color:transparent !important;
+  color: rgb(255, 255, 255) !important;
+  box-shadow: 2px 2px 2px  rgba(0, 0, 0, 0.439);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7) !important;
+  font-size: 20px;
+}
+.login .submit-button:hover {
+  background-color: #52658F !important; 
+  border-color: #52658F !important; 
+}
