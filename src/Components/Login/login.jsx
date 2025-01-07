@@ -4,6 +4,8 @@ import greenarrow from "../../images/greenarrow.png";
 import schoolbg1 from "../../images/schoolbg.png";
 import classbg from "../../images/classbg.jpg";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle } from '@fortawesome/free-solid-svg-icons';
 const Login = () => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [currentBg, setCurrentBg] = useState(schoolbg1);
@@ -62,10 +64,18 @@ return (
                                   <input type="text" class="form-control box " id="floatingInput" placeholder="Enter Password" required/>
                                   <label  for="floatingInput ">Enter Password</label>
                         </div>
-                      <button type="submit" className="submit-button">
+                      <button type="submit" className="submit-button1">
                       Signup
-                      </button>
+                      </button>     
                   </form>
+                  <div className="google-con" >
+                  <div className="navbar-line"></div>
+                    <p>or</p>
+                    <div className="navbar-line"></div>
+                  </div>
+                  <button className="google-btn">
+                  G
+                  </button>
                   </div>
               </div>
           </div>

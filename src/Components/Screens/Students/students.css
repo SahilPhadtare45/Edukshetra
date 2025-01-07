@@ -177,3 +177,11 @@
 .studentscreen .trash_icon:hover{
     color: red;
 }
+.studentscreen .navbar-line1{
+    position: static;
+    width: 95%;
+    height: 1px;
+    margin-left: 3%;
+    background-color: #000;
+    margin-top: 5px; /* Add spacing between navbar and static line */     
+}

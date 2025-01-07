@@ -86,3 +86,13 @@
     background-color: #d41d1d !important; 
     border-color: #d41d1d !important; 
 }
+.addstudents .navbarline{
+    position: static;
+    width: 80%;
+    height: 1px;
+    background-color: #ffffff;
+    margin-left: 10%;
+    
+    margin-top: 2%;
+    box-shadow: 1px 0.5px 1px black;
+}

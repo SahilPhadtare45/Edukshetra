@@ -86,3 +86,12 @@
     background-color: #d41d1d !important; 
     border-color: #d41d1d !important; 
 }
+.addteachers .navbar-line{
+    position: static;
+    width: 80%;
+    height: 1px;
+    background-color: #ffffff;
+    margin-left: 10%;
+    
+    box-shadow: 1px 0.5px 1px black;
+}

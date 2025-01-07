@@ -28,22 +28,25 @@ const People = () => {
                             <ul class="list-group list-group-flush llist">
                                 <li class="li-item">
                                     <img className='people_img'  src={acclogo} alt=""></img>
-                                    <div className="item-text text-truncate">sahilphadare1045@gmail.com</div>
+                                    <div className="item-text text-truncate">sahilphadtare1045@gmail.com</div>
                                     <div className='sub_name text-truncate'>51144544488</div>
                                     <FontAwesomeIcon className='trash_icon' icon={faTrash}/>
                                 </li>
                             </ul>
                         </div>
+                        <div className='navbarline1'/>
                         <div className='table_row'>
                             <ul class="list-group list-group-flush llist">
                                 <li class="li-item">
                                     <img className='people_img'  src={acclogo} alt=""></img>
-                                    <div className="item-text text-truncate">sahilphadare1045@gmail.com</div>
+                                    <div className="item-text text-truncate">sahilphadtare1045@gmail.com</div>
                                     <div className='sub_name text-truncate'>51144544488</div>
                                     <FontAwesomeIcon className='trash_icon' icon={faTrash}/>
                                 </li>
                             </ul>
-                        </div>          
+                        </div> 
+                        <div className='navbarline1'/>
+         
                     </div>
                 </div>
             </div>

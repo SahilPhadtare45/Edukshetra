@@ -62,10 +62,6 @@ const Teachers = () => {
                <div style={{marginLeft:'4%',marginTop:'1%',fontWeight:'bold'}}>Name</div>
                <div style={{marginLeft:'44%',marginTop:'1%',fontWeight:'bold'}}>Subjects</div>
             </div>
-            <div style={{display:'flex'}}>
-            <div className="navbar-line1"></div>
-            <div className="navbar-line2"></div>
-            </div>
             <div className='tr_section'>
                     <div className='table_row'>
                     <ul class="list-group list-group-flush llist">
@@ -77,6 +73,8 @@ const Teachers = () => {
                     </li>
                     </ul>
                     </div>
+                    <div className="navbar-line1"></div>
+
                     <div className='table_row'>
                     <ul class="list-group list-group-flush llist">
                     <li class="li-item">
@@ -87,6 +85,8 @@ const Teachers = () => {
                     </li>
                     </ul>
                     </div>
+                    <div className="navbar-line1"></div>
+
             </div>
             </div>            
         </div>

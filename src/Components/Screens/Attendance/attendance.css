@@ -309,4 +309,12 @@
     border-radius: 10px !important;
     border: none;
 }
- 
+.attendancepage .navbarline1{
+  position: static;
+  width: 95%;
+  height: 1px;
+  background-color: #000000;
+  margin-left: 3%;
+  margin-right: 5%;
+  margin-top: 10px;
+}

@@ -5,7 +5,7 @@ import { faPlus,faGear } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Comman/header';
 import workplace from '../Hompage/workplace.jpg';
 import Add from './Add/add.jsx';
-
+import school from '../../images/schoolimg.jpg';
 const Homepage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [underlineStyle, setUnderlineStyle] = useState({});
@@ -68,7 +68,10 @@ const Homepage = () => {
                         <div className="card-img-overlay">
                         <h5 className="card-text role"><small>Role:Admin</small></h5>
                         <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <h5 className="card-text shortform">N.E.H.S</h5>
+                        <div style={{display:'flex'}}>
+                            <img className="school-logo" src={school} alt='...'/>
+                            <h5 className="card-text shortform">N.E.H.S</h5>
+                        </div>
                         </div>                        
                     </li>                   
                

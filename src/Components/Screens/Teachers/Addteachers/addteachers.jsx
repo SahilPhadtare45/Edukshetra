@@ -26,24 +26,38 @@ const Addteachers = () => {
                 <img className='srimg'  src={acclogo} alt=""></img>
                 <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
                 </div>  
+                <div className="navbar-line"></div>
+
                 <div className='srrow'>
                 <img className='srimg'  src={acclogo} alt=""></img>
                 <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
-                </div>      
+                </div>    
+                <div className="navbar-line"></div>
+  
                 <div className='srrow'>
                 <img className='srimg'  src={acclogo} alt=""></img>
                 <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
                 </div>
+                <div className="navbar-line"></div>
+
                 <div className='srrow'>
                 <img className='srimg'  src={acclogo} alt=""></img>
                 <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
-                </div><div className='srrow'>
-                <img className='srimg'  src={acclogo} alt=""></img>
-                <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
-                </div><div className='srrow'>
+                </div>
+                <div className="navbar-line"></div>
+
+                <div className='srrow'>
                 <img className='srimg'  src={acclogo} alt=""></img>
                 <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
                 </div>
+                <div className="navbar-line"></div>
+
+                <div className='srrow'>
+                <img className='srimg'  src={acclogo} alt=""></img>
+                <div className='srmail text-truncate'>sahilphadtare1045gmail.com</div>
+                </div>
+                <div className="navbar-line"></div>
+
             </div>
             <button class="btn sradd" type="submit">Submit</button>         
         </div>

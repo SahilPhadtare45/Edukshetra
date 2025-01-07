@@ -129,7 +129,9 @@ const Attendance = () => {
                                         </div>       
                                     </li>
                                 </ul>
-                            </div>                        
+                            </div>   
+                            <div className='navbarline1'/>
+                     
                         </div>          
             </div>
 
@@ -158,6 +160,7 @@ const Attendance = () => {
                                     </li>
                                 </ul>
                             </div> 
+                            <div className='navbarline1'/>
                             <div className='table_row'>
                                 <ul class="list-group list-group-flush llist">
                                     <li class="li-item">
@@ -171,7 +174,9 @@ const Attendance = () => {
                                         </div>                              
                                     </li>
                                 </ul>
-                            </div>                      
+                            </div> 
+                            <div className='navbarline1'/>
+                     
                         </div>            
                 </div>
             </div>

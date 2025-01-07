@@ -73,6 +73,8 @@ const Students = () => {
                     </li>
                     </ul>
                     </div>
+                    <div className="navbar-line1"></div>
+
                     <div className='table_row'>
                     <ul class="list-group list-group-flush llist">
                     <li class="li-item">
@@ -83,6 +85,8 @@ const Students = () => {
                     </li>
                     </ul>
                     </div>
+                    <div className="navbar-line1"></div>
+
                     <div className='table_row'>
                     <ul class="list-group list-group-flush llist">
                     <li class="li-item">
@@ -93,6 +97,8 @@ const Students = () => {
                     </li>
                     </ul>
                     </div>
+                    <div className="navbar-line1"></div>
+
             </div>
         </div>
             
