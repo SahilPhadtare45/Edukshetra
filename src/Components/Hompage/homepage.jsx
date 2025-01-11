@@ -6,6 +6,8 @@ import Header from '../Comman/header';
 import workplace from '../Hompage/workplace.jpg';
 import Add from './Add/add.jsx';
 import school from '../../images/schoolimg.jpg';
+import desk from '../../images/deskbg.jpg';
+import books from '../../images/download.jpg';
 const Homepage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [underlineStyle, setUnderlineStyle] = useState({});
@@ -77,7 +79,7 @@ const Homepage = () => {
                
                 
                     <li className='card concard'>                    
-                        <img src={workplace} className="card-img cardimg d-none d-md-block" alt="..." />                       
+                        <img src={desk} className="card-img cardimg d-none d-md-block" alt="..." />                       
                         <div className="card-img-overlay">
                         <h5 className="card-text role"><small>Role:Admin</small></h5>
                         <div className="card-title title text-truncate">Navodaya English High School</div>
@@ -87,7 +89,7 @@ const Homepage = () => {
                
                 
                     <li className='card concard'>                    
-                        <img src={workplace} className="card-img cardimg d-none d-md-block" alt="..." />                       
+                        <img src={books} className="card-img cardimg d-none d-md-block" alt="..." />                       
                         <div className="card-img-overlay">
                         <h5 className="card-text role"><small>Role:Admin</small></h5>
                         <div className="card-title title text-truncate">Navodaya English High School</div>
@@ -107,7 +109,7 @@ const Homepage = () => {
                 
                 
                     <li className='card concard'>                    
-                        <img src={workplace} className="card-img cardimg d-none d-md-block" alt="..." />                       
+                        <img src={desk} className="card-img cardimg d-none d-md-block" alt="..." />                       
                         <div className="card-img-overlay">
                         <h5 className="card-text role"><small>Role:Admin</small></h5>
                         <div className="card-title title text-truncate">Navodaya English High School</div>

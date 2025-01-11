@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Homepage from './Components/Hompage/homepage';
 import Dashboard from "./Components/Screens/Dashboard/dashboard";
 import Teachers from './Components/Screens/Teachers/teachers';
@@ -12,26 +12,36 @@ import LeaveSchool from './Components/Screens/Leave/leave';
 import Creatework from "./Components/Screens/Classwork/Creatework/creatework";
 import Addmarks from "./Components/Screens/Profile/Addmarks/addmarks";
 import Login from "./Components/Login/login";
+import { children, useContext } from 'react';
+import { AuthContext } from './Context/AuthContext';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
-  return (
+  const {currentUser}= useContext(AuthContext)
+  const RequireAuth = ({children}) =>{
+    return currentUser ? (children) : <Navigate to="/"/>
+  };
+  console.log(currentUser)
+ return (
 <>
         <Router>
                     <Routes>
                     <Route path="/" element={<Login />} />
-                        <Route path="/home" element={<Homepage />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/teachers" element={<Teachers />} />
-                        <Route path="/students" element={<Students />} />
-                        <Route path="/classwork" element={<Classwork />} />
-                        <Route path="/attendance" element={<Attendance />} />
-                        <Route path="/people" element={<People />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/leave-school" element={<LeaveSchool />} />
-                        <Route path="/creatework" element={<Creatework />} />
-                        <Route path="/addmarks" element={<Addmarks />} />
+                        <Route path="/home" element={<RequireAuth><Homepage /></RequireAuth>} />
+                        <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+                        <Route path="/teachers" element={<RequireAuth><Teachers /></RequireAuth>} />
+                        <Route path="/students" element={<RequireAuth><Students /></RequireAuth>} />
+                        <Route path="/classwork" element={<RequireAuth><Classwork /></RequireAuth>} />
+                        <Route path="/attendance" element={<RequireAuth><Attendance /></RequireAuth>} />
+                        <Route path="/people" element={<RequireAuth><People /></RequireAuth>} />
+                        <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+                        <Route path="/leave-school" element={<RequireAuth><LeaveSchool /></RequireAuth>} />
+                        <Route path="/creatework" element={<RequireAuth><Creatework /></RequireAuth>} />
+                        <Route path="/addmarks" element={<RequireAuth><Addmarks /></RequireAuth>} />
                     </Routes>
         </Router>
-  
+        <ToastContainer />
 </>
   
   )
