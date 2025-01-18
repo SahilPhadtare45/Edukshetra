@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";  
+import React, { useState,useEffect } from "react";  
 import "./login.css";
 import schoolbg1 from "../../images/schoolbg.png";
 import classbg from "../../images/classbg.jpg";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../Firebase/firebase";
-import { AuthContext } from "../../Context/AuthContext";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from 'react-toastify';
+import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
 
 const Login = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -17,7 +17,21 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState(""); // Added name for Signup
   const [error, setError] = useState(false);
-  const { dispatch } = useContext(AuthContext);
+  const { fetchUserInfo, clearUser, setLoading } = useUserStore(); // Zustand hooks
+
+  useEffect(() => {
+    // Listen for authentication state change (login, logout)
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setLoading(true); // Set loading true
+        await fetchUserInfo(user.uid); // Fetch additional Firestore data
+      } else {
+        clearUser(); // Clear user data if logged out
+      }
+    });
+
+    return () => unsubscribe(); // Clean up the listener on component unmount
+  }, [fetchUserInfo, clearUser, setLoading]);
 
   const toggleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -39,10 +53,19 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      navigate("/home"); // Redirect to home page after successful login
+
+      toast.success("Login successful! Redirecting...");
+      navigate("/home", { replace: true }); // Prevent navigation history stacking
     } catch (error) {
-      setError(true); // Display error if login fails
-      console.error("Login error:", error.message);
+      console.error("Login error:", error.code, error.message);
+      if (error.code === "auth/wrong-password") {
+        toast.error("Incorrect password. Please try again.");
+      } else if (error.code === "auth/user-not-found") {
+        toast.error("No user found with this email.");
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
+      setError(true);
     }
   };
 
@@ -68,12 +91,14 @@ const Login = () => {
         createdAt: new Date(),
       });
 
-      console.log("User registered successfully:", user);
-
-      // Redirect to home page immediately after signup
-      navigate("/home"); // Navigate to home page after successful signup
+      toast.success("Signup successful! Redirecting...");
+       // Delay navigation to allow time for UI updates
+       setTimeout(() => {
+        navigate("/home", { replace: true }); // Prevent navigation history stacking
+      }, 500);
     } catch (error) {
       setError(true); // Display error if signup fails
+      toast.error("Signup failed. Please try again.");
       console.error("Signup error:", error.message);
     }
   };

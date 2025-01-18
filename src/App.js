@@ -12,24 +12,34 @@ import LeaveSchool from './Components/Screens/Leave/leave';
 import Creatework from "./Components/Screens/Classwork/Creatework/creatework";
 import Addmarks from "./Components/Screens/Profile/Addmarks/addmarks";
 import Login from "./Components/Login/login";
-import { children, useContext } from 'react';
-import { AuthContext } from './Context/AuthContext';
+import { children } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useState,useEffect } from 'react';
+import {auth} from "./Firebase/firebase";
+import { onAuthStateChanged } from 'firebase/auth';
 function App() {
-  const {currentUser}= useContext(AuthContext)
-  const RequireAuth = ({children}) =>{
-    return currentUser ? (children) : <Navigate to="/"/>
-  };
-  console.log(currentUser)
+    const [currentUser, setCurrentUser] = useState(null);
+    // Track user authentication state
+    useEffect(() => { //session management
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setCurrentUser(user); // Update the user state when the auth state changes
+      });
+      return () => unsubscribe(); // Cleanup the listener on unmount
+    }, []);
+  
+    const RequireAuth = ({ children }) => {  //protection from navigating anywhere
+      return currentUser ? children : <Navigate to="/" />;
+    };   
+    console.log(currentUser)
  return (
 <>
         <Router>
                     <Routes>
                     <Route path="/" element={<Login />} />
                         <Route path="/home" element={<RequireAuth><Homepage /></RequireAuth>} />
-                        <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+                        <Route path="/dashboard" element={<RequireAuth><Dashboard user={currentUser}/></RequireAuth>} />
                         <Route path="/teachers" element={<RequireAuth><Teachers /></RequireAuth>} />
                         <Route path="/students" element={<RequireAuth><Students /></RequireAuth>} />
                         <Route path="/classwork" element={<RequireAuth><Classwork /></RequireAuth>} />

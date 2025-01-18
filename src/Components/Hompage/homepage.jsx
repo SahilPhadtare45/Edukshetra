@@ -8,15 +8,42 @@ import Add from './Add/add.jsx';
 import school from '../../images/schoolimg.jpg';
 import desk from '../../images/deskbg.jpg';
 import books from '../../images/download.jpg';
+import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
+import Createform from './Add/createform'; // Import the Createform component
+
 const Homepage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
+    const userSchools = useUserStore((state) => state.userSchools); // Get schools from Zustand store
     const [showAddComponent, setShowAddComponent] = useState(false);
+    const [schools, setSchools] = useState(userSchools);
+
     const handleNavClick = (index) => {
         setActiveIndex(index);
     };
+    // This function will handle adding a new school card with form data
+     const handleAddSchool  = (newSchool) => {
+        setSchools((prevSchools) => [...prevSchools, newSchool]);
+    };
+     // Random image selection function
+     const getRandomImage = () => {
+        const images = [workplace, desk, books]; // List of images
+        const randomIndex = Math.floor(Math.random() * images.length); // Get random index
+        return images[randomIndex]; // Return the selected image
+    };
 
+    useEffect(() => {
+        // Fetch user's schools when the component mounts
+        const fetchSchools = async () => {
+            const currentUser = useUserStore.getState().currentUser;
+            if (currentUser) {
+                await useUserStore.getState().fetchUserSchools(currentUser.uid);
+            }
+        };
+
+        fetchSchools();
+    }, []);
     useEffect(() => {
         if (navItemsRef.current[activeIndex]) {
             const { offsetLeft, offsetWidth } = navItemsRef.current[activeIndex];
@@ -27,6 +54,7 @@ const Homepage = () => {
         }
     }, [activeIndex]);
 
+     
     return (
         <>
         <div className="homepage">
@@ -63,61 +91,25 @@ const Homepage = () => {
             <div className="navbar-line"></div>
 
             <div class="list-group">
-            <ul className="container maincon">
-                
-                    <li className='card concard'>                    
-                        <img src={workplace} className="card-img cardimg d-none d-md-block" alt="..." />                       
-                        <div className="card-img-overlay">
-                        <h5 className="card-text role"><small>Role:Admin</small></h5>
-                        <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <div style={{display:'flex'}}>
-                            <img className="school-logo" src={school} alt='...'/>
-                            <h5 className="card-text shortform">N.E.H.S</h5>
-                        </div>
-                        </div>                        
-                    </li>                   
-               
-                
-                    <li className='card concard'>                    
-                        <img src={desk} className="card-img cardimg d-none d-md-block" alt="..." />                       
-                        <div className="card-img-overlay">
-                        <h5 className="card-text role"><small>Role:Admin</small></h5>
-                        <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <h5 className="card-text shortform">N.E.H.S</h5>
-                        </div>                        
-                    </li>                   
-               
-                
-                    <li className='card concard'>                    
-                        <img src={books} className="card-img cardimg d-none d-md-block" alt="..." />                       
-                        <div className="card-img-overlay">
-                        <h5 className="card-text role"><small>Role:Admin</small></h5>
-                        <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <h5 className="card-text shortform">N.E.H.S</h5>
-                        </div>                        
-                    </li>                   
-                
-                
-                    <li className='card concard'>                    
-                        <img src={workplace} className="card-img cardimg d-none d-md-block" alt="..." />                       
-                        <div className="card-img-overlay">
-                        <h5 className="card-text role"><small>Role:Admin</small></h5>
-                        <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <h5 className="card-text shortform">N.E.H.S</h5>
-                        </div>                        
-                    </li>                   
-                
-                
-                    <li className='card concard'>                    
-                        <img src={desk} className="card-img cardimg d-none d-md-block" alt="..." />                       
-                        <div className="card-img-overlay">
-                        <h5 className="card-text role"><small>Role:Admin</small></h5>
-                        <div className="card-title title text-truncate">Navodaya English High School</div>
-                        <h5 className="card-text shortform">N.E.H.S</h5>
-                        </div>                        
-                    </li>                   
-                
-            </ul>
+                <ul className="container maincon">
+                    {userSchools.length === 0 ? (
+                            <p>No schools joined yet</p>
+                    ) : (
+                        userSchools.map((school, index) => (
+                            <li className='card concard' key={index}>                    
+                                <img src={getRandomImage()} className="card-img cardimg d-none d-md-block" alt="..." />                       
+                                <div className="card-img-overlay">
+                                <h5 className="card-text role"><small>Role:Admin</small></h5>
+                                <div className="card-title title text-truncate">{school.name}</div>
+                                <div style={{display:'flex'}}>
+                                    <img className="school-logo" src={school} alt='...'/>
+                                    <h5 className="card-text shortform">{school.shortForm}</h5>
+                                </div>
+                                </div>                        
+                            </li>                   
+                        ))
+                    )}              
+                </ul>
             </div>
         </div>
         </>

@@ -2,7 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './header.css';
 import acclogo from '../../images/acclogo.png';
 import edulogo from '../../images/edulogo.png';
+import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
+
 const Header = () => {
+    const { currentUser } = useUserStore(); // Access user data and loading state
+    console.log("Current User in Header:", currentUser);
+
     return (         
         <div className="header">
             <div className="left-rec">
@@ -13,7 +18,8 @@ const Header = () => {
                 <div className="pfp">
                 <img  src={acclogo} alt=""></img>
                 </div>
-                <div className="username text-truncate">Sahil Phadtare </div>
+                <div className="username text-truncate">{currentUser?.name || "User"}  </div>
+                
                 
             </div>
         </div>
