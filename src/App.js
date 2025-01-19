@@ -21,11 +21,18 @@ import {auth} from "./Firebase/firebase";
 import { onAuthStateChanged } from 'firebase/auth';
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Loading state to wait for auth state change
+
     // Track user authentication state
     useEffect(() => { //session management
       const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setCurrentUser(user); // Update the user state when the auth state changes
-      });
+        if (user) {
+          setCurrentUser(user); // Set the user if logged in
+        } else {
+          setCurrentUser(null); // Set user to null if logged out
+        }
+        setLoading(false); // Stop loading after checking auth state
+      });      
       return () => unsubscribe(); // Cleanup the listener on unmount
     }, []);
   
@@ -33,6 +40,9 @@ function App() {
       return currentUser ? children : <Navigate to="/" />;
     };   
     console.log(currentUser)
+    if (loading) {
+      return <div>Loading...</div>; // Show loading screen until auth state is known
+    }
  return (
 <>
         <Router>

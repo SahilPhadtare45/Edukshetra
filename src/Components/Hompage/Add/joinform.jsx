@@ -2,12 +2,18 @@ import './joinform.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Joinform = () => {
     const [isVisible, setIsVisible] = useState(true);
+    const navigate = useNavigate();
 
     const handleClose = () => {
         setIsVisible(false); // Hides the container
     };
+    const handleSubmit = () => {
+        navigate("/dashboard");
+    }
     return ( 
         isVisible && (
             <div className="joinfrombg">
@@ -27,7 +33,7 @@ const Joinform = () => {
                 <span class="input-group-text eg" id="basic-addon3">eg.XUVcdc</span> 
             </div>
 
-            <button class="btn sub1" type="submit">Submit</button>
+            <button class="btn sub1" onClick={handleSubmit} type="submit">Submit</button>
         </div>
         </div>
         )

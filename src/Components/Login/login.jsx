@@ -17,7 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState(""); // Added name for Signup
   const [error, setError] = useState(false);
-  const { fetchUserInfo, clearUser, setLoading } = useUserStore(); // Zustand hooks
+  const { setUser, clearUser, setLoading, fetchUserInfo } = useUserStore(); // Zustand hooks
 
   useEffect(() => {
     // Listen for authentication state change (login, logout)
@@ -30,8 +30,15 @@ const Login = () => {
       }
     });
 
+      // Check if a user is already present in the Zustand store (persisted state)
+  const persistedUser = useUserStore.getState().currentUser;
+  if (persistedUser) {
+    setLoading(true);
+    fetchUserInfo(persistedUser.uid); // Fetch user info if it already exists in persisted state
+  }
+  
     return () => unsubscribe(); // Clean up the listener on component unmount
-  }, [fetchUserInfo, clearUser, setLoading]);
+  }, [setUser,fetchUserInfo, clearUser, setLoading]);
 
   const toggleFlip = () => {
     setIsFlipped(!isFlipped);

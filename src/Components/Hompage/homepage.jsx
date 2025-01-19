@@ -10,6 +10,8 @@ import desk from '../../images/deskbg.jpg';
 import books from '../../images/download.jpg';
 import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
 import Createform from './Add/createform'; // Import the Createform component
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -18,7 +20,18 @@ const Homepage = () => {
     const userSchools = useUserStore((state) => state.userSchools); // Get schools from Zustand store
     const [showAddComponent, setShowAddComponent] = useState(false);
     const [schools, setSchools] = useState(userSchools);
+    const navigate = useNavigate();
 
+    const handleLogout = async () => {
+        const auth = getAuth();
+        try {
+            await signOut(auth); // Sign out from Firebase
+            useUserStore.getState().clearUser(); // Clear Zustand store
+            navigate("/")
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    };
     const handleNavClick = (index) => {
         setActiveIndex(index);
     };
@@ -85,7 +98,7 @@ const Homepage = () => {
                 </div>
                 <div className="active-underline md-none" style={underlineStyle}></div>
                 <FontAwesomeIcon className="plusicon" onClick={() => setShowAddComponent((prev) => !prev)} icon={faPlus} />
-                <FontAwesomeIcon className="gearicon" icon={faGear} />
+                <FontAwesomeIcon className="gearicon" onClick={handleLogout} icon={faGear} />
             </nav>
             {showAddComponent && <Add />}
             <div className="navbar-line"></div>
