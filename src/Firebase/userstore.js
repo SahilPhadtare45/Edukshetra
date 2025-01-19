@@ -1,7 +1,7 @@
   import { create } from "zustand";
   import { doc, getDoc, getDocs, collection } from "firebase/firestore";
   import { auth, db } from "../Firebase/firebase.js"; // Ensure the firebase config is imported
-  import { onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
+  import { setPersistence, browserLocalPersistence } from "firebase/auth";
   import { persist } from "zustand/middleware";
 
   // Ensure persistence for Firebase Authentication
@@ -18,6 +18,7 @@
     setUser: (user) => set({ currentUser: user, isLoading: false }), // Set user data
     setLoading: (loading) => set({ isLoading: loading }), // Set loading state
     userRole: 'guest', // Default role is 'guest'
+    addSchool: (newSchool) => set((state) => ({ userSchools: [...state.userSchools, newSchool] })),
     clearUser: () => set({ currentUser: null, isLoading: false }), // Clear user data
     setUserRole: (role) => set({ userRole: role }), // To set the role (admin, teacher, student)
     fetchUserInfo: async (uid) => {
@@ -49,8 +50,9 @@
             const schools = [];
         
             querySnapshot.forEach((doc) => {
-              if (doc.data().userId === uid) {
-                schools.push(doc.data());
+              const schoolData = doc.data();
+              if (schoolData.userId === uid) {
+                schools.push(schoolData);
               }
             });
             set({ userSchools: schools });

@@ -5,6 +5,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { useUserStore } from "../../../Firebase/userstore"; // Import Zustand store
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
+import school from '../../../images/schoolimg.jpg';
+
 const Createform = () => {
     const [isVisible, setIsVisible] = useState(true);
     const setUserRole = useUserStore((state) => state.setUserRole); // Get the setUserRole function from the store
@@ -28,7 +31,18 @@ const Createform = () => {
             return;
           }
         const db = getFirestore();
+        const storage = getStorage();
 
+         // Upload the image to Firebase Storage
+        const fileInput = document.getElementById("inputGroupFile04");
+        const file = fileInput.files[0];
+        let logoUrl = "";
+
+        if (file) {
+            const storageRef = ref(storage, `schoolLogos/${currentUser.uid}-${Date.now()}`);
+            await uploadBytes(storageRef, file);
+            logoUrl = await getDownloadURL(storageRef); // Get the image URL
+        }
     // Save school data
     const schoolData = {
       userId: currentUser.uid, // Add userId to associate with the user
@@ -37,11 +51,13 @@ const Createform = () => {
       phone: schoolPhone,
       email: schoolEmail,
       createdAt: new Date(),
-      logoUrl: "school_logo_url_here", // You can implement image upload if needed
+      logoUrl: logoUrl || school, // Use the uploaded logo or a default
     };
 
     const schoolRef = doc(db, 'schools', `${currentUser.uid}-${Date.now()}`); // Unique ID
     await setDoc(schoolRef, schoolData);
+
+    useUserStore.getState().addSchool(schoolData);
 
     setIsVisible(false); // Hides the container
     };
