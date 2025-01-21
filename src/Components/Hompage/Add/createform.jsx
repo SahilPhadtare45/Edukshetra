@@ -5,9 +5,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { useUserStore } from "../../../Firebase/userstore"; // Import Zustand store
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
 import school from '../../../images/schoolimg.jpg';
-
+import uploadImageToCloudinary from "../../../Firebase/upload";
 const Createform = () => {
     const [isVisible, setIsVisible] = useState(true);
     const setUserRole = useUserStore((state) => state.setUserRole); // Get the setUserRole function from the store
@@ -31,7 +30,6 @@ const Createform = () => {
             return;
           }
         const db = getFirestore();
-        const storage = getStorage();
 
          // Upload the image to Firebase Storage
         const fileInput = document.getElementById("inputGroupFile04");
@@ -39,13 +37,20 @@ const Createform = () => {
         let logoUrl = "";
 
         if (file) {
-            const storageRef = ref(storage, `schoolLogos/${currentUser.uid}-${Date.now()}`);
-            await uploadBytes(storageRef, file);
-            logoUrl = await getDownloadURL(storageRef); // Get the image URL
+            try {
+                // Use the new uploadImage function
+                logoUrl = await uploadImageToCloudinary(file, currentUser.uid);
+                console.log("Image uploaded successfully:", logoUrl); // Check if URL is generated
+
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                return;
+            }
         }
     // Save school data
     const schoolData = {
       userId: currentUser.uid, // Add userId to associate with the user
+      username: currentUser.name,
       name: schoolName,
       shortForm: shortForm,
       phone: schoolPhone,
@@ -54,13 +59,19 @@ const Createform = () => {
       logoUrl: logoUrl || school, // Use the uploaded logo or a default
     };
 
-    const schoolRef = doc(db, 'schools', `${currentUser.uid}-${Date.now()}`); // Unique ID
-    await setDoc(schoolRef, schoolData);
+    try {
+        const schoolRef = doc(db, "schools", `${currentUser.uid}-${Date.now()}`);
+        await setDoc(schoolRef, schoolData);
 
-    useUserStore.getState().addSchool(schoolData);
+        // Add the new school to Zustand store
+        useUserStore.getState().addSchool(schoolData);
 
-    setIsVisible(false); // Hides the container
-    };
+        setIsVisible(false); // Hide the form
+        console.log("School added successfully.");
+    } catch (error) {
+        console.error("Error saving school data:", error);
+    }
+};
     return(
         isVisible && (
     <div className="createfrombg">

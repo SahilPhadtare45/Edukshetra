@@ -16,6 +16,8 @@ const Homepage = () => {
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
     const userSchools = useUserStore((state) => state.userSchools); // Get schools from Zustand store
+    const currentUser = useUserStore((state) => state.currentUser); // Get the current user
+    const fetchUserSchools = useUserStore((state) => state.fetchUserSchools); // Zustand function to fetch schools  
     const [showAddComponent, setShowAddComponent] = useState(false);
     const [schools, setSchools] = useState(userSchools);
     const navigate = useNavigate();
@@ -37,16 +39,12 @@ const Homepage = () => {
     };
      
     useEffect(() => {
-        // Fetch user's schools when the component mounts
-        const fetchSchools = async () => {
-            const currentUser = useUserStore.getState().currentUser;
-            if (currentUser) {
-                await useUserStore.getState().fetchUserSchools(currentUser.uid);
-            }
-        };
+    // Fetch user's schools when the component mounts or when the user changes
+    if (currentUser) {
+      fetchUserSchools(currentUser.uid); // Fetch schools for the logged-in user
+    }
+  }, [currentUser, fetchUserSchools]); // Dependency array includes `currentUser`
 
-        fetchSchools();
-    }, []);
      // Precompute images for schools
      const images = [workplace, desk, books];
      const schoolImages = userSchools.map((_, index) => images[index % images.length]); // Cyclic assignment

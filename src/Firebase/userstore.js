@@ -11,16 +11,25 @@
   // Creating Zustand store to manage user data and loading state
   export const useUserStore = create(
     persist(
-      (set) => ({  
+      (set,get) => ({  
     currentUser: null,
     isLoading: true,
     userSchools: [], // New state to hold schools data
     setUser: (user) => set({ currentUser: user, isLoading: false }), // Set user data
+    // Set user and trigger schools fetch
+    setUser: (user) => {
+      set({ currentUser: user, isLoading: false });
+      if (user) {
+        get().fetchUserSchools(user.uid); // Fetch schools for the logged-in user
+      }
+    },
+    
     setLoading: (loading) => set({ isLoading: loading }), // Set loading state
     userRole: 'guest', // Default role is 'guest'
     addSchool: (newSchool) => set((state) => ({ userSchools: [...state.userSchools, newSchool] })),
     clearUser: () => set({ currentUser: null, isLoading: false }), // Clear user data
     setUserRole: (role) => set({ userRole: role }), // To set the role (admin, teacher, student)
+    clearUser: () => set({ currentUser: null, isLoading: false, userSchools: [] }),
     fetchUserInfo: async (uid) => {
       if (!uid) return set({ currentUser: null, isLoading: false });
     
