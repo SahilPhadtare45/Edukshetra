@@ -19,9 +19,7 @@ const Homepage = () => {
     const currentUser = useUserStore((state) => state.currentUser); // Get the current user
     const fetchUserSchools = useUserStore((state) => state.fetchUserSchools); // Zustand function to fetch schools  
     const [showAddComponent, setShowAddComponent] = useState(false);
-    const [schools, setSchools] = useState(userSchools);
     const navigate = useNavigate();
-    const [imageIndex, setImageIndex] = useState(0); // State to track the current image index
 
 
     const handleLogout = async () => {
@@ -59,6 +57,9 @@ const Homepage = () => {
         }
     }, [activeIndex]);
 
+    const handleSchoolClick = (school) => {
+       navigate(`/dashboard`)
+    };
     return (
         <>
         <div className="homepage">            
@@ -93,7 +94,7 @@ const Homepage = () => {
                             <p>No schools joined yet</p>
                     ) : (
                         userSchools.map((school, index) => (
-                            <li className='card concard' key={index}>                    
+                            <li className='card concard' key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
                                     <h5 className="card-text role"><small>Role:Admin</small></h5>

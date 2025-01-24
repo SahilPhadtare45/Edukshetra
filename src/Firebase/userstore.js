@@ -15,7 +15,11 @@
     currentUser: null,
     isLoading: true,
     userSchools: [], // New state to hold schools data
+    currentSchool: null, // The currently selected or active school
+    setSchools: (userSchools) => set({ userSchools }),  // Add this action to set the schools
+    updateRole: (role) => set({ userRole: role }),
     setUser: (user) => set({ currentUser: user, isLoading: false }), // Set user data
+
     // Set user and trigger schools fetch
     setUser: (user) => {
       set({ currentUser: user, isLoading: false });
@@ -24,12 +28,24 @@
       }
     },
     
+    // Set the current school based on schoolId
+    setCurrentSchool: (schoolId) => {
+      const schools = get().userSchools;
+      const school = schools.find((s) => s.schoolId === schoolId);
+      if (school) {
+        set({ currentSchool: school });
+      } else {
+        console.warn(`School with ID ${schoolId} not found.`);
+        set({ currentSchool: null });
+      }
+    },
+
     setLoading: (loading) => set({ isLoading: loading }), // Set loading state
-    userRole: 'guest', // Default role is 'guest'
+    
     addSchool: (newSchool) => set((state) => ({ userSchools: [...state.userSchools, newSchool] })),
-    clearUser: () => set({ currentUser: null, isLoading: false }), // Clear user data
     setUserRole: (role) => set({ userRole: role }), // To set the role (admin, teacher, student)
-    clearUser: () => set({ currentUser: null, isLoading: false, userSchools: [] }),
+    clearUser: () => set({ currentUser: null, isLoading: false, userSchools: [], userRole: "guest", }),
+    
     fetchUserInfo: async (uid) => {
       if (!uid) return set({ currentUser: null, isLoading: false });
     
@@ -67,6 +83,20 @@
             set({ userSchools: schools });
           } catch (error) {
             console.error("Error fetching schools:", error);
+          }
+        },
+        fetchSchoolById: async (schoolId) => {
+          try {
+            const schoolDoc = await getDoc(doc(db, "schools", schoolId)); // Use Firestore's doc path
+            if (schoolDoc.exists()) {
+              return schoolDoc.data(); // Return the school data
+            } else {
+              console.warn("No school found with the provided ID");
+              return null;
+            }
+          } catch (error) {
+            console.error("Error fetching school data:", error);
+            return null;
           }
         },
       }),

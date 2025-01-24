@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc,updateDoc,arrayUnion } from "firebase/firestore";
 import { useUserStore } from "../../../Firebase/userstore"; // Import Zustand store
 import school from '../../../images/schoolimg.jpg';
 import uploadImageToCloudinary from "../../../Firebase/upload";
 const Createform = () => {
     const [isVisible, setIsVisible] = useState(true);
-    const setUserRole = useUserStore((state) => state.setUserRole); // Get the setUserRole function from the store
     const currentUser = useUserStore((state) => state.currentUser); // Get current user from Zustand
     const [schoolName, setSchoolName] = useState("");
     const [shortForm, setShortForm] = useState("");
@@ -24,7 +23,7 @@ const Createform = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
         // Set the role to 'admin' when the user is creating a school
-        setUserRole('admin');
+
         if (!currentUser) {
             console.error("User is not authenticated.");
             return;
@@ -34,7 +33,7 @@ const Createform = () => {
          // Upload the image to Firebase Storage
         const fileInput = document.getElementById("inputGroupFile04");
         const file = fileInput.files[0];
-        let logoUrl = "";
+        let logoUrl = school;
 
         if (file) {
             try {
@@ -47,8 +46,12 @@ const Createform = () => {
                 return;
             }
         }
+      // Generate a schoolId using userId and timestamp
+      const schoolId = `${currentUser.uid}-${Date.now()}`;
+
     // Save school data
     const schoolData = {
+      schoolId: schoolId, // Store the unique school ID
       userId: currentUser.uid, // Add userId to associate with the user
       username: currentUser.name,
       name: schoolName,
@@ -56,13 +59,19 @@ const Createform = () => {
       phone: schoolPhone,
       email: schoolEmail,
       createdAt: new Date(),
-      logoUrl: logoUrl || school, // Use the uploaded logo or a default
+      logoUrl: logoUrl, // Use the uploaded logo or a default
+      userRole: "Admin"
     };
 
     try {
-        const schoolRef = doc(db, "schools", `${currentUser.uid}-${Date.now()}`);
+        const schoolRef = doc(db, "schools", schoolId);
         await setDoc(schoolRef, schoolData);
 
+         // Update user's schoolData array in the "Users" collection
+         const userRef = doc(db, "Users", currentUser.uid);
+         await updateDoc(userRef, {
+             schoolData: arrayUnion(schoolData),
+         });
         // Add the new school to Zustand store
         useUserStore.getState().addSchool(schoolData);
 

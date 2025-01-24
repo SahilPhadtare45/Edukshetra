@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const Joinform = () => {
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+const Joinform =async (schoolId) =>  {
     const [isVisible, setIsVisible] = useState(true);
     const navigate = useNavigate();
 
@@ -14,6 +14,8 @@ const Joinform = () => {
     const handleSubmit = () => {
         navigate("/dashboard");
     }
+    
+    
     return ( 
         isVisible && (
             <div className="joinfrombg">

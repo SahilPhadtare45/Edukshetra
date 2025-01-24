@@ -4,12 +4,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faChalkboardTeacher, faUsers, faClipboard, faTasks, faCheckSquare,faUsersRectangle, faUser,faSchool, faDoorOpen,faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import './sidebar.css';
 import Schoolimg from '../../images/schoolimg.jpg';
-
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import  { useState, useEffect } from 'react';
+import { useUserStore } from '../../Firebase/userstore';
 const Sidebar = () => {
+    const [schoolLogo, setSchoolLogo] = useState('');
+    const [schoolName, setSchoolName] = useState('your school'); // Default value
+    const currentUser = useUserStore((state) => state.currentUser); // Zustand store to get the current user
+    const userSchools = useUserStore((state) => state.userSchools);
+
+    useEffect(() => {
+            if (!currentUser || userSchools.length === 0) {
+                console.warn("No user or school data found.");
+                return;
+            }
+    
+            // Assuming the user is linked to a single school; update as needed for multiple schools
+            const school = userSchools[0]; // Fetch the first school associated with the user
+            console.log("Selected School Data:", school);
+    
+            if (school) {
+                setSchoolLogo(school.logoUrl || Schoolimg); // Use uploaded logo or default
+                setSchoolName(school.name || "Your School");
+            }
+        }, [currentUser, userSchools]);
     return (
         <div className="sidebar">
-            <img src={Schoolimg} className="sclimg" alt='..' />
-            <div className='sclname'>N.E.H.S</div>
+            <img src={schoolLogo || Schoolimg} className="sclimg" alt='..' />
+            <div style={{alignItems: "center",justifyItems: "center"}}>
+            <div className='sclname'>{schoolName}</div></div>
             <NavLink to="/" className="home">
                         <FontAwesomeIcon icon={faHome} /> Home
             </NavLink>
