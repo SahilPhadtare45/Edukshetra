@@ -28,17 +28,9 @@
       }
     },
     
-    // Set the current school based on schoolId
-    setCurrentSchool: (schoolId) => {
-      const schools = get().userSchools;
-      const school = schools.find((s) => s.schoolId === schoolId);
-      if (school) {
-        set({ currentSchool: school });
-      } else {
-        console.warn(`School with ID ${schoolId} not found.`);
-        set({ currentSchool: null });
-      }
-    },
+   // Inside your useUserStore file
+setCurrentSchool: (school) => set({ currentSchool: school }),
+clearCurrentSchool: () => set({ currentSchool: null }),
 
     setLoading: (loading) => set({ isLoading: loading }), // Set loading state
     
@@ -77,7 +69,10 @@
             querySnapshot.forEach((doc) => {
               const schoolData = doc.data();
               if (schoolData.userId === uid) {
-                schools.push(schoolData);
+                schools.push({
+                  ...schoolData,
+                  password: schoolData.password, // Ensure password is included
+              });
               }
             });
             set({ userSchools: schools });

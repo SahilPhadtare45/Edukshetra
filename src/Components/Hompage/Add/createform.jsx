@@ -7,6 +7,8 @@ import { getFirestore, setDoc, doc,updateDoc,arrayUnion } from "firebase/firesto
 import { useUserStore } from "../../../Firebase/userstore"; // Import Zustand store
 import school from '../../../images/schoolimg.jpg';
 import uploadImageToCloudinary from "../../../Firebase/upload";
+import { generatePassword } from '../../../Firebase/services';
+
 const Createform = () => {
     const [isVisible, setIsVisible] = useState(true);
     const currentUser = useUserStore((state) => state.currentUser); // Get current user from Zustand
@@ -49,6 +51,9 @@ const Createform = () => {
       // Generate a schoolId using userId and timestamp
       const schoolId = `${currentUser.uid}-${Date.now()}`;
 
+      // Generate a unique 6-character password for the school
+        const schoolPassword = generatePassword();
+
     // Save school data
     const schoolData = {
       schoolId: schoolId, // Store the unique school ID
@@ -60,7 +65,8 @@ const Createform = () => {
       email: schoolEmail,
       createdAt: new Date(),
       logoUrl: logoUrl, // Use the uploaded logo or a default
-      userRole: "Admin"
+      userRole: "Admin",
+      password: schoolPassword, // Include the generated password
     };
 
     try {
@@ -77,6 +83,7 @@ const Createform = () => {
 
         setIsVisible(false); // Hide the form
         console.log("School added successfully.");
+        console.log("School password:", schoolPassword); // Log the password for debugging (remove in production)
     } catch (error) {
         console.error("Error saving school data:", error);
     }

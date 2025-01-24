@@ -1,12 +1,12 @@
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
-import { useUserStore } from '../store/userStore'; // Update path as necessary
+import { useUserStore } from '../Firebase/userstore'; // Update path as necessary
 
 export const updateRole = async (newRole) => {
     const db = getFirestore();
     const currentUser = useUserStore.getState().currentUser; // Get the current user from Zustand
     const userRef = doc(db, "Users", currentUser.uid); // Get current user's reference
-
+    
     try {
         // Fetch the user's school data
         const userSnap = await getDoc(userRef);
@@ -33,4 +33,14 @@ export const updateRole = async (newRole) => {
         console.error("Error updating role:", error);
         alert("Failed to update role. Please try again.");
     }
+};
+
+export const generatePassword = () => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let password = "";
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters[randomIndex];
+    }
+    return password;
 };

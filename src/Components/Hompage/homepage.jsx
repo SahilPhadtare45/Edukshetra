@@ -16,12 +16,23 @@ const Homepage = () => {
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
     const userSchools = useUserStore((state) => state.userSchools); // Get schools from Zustand store
+    const userRole = useUserStore((state) => state.userRole); 
+
     const currentUser = useUserStore((state) => state.currentUser); // Get the current user
     const fetchUserSchools = useUserStore((state) => state.fetchUserSchools); // Zustand function to fetch schools  
     const [showAddComponent, setShowAddComponent] = useState(false);
     const navigate = useNavigate();
+    const setCurrentSchool = useUserStore((state) => state.setCurrentSchool); // Zustand action
 
-
+const handleSchoolClick = (school) => {
+    setCurrentSchool(school); // Set the current school in the Zustand store
+    navigate(`/dashboard`); // Navigate to the dashboard or desired route
+};
+const handleCopyPassword = (password) => {
+    navigator.clipboard.writeText(password).then(() => {
+        alert("Password copied to clipboard!");
+    });
+};
     const handleLogout = async () => {
         const auth = getAuth();
         try {
@@ -57,9 +68,6 @@ const Homepage = () => {
         }
     }, [activeIndex]);
 
-    const handleSchoolClick = (school) => {
-       navigate(`/dashboard`)
-    };
     return (
         <>
         <div className="homepage">            
@@ -97,6 +105,25 @@ const Homepage = () => {
                             <li className='card concard' key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
+                                <div className='share_code'>
+    Password: <strong>{school.password || "Not available"}</strong>
+    {currentUser.userRole === "Admin" && school.password ? (
+        <button 
+            className="copy-button" 
+            onClick={(e) => {
+                e.stopPropagation(); // Prevent navigating to the school dashboard
+                handleCopyPassword(school.password);
+            }}
+        >
+            Copy
+        </button>
+    ) : (
+        <p className="info-text">
+            {currentUser.userRole !== "Admin" ? "Only admins can copy the password." : ""}
+        </p>
+    )}
+</div>
+                               
                                     <h5 className="card-text role"><small>Role:Admin</small></h5>
                                     <div className="card-title title text-truncate">{school.name}</div>
                                     <div style={{display:'flex'}}>
