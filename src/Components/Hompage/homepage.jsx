@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './homepage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus,faGear } from '@fortawesome/free-solid-svg-icons';
+import { faPlus,faGear,faCopy } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Comman/header';
 import workplace from '../Hompage/workplace.jpg';
 import Add from './Add/add.jsx';
@@ -10,29 +10,25 @@ import books from '../../images/download.jpg';
 import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { onSnapshot, collection, query, where } from "firebase/firestore";
+import { db } from "../../Firebase/firebase";
+
 
 const Homepage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
-    const userSchools = useUserStore((state) => state.userSchools); // Get schools from Zustand store
-    const userRole = useUserStore((state) => state.userRole); 
-
-    const currentUser = useUserStore((state) => state.currentUser); // Get the current user
-    const fetchUserSchools = useUserStore((state) => state.fetchUserSchools); // Zustand function to fetch schools  
+    
+    const { userSchools, fetchUserSchools, currentUser,setSchools } = useUserStore();
     const [showAddComponent, setShowAddComponent] = useState(false);
     const navigate = useNavigate();
     const setCurrentSchool = useUserStore((state) => state.setCurrentSchool); // Zustand action
 
-const handleSchoolClick = (school) => {
-    setCurrentSchool(school); // Set the current school in the Zustand store
-    navigate(`/dashboard`); // Navigate to the dashboard or desired route
-};
-const handleCopyPassword = (password) => {
-    navigator.clipboard.writeText(password).then(() => {
-        alert("Password copied to clipboard!");
-    });
-};
+    const handleSchoolClick = (school) => {
+        setCurrentSchool(school); // Set the current school in the Zustand store
+        navigate(`/dashboard`); // Navigate to the dashboard or desired route
+    };
+
     const handleLogout = async () => {
         const auth = getAuth();
         try {
@@ -43,17 +39,35 @@ const handleCopyPassword = (password) => {
             console.error("Error signing out:", error);
         }
     };
+
     const handleNavClick = (index) => {
         setActiveIndex(index);
     };
-     
-    useEffect(() => {
-    // Fetch user's schools when the component mounts or when the user changes
-    if (currentUser) {
-      fetchUserSchools(currentUser.uid); // Fetch schools for the logged-in user
-    }
-  }, [currentUser, fetchUserSchools]); // Dependency array includes `currentUser`
 
+    useEffect(() => {
+        if (!currentUser) return;
+    
+        const schoolsQuery = query(collection(db, "schools"), where("members", "array-contains", currentUser.uid));
+    
+        const unsubscribe = onSnapshot(schoolsQuery, (querySnapshot) => {
+            const schools = querySnapshot.docs.map((doc) => ({
+                id: doc.id, 
+                ...doc.data(),
+            }));
+            console.log("Updated Schools from Firestore:", schools); // Debugging log
+
+            useUserStore.getState().setSchools(schools); // Ensure Zustand state is updated
+        });
+    
+        return () => unsubscribe();
+    }, [currentUser]); 
+
+
+    useEffect(() => {
+        if (currentUser && userSchools.length === 0) {
+          fetchUserSchools(currentUser.uid);
+        }
+      }, [currentUser, fetchUserSchools, userSchools.length]);
      // Precompute images for schools
      const images = [workplace, desk, books];
      const schoolImages = userSchools.map((_, index) => images[index % images.length]); // Cyclic assignment
@@ -67,6 +81,8 @@ const handleCopyPassword = (password) => {
             });
         }
     }, [activeIndex]);
+
+    console.log("userSchools:", userSchools, "Type:", typeof userSchools);
 
     return (
         <>
@@ -98,34 +114,19 @@ const handleCopyPassword = (password) => {
             <div className="navbar-line"/>
             <div class="list-group">
                 <ul className="container maincon">
-                    {userSchools.length === 0 ? (
-                            <p>No schools joined yet</p>
+                {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
+                        <p>No schools joined yet</p>
                     ) : (
                         userSchools.map((school, index) => (
                             <li className='card concard' key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
                                 <div className='share_code'>
-    Password: <strong>{school.password || "Not available"}</strong>
-    {currentUser.userRole === "Admin" && school.password ? (
-        <button 
-            className="copy-button" 
-            onClick={(e) => {
-                e.stopPropagation(); // Prevent navigating to the school dashboard
-                handleCopyPassword(school.password);
-            }}
-        >
-            Copy
-        </button>
-    ) : (
-        <p className="info-text">
-            {currentUser.userRole !== "Admin" ? "Only admins can copy the password." : ""}
-        </p>
-    )}
-</div>
+                                    Password: <strong>{school.password || "Not available"}</strong>
+                                </div>
                                
-                                    <h5 className="card-text role"><small>Role:Admin</small></h5>
-                                    <div className="card-title title text-truncate">{school.name}</div>
+                                    <h5 className="card-text role"><small>Role:{school.userRole}</small></h5>
+                                    <div className="card-title title text-truncate">{school.schoolName}</div>
                                     <div style={{display:'flex'}}>
                                         <img className="school-logo" src={school.logoUrl} alt='...'/>
                                         <h5 className="card-text shortform">{school.shortForm}</h5>

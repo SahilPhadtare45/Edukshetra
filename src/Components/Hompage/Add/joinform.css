@@ -8,13 +8,13 @@
     margin-left: -1275px;
 }
 .joinform{
-    height: 500px;
+    height: 460px;
     width: 650px;
     background-color: rgba(255, 255, 255, 255) !important;
     border-radius: 10px !important;
     position: absolute !important;
     margin-left:32%;
-    margin-top: 180px;
+    margin-top: 240px;
     border: 1px solid black;
 
 }

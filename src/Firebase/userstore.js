@@ -16,9 +16,8 @@
     isLoading: true,
     userSchools: [], // New state to hold schools data
     currentSchool: null, // The currently selected or active school
-    setSchools: (userSchools) => set({ userSchools }),  // Add this action to set the schools
+    setSchools: (schools) => set({ userSchools: Array.isArray(schools) ? schools : [] }),
     updateRole: (role) => set({ userRole: role }),
-    setUser: (user) => set({ currentUser: user, isLoading: false }), // Set user data
 
     // Set user and trigger schools fetch
     setUser: (user) => {
@@ -58,28 +57,39 @@ clearCurrentSchool: () => set({ currentSchool: null }),
         set({ currentUser: null, isLoading: false });
       }
     },
-        fetchUserSchools: async (uid) => {
-          if (!uid) return;
-        
-          try {
-            const schoolsRef = collection(db, "schools");
-            const querySnapshot = await getDocs(schoolsRef);
-            const schools = [];
-        
-            querySnapshot.forEach((doc) => {
-              const schoolData = doc.data();
-              if (schoolData.userId === uid) {
-                schools.push({
-                  ...schoolData,
-                  password: schoolData.password, // Ensure password is included
-              });
-              }
-            });
-            set({ userSchools: schools });
-          } catch (error) {
-            console.error("Error fetching schools:", error);
-          }
-        },
+    fetchUserSchools: async (uid) => {
+      if (!uid) return;
+  
+      try {
+         // Fetch the user's document from the 'users' collection
+         const userRef = doc(db, "Users", uid);
+         const userSnap = await getDoc(userRef);
+ 
+         let userJoinedSchools = [];
+         if (userSnap.exists()) {
+             const userData = userSnap.data();
+             if (userData.schoolData && Array.isArray(userData.schoolData)) {
+                 userJoinedSchools = userData.schoolData; // Extract stored schools
+             }
+         }
+          const schoolsRef = collection(db, "schools");
+          const querySnapshot = await getDocs(schoolsRef);
+          const schools = querySnapshot.docs
+              .map((doc) => ({
+                  id: doc.id,
+                  ...doc.data(),
+              }))
+              .filter((school) => Array.isArray(school.members) && school.members.includes(uid)); // Ensure filtering works
+  
+              // Combine fetched schools and user's joined schools
+          const combinedSchools = [...schools, ...userJoinedSchools];
+          console.log("Fetched Schools:", combinedSchools); // Debugging log
+          set({ userSchools: Array.isArray(combinedSchools) ? combinedSchools : [] }); // Ensures an array is set
+        } catch (error) {
+          console.error("Error fetching schools:", error);
+          set({ userSchools: [] }); // Prevents null issues
+      }
+  },
         fetchSchoolById: async (schoolId) => {
           try {
             const schoolDoc = await getDoc(doc(db, "schools", schoolId)); // Use Firestore's doc path

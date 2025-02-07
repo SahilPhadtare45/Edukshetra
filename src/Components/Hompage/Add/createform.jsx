@@ -58,8 +58,8 @@ const Createform = () => {
     const schoolData = {
       schoolId: schoolId, // Store the unique school ID
       userId: currentUser.uid, // Add userId to associate with the user
-      username: currentUser.name,
-      name: schoolName,
+      createdBy: currentUser.name,
+      schoolName: schoolName,
       shortForm: shortForm,
       phone: schoolPhone,
       email: schoolEmail,

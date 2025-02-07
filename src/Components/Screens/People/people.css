@@ -48,7 +48,7 @@
     color: #fff;
 }
 .peoplepage .tr_section{
-    max-height: 500px;
+    max-height: 700px;
     width: 100%;
     background-color: transparent !important;
     position:absolute !important;
@@ -121,5 +121,5 @@
     background-color: #000000;
     margin-left: 3%;
     margin-right: 5%;
-    margin-top:3px;
+    margin-top:30px;
 }
