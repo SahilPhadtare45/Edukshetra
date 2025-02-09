@@ -1,5 +1,5 @@
   import { create } from "zustand";
-  import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+  import { doc, getDoc, getDocs, collection, onSnapshot  } from "firebase/firestore";
   import { auth, db } from "../Firebase/firebase.js"; // Ensure the firebase config is imported
   import { setPersistence, browserLocalPersistence } from "firebase/auth";
   import { persist } from "zustand/middleware";
@@ -27,8 +27,18 @@
       }
     },
     
-   // Inside your useUserStore file
-setCurrentSchool: (school) => set({ currentSchool: school }),
+    
+    setCurrentSchool: (school) => {
+      const current = get().currentSchool;
+  
+      if (!school || (current && current.schoolId === school.schoolId)) {
+          console.warn("Duplicate school detected. Not updating currentSchool.");
+          return;
+      }
+  
+      set({ currentSchool: school });
+  },
+  
 clearCurrentSchool: () => set({ currentSchool: null }),
 
     setLoading: (loading) => set({ isLoading: loading }), // Set loading state
@@ -37,73 +47,126 @@ clearCurrentSchool: () => set({ currentSchool: null }),
     setUserRole: (role) => set({ userRole: role }), // To set the role (admin, teacher, student)
     clearUser: () => set({ currentUser: null, isLoading: false, userSchools: [], userRole: "guest", }),
     
-    fetchUserInfo: async (uid) => {
-      if (!uid) return set({ currentUser: null, isLoading: false });
-    
-      try {
-        const docRef = doc(db, "Users", uid); // Ensure the document path matches Firestore structure
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          set({
-            currentUser: { uid, ...docSnap.data() }, // Include UID with Firestore data
-            isLoading: false,
-          });
-        } else {
-          console.warn("No user document found");
-          set({ currentUser: null, isLoading: false });
+    fetchUserInfo: (uid) => {
+    if (!uid) return set({ currentUser: null, isLoading: false });
+
+    try {
+        const docRef = doc(db, "Users", uid);
+
+        // Unsubscribe from previous listener to avoid duplicates
+        if (useUserStore.getState().unsubscribeUser) {
+            useUserStore.getState().unsubscribeUser();
         }
-      } catch (error) {
+
+        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                set({
+                    currentUser: { uid, ...docSnap.data() }, // Include UID with Firestore data
+                    isLoading: false,
+                });
+            } else {
+                console.warn("No user document found");
+                set({ currentUser: null, isLoading: false });
+            }
+        });
+
+        // Store unsubscribe function for cleanup
+        set({ unsubscribeUser: unsubscribe });
+    } catch (error) {
         console.error("Error fetching user data:", error);
         set({ currentUser: null, isLoading: false });
-      }
-    },
+    }
+},
     fetchUserSchools: async (uid) => {
       if (!uid) return;
   
       try {
-         // Fetch the user's document from the 'users' collection
-         const userRef = doc(db, "Users", uid);
-         const userSnap = await getDoc(userRef);
- 
-         let userJoinedSchools = [];
-         if (userSnap.exists()) {
-             const userData = userSnap.data();
-             if (userData.schoolData && Array.isArray(userData.schoolData)) {
-                 userJoinedSchools = userData.schoolData; // Extract stored schools
-             }
-         }
+          const userRef = doc(db, "Users", uid);
+          const userSnap = await getDoc(userRef);
+  
+          let userJoinedSchools = [];
+          if (userSnap.exists()) {
+              const userData = userSnap.data();
+              if (userData.schoolData && Array.isArray(userData.schoolData)) {
+                  userJoinedSchools = userData.schoolData;
+              }
+          }
+  
           const schoolsRef = collection(db, "schools");
           const querySnapshot = await getDocs(schoolsRef);
           const schools = querySnapshot.docs
-              .map((doc) => ({
-                  id: doc.id,
-                  ...doc.data(),
-              }))
-              .filter((school) => Array.isArray(school.members) && school.members.includes(uid)); // Ensure filtering works
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter((school) =>
+                  school.members?.some(member => member.uid === uid)
+              );
   
-              // Combine fetched schools and user's joined schools
-          const combinedSchools = [...schools, ...userJoinedSchools];
-          console.log("Fetched Schools:", combinedSchools); // Debugging log
-          set({ userSchools: Array.isArray(combinedSchools) ? combinedSchools : [] }); // Ensures an array is set
-        } catch (error) {
+          // **Map to store unique schools**
+          const schoolMap = new Map();
+  
+          [...userJoinedSchools, ...schools].forEach((school) => {
+              if (!schoolMap.has(school.schoolId)) {
+                  schoolMap.set(school.schoolId, school);
+              }
+          });
+  
+          const uniqueSchools = Array.from(schoolMap.values());
+  
+          // **Prevent rejoining the same school**
+          const currentSchool = get().currentSchool;
+          if (!currentSchool || !uniqueSchools.some(s => s.schoolId === currentSchool.schoolId)) {
+              set({ currentSchool: uniqueSchools[0] });
+          }
+  
+          set({ userSchools: uniqueSchools });
+      } catch (error) {
           console.error("Error fetching schools:", error);
-          set({ userSchools: [] }); // Prevents null issues
+          set({ userSchools: [] });
       }
   },
-        fetchSchoolById: async (schoolId) => {
-          try {
-            const schoolDoc = await getDoc(doc(db, "schools", schoolId)); // Use Firestore's doc path
-            if (schoolDoc.exists()) {
-              return schoolDoc.data(); // Return the school data
-            } else {
-              console.warn("No school found with the provided ID");
-              return null;
+  fetchSchoolById: async (schoolId) => {
+    try {
+        const schoolDoc = await getDoc(doc(db, "schools", schoolId)); // Fetch school
+        if (schoolDoc.exists()) {
+            const schoolData = schoolDoc.data();
+            console.log("Fetched School Data:", schoolData); // Debugging log
+
+            // Ensure members field is an array
+            if (!Array.isArray(schoolData.members)) {
+                schoolData.members = [];
             }
-          } catch (error) {
-            console.error("Error fetching school data:", error);
+
+            // Fetch detailed data of each member
+            const membersWithDetails = await Promise.all(
+                schoolData.members.map(async (member) => {
+                    if (member.uid) {
+                        const memberDoc = await getDoc(doc(db, "Users", member.uid));
+                        return memberDoc.exists()
+                            ? { uid: member.uid, ...memberDoc.data().name, email: memberDoc.data().email }
+                            : { uid: member.uid, name: "Unknown", email: "No email found" }; // Handle missing data
+                    }
+                    return member;
+                })
+            );
+
+            // Set the school data including member details
+            const schoolWithMembers = {
+                id: schoolId,
+                name: schoolData.name,
+                shortForm: schoolData.shortForm,
+                members: membersWithDetails, // Store detailed members data
+            };
+
+            set({ currentSchool: schoolWithMembers }); // Update Zustand state
+            return schoolWithMembers;
+        } else {
+            console.warn("No school found with the provided ID");
             return null;
-          }
-        },
+        }
+    } catch (error) {
+        console.error("Error fetching school data:", error);
+        return null;
+    }
+}
       }),
     { name: "user-store" } // Persist state to localStorage with key "user-store"
     )

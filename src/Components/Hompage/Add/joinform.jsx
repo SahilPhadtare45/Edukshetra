@@ -13,6 +13,7 @@ const Joinform = () => {  // Default value to avoid undefined error
     const navigate = useNavigate();
     const currentUser = useUserStore((state) => state.currentUser); // Zustand Store
     const setSchools = useUserStore((state) => state.setSchools); // Add the setSchools action from Zustand
+    const fetchUserInfo = useUserStore((state) => state.fetchUserInfo); // Get the function from Zustand
 
     const handleClose = () => {
         setIsVisible(false); // Hides the container
@@ -53,31 +54,69 @@ const Joinform = () => {  // Default value to avoid undefined error
                 return;
             }
     
+            const schoolRef = doc(db, "schools", matchedSchool.id);
+            const schoolSnap = await getDoc(schoolRef);
+
+            if (!schoolSnap.exists()) {
+                alert("School does not exist!");
+                return;
+            }
+            
+            const schoolData = schoolSnap.data();
+            const existingMembers = schoolData.members || [];
+            
+            if (schoolData.createdBy === currentUser.uid) {
+                alert("You are the creator of this school and cannot rejoin.");
+                return;
+            }
+            // Check if the user is already in the members list
+            const isAlreadyMember = existingMembers.some(member => member.uid === currentUser.uid);
+
+            if (isAlreadyMember) {
+                alert("You have already joined this school.");
+                return;
+            }
+
+            let userRole = "Guest"; // Default role
+                if (schoolData.adminId === currentUser.uid) {
+                    userRole = "Admin";
+                } else if (schoolData.teachers?.some(teacher => teacher.uid === currentUser.uid)) {
+                    userRole = "Teacher";
+                } else if (schoolData.students?.some(student => student.uid === currentUser.uid)) {
+                    userRole = "Student";
+                }
             // Prepare userSchoolData for Zustand
             const userSchoolData = {
                 schoolId: matchedSchool.id,
                 schoolName: matchedSchool.schoolName,
                 shortForm: matchedSchool.shortForm, // Include shortform
                 logoUrl: matchedSchool.logoUrl, // Include image URL
-                userRole: "Guest", // Default role
+                userRole: userRole, // Default role
                 joinedAt: new Date(),
                 password: matchedSchool.password,
                 phone:phone
             };
     
-            // Update Zustand state with new school
-            setSchools((prevSchools) => [...prevSchools, userSchoolData]);
-    
+            // Update Zustand state with new school, preventing duplicates
+setSchools((prevSchools) => {
+    const exists = prevSchools.some(school => school.schoolId === matchedSchool.id);
+    if (exists) return prevSchools; // Prevent duplicate
+    return [...prevSchools, userSchoolData];
+});
             // Add user to the school's members array in Firestore
             const userData = {
                 uid: currentUser.uid,
                 username: currentUser.name,
-                userRole: "Guest",
+                userRole: userRole,
                 email: currentUser.email,
                 joinedAt: new Date(),
                 phone:phone
             };
     
+            await updateDoc(schoolRef, {
+                members: arrayUnion(userData),
+            });
+            
             await updateDoc(doc(db, "schools", matchedSchool.id), {
                 members: arrayUnion(userData),
             });
@@ -88,9 +127,12 @@ const Joinform = () => {  // Default value to avoid undefined error
                 schoolData: arrayUnion(userSchoolData), // Append new school data
             });
 
+            // ✅ Fetch updated user info (triggers Zustand update)
+            fetchUserInfo(currentUser.uid);
+
             alert("Successfully joined the school!");
             setIsVisible(false);
-            navigate("/people");
+            navigate("/home");
         } catch (error) {
             console.error("Error joining school:", error);
             alert("Failed to join the school. Try again later.");

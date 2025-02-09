@@ -29,6 +29,7 @@ const Homepage = () => {
         navigate(`/dashboard`); // Navigate to the dashboard or desired route
     };
 
+    
     const handleLogout = async () => {
         const auth = getAuth();
         try {
