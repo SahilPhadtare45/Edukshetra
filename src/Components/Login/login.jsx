@@ -24,6 +24,7 @@ const Login = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setLoading(true); // Set loading true
+        setUser(user);  // ✅ Ensure Zustand gets the user
         await fetchUserInfo(user.uid); // Fetch additional Firestore data
       } else {
         clearUser(); // Clear user data if logged out
@@ -61,6 +62,10 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // ✅ Update Zustand store after successful login
+    setUser(user);
+    await fetchUserInfo(user.uid);
+
       toast.success("Login successful! Redirecting...");
       navigate("/home", { replace: true }); // Prevent navigation history stacking
     } catch (error) {
@@ -74,6 +79,8 @@ const Login = () => {
       }
       setError(true);
     }
+    console.log("Zustand User:", useUserStore.getState().currentUser);
+
   };
 
   // Signup handler

@@ -95,6 +95,7 @@ const Joinform = () => {  // Default value to avoid undefined error
                 joinedAt: new Date(),
                 password: matchedSchool.password,
                 phone:phone
+                
             };
     
             // Update Zustand state with new school, preventing duplicates
@@ -110,7 +111,8 @@ setSchools((prevSchools) => {
                 userRole: userRole,
                 email: currentUser.email,
                 joinedAt: new Date(),
-                phone:phone
+                phone:phone,
+                memberId:""
             };
     
             await updateDoc(schoolRef, {
