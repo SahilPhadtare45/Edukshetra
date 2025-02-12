@@ -6,7 +6,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faTrash,faUser } from '@fortawesome/free-solid-svg-icons';
 import Addteachers from './Addteachers/addteachers';
+import { useUserStore } from "../../../Firebase/userstore"; // If using Zustand
 const Teachers = () => {
+    const { schoolId } = useUserStore();
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
@@ -57,7 +60,7 @@ const Teachers = () => {
             <div className='cricon'>
             <FontAwesomeIcon className='adicon'  onClick={() => setAddTrpage((prev) => !prev)} icon={faUserPlus}/>
             </div>
-            {addTrpage && <Addteachers/>}
+            {addTrpage && <Addteachers schoolId={schoolId}/>}
             <div className='table_title' style={{display:"flex"}}>
                <div style={{marginLeft:'4%',marginTop:'1%',fontWeight:'bold'}}>Name</div>
                <div style={{marginLeft:'44%',marginTop:'1%',fontWeight:'bold'}}>Subjects</div>

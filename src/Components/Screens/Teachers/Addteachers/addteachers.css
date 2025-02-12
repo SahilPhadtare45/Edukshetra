@@ -4,12 +4,12 @@
     background-color: rgba(0, 0, 0, 0.528) !important;
     border-radius: 10px !important;
     position:absolute !important;
-    margin-top: -440px;
+    margin-top: -450px;
     margin-left: -455px;
     z-index: 1;
 }
 .addteachers{
-    height: 550px;
+    height: 580px;
     width: 650px;
     background-color: rgba(255, 255, 255, 255) !important;
     border-radius: 10px !important;
@@ -28,7 +28,7 @@
     border-radius: 50px;
     border: none !important;
     box-shadow:0.1px 1px 4px 2px  #525252;
-    margin-top: 2%;
+    margin-top: 4%;
 }
 .addteachers .srbtn{
     margin-top: -14.5%;
@@ -40,15 +40,17 @@
     border-radius: 50px;
 }
 .addteachers .sritems{
-    max-height: 180px;
+    max-height: 190px;
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
+    margin-top: -20px;
+    position: absolute;
+    width: 92%;
 }
 .addteachers .sritems::-webkit-scrollbar {
     width: 15px !important;
     background-color: transparent !important;
-    border-top-left-radius: 10px !important;
 }
 .addteachers .sritems::-webkit-scrollbar-thumb {
     background-color:#52658F!important;
@@ -57,8 +59,9 @@
 }
 .addteachers .srrow{
     display: flex;
-    max-width: 85%;
-    margin-top: 10px;
+    margin-top: 7.2px;
+    margin-left: 12px;
+
 }
 .addteachers .srimg{
     height: 50px;
@@ -70,17 +73,17 @@
     margin-left: 2%;
     margin-top: 1%;
 }
-.sradd{
+.addteachers .sradd{
     width: 20%;
     height: 8% !important;
     font-size: 15px;
-    margin-top: 5%;
+    margin-top: 25%;
     margin-left: 40%;
     border-radius: 50px !important;
     border: 2px solid rgb(0, 0, 0) !important;
     background-color:cornflowerblue !important;
     color: rgb(255, 255, 255) !important;
-    position: absolute;
+    position: absolute !important;
 }
 .sradd:hover {
     background-color: #d41d1d !important; 
@@ -88,10 +91,22 @@
 }
 .addteachers .navbar-line{
     position: static;
-    width: 80%;
+    width: 85%;
     height: 1px;
     background-color: #ffffff;
     margin-left: 10%;
     
     box-shadow: 1px 0.5px 1px black;
+}
+.addteachers .CB{
+    margin-left: 25px;
+    margin-top: 6px;
+}
+.addteachers .Cbox-bg{
+    margin-left: 34px;
+    background-color: #ffd2d24b;
+    height: 70px;
+    width: 89%;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.143);
 }
