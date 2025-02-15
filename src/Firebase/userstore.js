@@ -23,6 +23,7 @@
     setUser: (user) => {
       set({ currentUser: user, isLoading: false });
       if (user) {
+        get().fetchUserInfo(user.uid); // Fetch schools for the logged-in user
         get().fetchUserSchools(user.uid); // Fetch schools for the logged-in user
       }
     },
@@ -45,10 +46,15 @@ clearCurrentSchool: () => set({ currentSchool: null }),
     
     addSchool: (newSchool) => set((state) => ({ userSchools: [...state.userSchools, newSchool] })),
     setUserRole: (role) => set({ userRole: role }), // To set the role (admin, teacher, student)
-    clearUser: () => set({ currentUser: null, isLoading: false, userSchools: [], userRole: "guest", }),
-    
+    clearUser: () => {
+        if (useUserStore.getState().unsubscribeUser) {
+            useUserStore.getState().unsubscribeUser(); // Unsubscribe Firestore listener
+        }
+        set({ currentUser: null, userRole: "Guest", isLoading: false, userSchools: [] });
+    },
+        
     fetchUserInfo: (uid) => {
-    if (!uid) return set({ currentUser: null, isLoading: false });
+    if (!uid) return set({ currentUser: null, isLoading: false, userRole: "Guest" });
 
     try {
         const docRef = doc(db, "Users", uid);
@@ -60,13 +66,21 @@ clearCurrentSchool: () => set({ currentSchool: null }),
 
         const unsubscribe = onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
+                const userData = docSnap.data();
+                let role = "Guest"; // Default role
+                if (userData.schoolData && Array.isArray(userData.schoolData) && userData.schoolData.length > 0) {
+                    role = userData.schoolData[0].userRole || "guest"; // Take the role from the first school
+                }
                 set({
-                    currentUser: { uid, ...docSnap.data() }, // Include UID with Firestore data
+                    currentUser: { uid, ...userData }, // Include UID with Firestore data
+                    userRole: role, // Dynamically update userRole
                     isLoading: false,
                 });
+                console.log("Updated Zustand State:", useUserStore.getState()); // Debugging log
+
             } else {
                 console.warn("No user document found");
-                set({ currentUser: null, isLoading: false });
+                set({ currentUser: null,userRole: "Guest", isLoading: false });
             }
         });
 
@@ -74,7 +88,7 @@ clearCurrentSchool: () => set({ currentSchool: null }),
         set({ unsubscribeUser: unsubscribe });
     } catch (error) {
         console.error("Error fetching user data:", error);
-        set({ currentUser: null, isLoading: false });
+        set({ currentUser: null, userRole: "Guest", isLoading: false });
     }
 },
     fetchUserSchools: async (uid) => {

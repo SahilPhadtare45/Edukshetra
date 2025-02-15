@@ -6,7 +6,6 @@ import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand st
 import { useEffect,useState } from "react";
 const Header = () => {
     const { currentUser,userSchools } = useUserStore(); // Access user data and loading state
-    console.log("Current User in Header:", currentUser);
 
   
 

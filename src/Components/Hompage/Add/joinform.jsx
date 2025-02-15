@@ -77,21 +77,14 @@ const Joinform = () => {  // Default value to avoid undefined error
                 return;
             }
 
-            let userRole = "Guest"; // Default role
-                if (schoolData.adminId === currentUser.uid) {
-                    userRole = "Admin";
-                } else if (schoolData.teachers?.some(teacher => teacher.uid === currentUser.uid)) {
-                    userRole = "Teacher";
-                } else if (schoolData.students?.some(student => student.uid === currentUser.uid)) {
-                    userRole = "Student";
-                }
+                
             // Prepare userSchoolData for Zustand
             const userSchoolData = {
                 schoolId: matchedSchool.id,
                 schoolName: matchedSchool.schoolName,
                 shortForm: matchedSchool.shortForm, // Include shortform
                 logoUrl: matchedSchool.logoUrl, // Include image URL
-                userRole: userRole, // Default role
+                userRole: "Guest", // Default role
                 joinedAt: new Date(),
                 password: matchedSchool.password,
                 phone:phone
@@ -108,7 +101,7 @@ setSchools((prevSchools) => {
             const userData = {
                 uid: currentUser.uid,
                 username: currentUser.name,
-                userRole: userRole,
+                userRole: "Guest",
                 email: currentUser.email,
                 joinedAt: new Date(),
                 phone:phone,

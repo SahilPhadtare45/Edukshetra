@@ -13,6 +13,8 @@ import { collection, query, where, getDoc, updateDoc, doc,addDoc } from "firebas
 const People = () => {
      const { currentSchool } = useUserStore();
      const [members, setMembers] = useState([]);
+     const [filteredMembers, setFilteredMembers] = useState([]); // For search results
+     const [searchQuery, setSearchQuery] = useState("");
 
      useEffect(() => {
         const fetchMembers = async () => {
@@ -40,7 +42,8 @@ const People = () => {
                     });
     
                     setMembers(updatedMembers);
-    
+                    setFilteredMembers(updatedMembers); // Initialize filtered members
+
                     // ✅ Only update Firestore if changes are made
                 if (JSON.stringify(updatedMembers) !== JSON.stringify(schoolData.members)) {
                     await updateDoc(schoolRef, { members: updatedMembers });
@@ -56,6 +59,19 @@ const People = () => {
     
         fetchMembers();
     }, [currentSchool]);
+    console.log("Current School Data:", currentSchool);
+    console.log("Current User Role:", currentSchool?.userRole);
+    const handleSearch = () => {
+        if (searchQuery.trim() === "") {
+            setFilteredMembers(members);
+        } else {
+            const filtered = members.filter(member =>
+                member.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                member.memberId.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilteredMembers(filtered);
+        }
+    };
 
     const handleDelete = async (memberUid) => {
         if (currentSchool.userRole !== "Admin") {
@@ -98,6 +114,7 @@ const People = () => {
             }
                 // Update state to reflect changes
                 setMembers(updatedMembers);
+                setFilteredMembers(updatedMembers);
                 console.log("Member removed successfully!");
             }
         } catch (error) {
@@ -116,9 +133,10 @@ const People = () => {
             <div className='people'>
                 <div className='contain'>
                     <div class="form-floating mb-3 name">               
-                        <input type="text" class="form-control nameinsr " id="floatingInput" placeholder="Search"/>
+                        <input type="text" class="form-control nameinsr " id="floatingInput" placeholder="Search" value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}/>
                         <label  for="floatingInput">Search&nbsp;<FontAwesomeIcon icon={faSearch} /></label>
-                        <button class="btn btn-outline-secondary srbtn" type="button" id="button-addon1">Search</button>
+                        <button class="btn btn-outline-secondary srbtn" type="button" id="button-addon1" onClick={handleSearch}>Search</button>
                     </div>
                 
                     <div className='table_title' style={{display:"flex"}}>
@@ -126,34 +144,34 @@ const People = () => {
                         <div style={{marginLeft:'54.5%',marginTop:'1%',fontWeight:'bold'}}>ID</div>
                     </div>
                     {/* Members List */}
-<div className='tr_section'>
-{members.length > 0 ? (
-    members.map((member,index) => (
-            <div key={member.uid} className='table_row'>
-                <ul className="list-group list-group-flush llist">
-                    <li className="li-item">
-                        <img className='people_img' src={acclogo} alt="profile" />
-                        <div className="item-text text-truncate">{member.email}</div>
-                        <div className='sub_name text-truncate'>{member.memberId}</div>
+                    <div className='tr_section'>
+                    {filteredMembers.length > 0 ? (
+                        filteredMembers.map((member,index) => (
+                                <div key={member.uid} className='table_row'>
+                                    <ul className="list-group list-group-flush llist">
+                                        <li className="li-item">
+                                            <img className='people_img' src={acclogo} alt="profile" />
+                                            <div className="item-text text-truncate">{member.email}</div>
+                                            <div className='sub_name text-truncate'>{member.memberId}</div>
 
-                        {/* Show delete icon only if the current user is an admin */}
-                        {currentSchool.userRole === "Admin" && (
-                            <FontAwesomeIcon 
-                                className='trash_icon' 
-                                icon={faTrash} 
-                                onClick={() => handleDelete(member.uid)}
-                                style={{ cursor: "pointer", color: "red" }}
-                            />
+                                            {/* Show delete icon only if the current user is an admin */}
+                                            {currentSchool.userRole === "Admin" && (
+                                                <FontAwesomeIcon 
+                                                    className='trash_icon' 
+                                                    icon={faTrash} 
+                                                    onClick={() => handleDelete(member.uid)}
+                                                    style={{ cursor: "pointer", color: "red" }}
+                                                />
+                                            )}
+                                        </li>
+                                    </ul>
+                                    <div className='navbarline1' />
+                                </div>
+                            ))
+                        ) : (
+                            <p style={{ textAlign: "center", marginTop: "20px" }}>No members found.</p>
                         )}
-                    </li>
-                </ul>
-                <div className='navbarline1' />
-            </div>
-        ))
-    ) : (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>No members found.</p>
-    )}
-</div>
+                    </div>
                 </div>
             </div>
         </div>

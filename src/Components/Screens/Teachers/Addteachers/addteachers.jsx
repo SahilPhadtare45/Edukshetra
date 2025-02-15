@@ -1,117 +1,205 @@
 import "./addteachers.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
-import React, { useState, useEffect  } from "react";
-import { collection, query, where, getDocs,getDoc, updateDoc, doc } from "firebase/firestore";
-import { db } from "../../../../Firebase/firebase"; // Ensure correct Firebase import
+import React, { useState, useEffect } from "react";
+import { collection, query, where, getDocs, getDoc, updateDoc, doc } from "firebase/firestore";
+import { db } from "../../../../Firebase/firebase";
 import acclogo from "../../../../images/acclogo.png";
 import { useUserStore } from "../../../../Firebase/userstore";
 
 const AddTeachers = ({ schoolId }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const [users, setUsers] = useState([]); // Store search results
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedClasses, setSelectedClasses] = useState([]);
     const { currentSchool } = useUserStore();
     const [members, setMembers] = useState([]);
+    const [filteredMembers, setFilteredMembers] = useState([]);
 
     useEffect(() => {
-        const fetchMembers = async () => {
-            if (!currentSchool || !currentSchool.schoolId) {
-                console.log("No school selected.");
-                return;
-            }
-
-            try {
-                const schoolRef = doc(db, "schools", currentSchool.schoolId);
-                const schoolSnap = await getDoc(schoolRef);
-
-                if (schoolSnap.exists()) {
-                    const schoolData = schoolSnap.data();
-                    setMembers(schoolData.members || []);
-                } else {
-                    console.log("No such school exists!");
-                }
-            } catch (error) {
-                console.error("Error fetching members:", error.message);
-            }
-        };
-
         fetchMembers();
     }, [currentSchool]);
-    
+
+    const fetchMembers = async () => {
+        if (!currentSchool || !currentSchool.schoolId) {
+            console.log("No school selected.");
+            return;
+        }
+
+        try {
+            const schoolRef = doc(db, "schools", currentSchool.schoolId);
+            const schoolSnap = await getDoc(schoolRef);
+
+            if (schoolSnap.exists()) {
+                const schoolData = schoolSnap.data();
+                const fetchedMembers = schoolData.members || [];
+
+                const membersWithIds = fetchedMembers.map((member) => ({
+                    ...member,
+                    id: member.memberId || member.uid, 
+                }));
+
+                console.log("Fetched Members:", membersWithIds);
+                setMembers(membersWithIds);
+                setFilteredMembers(membersWithIds);
+            } else {
+                console.log("No such school exists!");
+            }
+        } catch (error) {
+            console.error("Error fetching members:", error.message);
+        }
+    };
+
     const handleSearch = () => {
         if (!searchTerm.trim()) {
             alert("Please enter a search term");
             return;
         }
     
-        // 🔹 Filter members from the state instead of fetching from Firestore
         const matchedUsers = members.filter(member =>
             member.email && member.email.toLowerCase().includes(searchTerm.toLowerCase())
         );
-    
+
         console.log("Matched Users:", matchedUsers);
     
         if (matchedUsers.length === 0) {
             alert("No users found with this email.");
         } 
-    
-        // Update users state to display filtered search results
-        setUsers(matchedUsers);
+
+        setFilteredMembers(matchedUsers);
     };
 
-
-    // 🔹 When clicking a suggestion, select the user & fill input
     const selectUser = (user) => {
-        setSelectedUser(user);
+        if (!user || (!user.memberId && !user.uid)) {
+            console.error("Error: Selected user has missing ID", user);
+            alert("Error: User data is incomplete.");
+            return;
+        }
+
+        console.log("User selected:", user);
+        setSelectedUser({
+            ...user,
+            id: user.memberId || user.uid, 
+        });
         setSearchTerm(user.email);
-        setUsers([]); // Hide suggestions
+        setFilteredMembers([]);
     };
 
-    // 🔹 Toggle class selection
     const toggleClassSelection = (className) => {
-        setSelectedClasses((prev) =>
-            prev.includes(className) ? prev.filter((c) => c !== className) : [...prev, className]
+        setSelectedClasses((prev) => 
+            prev.includes(className) 
+                ? prev.filter((c) => c !== className) 
+                : [...prev, className] 
         );
     };
 
-    // 🔹 Submit selected user as teacher
-    const handleSubmit = async () => {
-        if (!selectedUser || !selectedUser.id) {
-            alert("Please select a user before submitting.");
+
+const handleSubmit = async () => {
+    console.log("Submitting Teacher Assignment...");
+    console.log("School ID:", schoolId);
+    console.log("Selected User:", selectedUser);
+    console.log("Selected Classes:", selectedClasses);
+
+    if (!selectedUser || !selectedUser.uid) {
+        alert("Please select a user before submitting.");
+        return;
+    }
+
+    if (!schoolId) {
+        alert("Error: School ID is missing.");
+        return;
+    }
+
+    if (selectedClasses.length === 0) {
+        alert("Please select at least one class.");
+        return;
+    }
+
+    try {
+        // Fetch user document
+        const userRef = doc(db, "Users", selectedUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            alert("Error: User not found.");
             return;
         }
-    
-        if (!schoolId) {
-            alert("Error: School ID is missing.");
+
+        const userData = userSnap.data();
+        let existingClasses = [];
+
+        // Find the user's assigned classes in this school
+        userData.schoolData.forEach(data => {
+            if (data.schoolId === schoolId && data.classes) {
+                existingClasses = data.classes;
+            }
+        });
+
+        // Find duplicate class assignments
+        const alreadyAssignedClasses = selectedClasses.filter(cls => existingClasses.includes(cls));
+
+        if (alreadyAssignedClasses.length > 0) {
+            alert(`Error: Teacher is already assigned to class(es): ${alreadyAssignedClasses.join(", ")}`);
             return;
         }
-    
-        if (selectedClasses.length === 0) {
-            alert("Please select at least one class.");
+
+        // Update user data in Users collection
+        const updatedSchoolData = userData.schoolData.map(data => {
+            if (data.schoolId === schoolId) {
+                return {
+                    ...data,
+                    userRole: "Teacher",
+                    classes: [...new Set([...existingClasses, ...selectedClasses])]  // Prevents duplicates
+                };
+            }
+            return data;
+        });
+
+        await updateDoc(userRef, { schoolData: updatedSchoolData });
+
+        // Fetch school document
+        const schoolRef = doc(db, "schools", schoolId);
+        const schoolSnap = await getDoc(schoolRef);
+
+        if (!schoolSnap.exists()) {
+            console.error("Error: School document not found.");
             return;
         }
-    
-        try {
-            const memberRef = doc(db, "schools", schoolId, "members", selectedUser.id);
-    
-            await updateDoc(memberRef, {
-                userRole: "Teacher",
-                classes: selectedClasses,
-            });
-    
-            alert("Teacher assigned successfully!");
-            setSelectedUser(null);
-            setSearchTerm("");
-            setSelectedClasses([]);
-        } catch (error) {
-            console.error("Error updating teacher:", error);
-            alert("Error assigning teacher. Please try again.");
-        }
-    };
-    
+
+        const schoolData = schoolSnap.data();
+        const updatedMembers = schoolData.members.map(member => {
+            if (member.memberId === selectedUser.memberId) {
+                const memberClasses = member.classes || [];
+                const alreadyAssignedInSchool = selectedClasses.filter(cls => memberClasses.includes(cls));
+
+                // Prevent duplicate assignment in school members array
+                if (alreadyAssignedInSchool.length > 0) {
+                    alert(`Error: Teacher is already assigned to class(es): ${alreadyAssignedInSchool.join(", ")}`);
+                    return member; // Return the original member without changes
+                }
+
+                return {
+                    ...member,
+                    userRole: "Teacher",
+                    classes: [...new Set([...memberClasses, ...selectedClasses])]
+                };
+            }
+            return member;
+        });
+
+        await updateDoc(schoolRef, { members: updatedMembers });
+
+        console.log("Updated school members:", updatedMembers);
+        alert("Teacher assigned successfully!");
+
+        fetchMembers();
+        setIsVisible(false);
+    } catch (error) {
+        console.error("Error updating teacher:", error.message);
+        alert(`Error assigning teacher: ${error.message}`);
+    }
+};
+
 
     const handleClose = () => {
         setIsVisible(false);
@@ -126,7 +214,6 @@ const AddTeachers = ({ schoolId }) => {
                     <FontAwesomeIcon className="xicon" onClick={handleClose} icon={faCircleXmark} />
                     <div className="addteacherstitle">Add Teachers</div>
 
-                    {/* 🔹 Class Selection */}
                     <div className="class_selection">
                         <label className="form-label lbl">Select Class:</label>
                         <div className="Cbox-bg">
@@ -136,6 +223,7 @@ const AddTeachers = ({ schoolId }) => {
                                         type="checkbox"
                                         className="w-4 h-4 hidden"
                                         onChange={() => toggleClassSelection(option)}
+                                        checked={selectedClasses.includes(option)}
                                     />
                                     <span>{option}</span>
                                 </label>
@@ -143,46 +231,30 @@ const AddTeachers = ({ schoolId }) => {
                         </div>
                     </div>
 
-                    {/* 🔹 Search Bar with Button */}
                     <div className="form-floating mb-3 name">               
                         <input
                             type="text"
                             className="form-control nameinsr"
-                            id="floatingInput"
                             placeholder="Search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <label htmlFor="floatingInput">
-                            Search&nbsp;
-                            <FontAwesomeIcon onClick={handleClose} icon={faSearch} />
-                        </label>
-                        <button
-                            className="btn btn-outline-secondary srbtn"
-                            type="button"
-                            id="button-addon1"
-                            onClick={handleSearch}  // 🔹 Trigger search on button click
-                        >
+                        <label>Search&nbsp;<FontAwesomeIcon icon={faSearch} /></label>
+                        <button className="btn btn-outline-secondary srbtn" onClick={handleSearch}>
                             Search
                         </button>
                     </div>
 
-
-                    {/* 🔹 Search Suggestions */}
-                    {members.length > 0 && (
+                    {filteredMembers.length > 0 && (
                         <div className="sritems">
-                            {members.map((member) => (
-                                <>
+                            {filteredMembers.map((member) => (
                                 <div key={member.id} className="srrow" onClick={() => selectUser(member)}>
                                     <img className="srimg" src={acclogo} alt="User" />
                                     <div className="srmail text-truncate">{member.email}</div>
                                 </div>
-                                <div className="navbar-line"/>
-                                </>
                             ))}
                         </div>
                     )}
-                        
                     
                     <button className="btn sradd" onClick={handleSubmit}>
                         Submit
