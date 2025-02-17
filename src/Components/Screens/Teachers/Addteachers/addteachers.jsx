@@ -115,48 +115,8 @@ const handleSubmit = async () => {
         return;
     }
 
+    
     try {
-        // Fetch user document
-        const userRef = doc(db, "Users", selectedUser.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
-            alert("Error: User not found.");
-            return;
-        }
-
-        const userData = userSnap.data();
-        let existingClasses = [];
-
-        // Find the user's assigned classes in this school
-        userData.schoolData.forEach(data => {
-            if (data.schoolId === schoolId && data.classes) {
-                existingClasses = data.classes;
-            }
-        });
-
-        // Find duplicate class assignments
-        const alreadyAssignedClasses = selectedClasses.filter(cls => existingClasses.includes(cls));
-
-        if (alreadyAssignedClasses.length > 0) {
-            alert(`Error: Teacher is already assigned to class(es): ${alreadyAssignedClasses.join(", ")}`);
-            return;
-        }
-
-        // Update user data in Users collection
-        const updatedSchoolData = userData.schoolData.map(data => {
-            if (data.schoolId === schoolId) {
-                return {
-                    ...data,
-                    userRole: "Teacher",
-                    classes: [...new Set([...existingClasses, ...selectedClasses])]  // Prevents duplicates
-                };
-            }
-            return data;
-        });
-
-        await updateDoc(userRef, { schoolData: updatedSchoolData });
-
         // Fetch school document
         const schoolRef = doc(db, "schools", schoolId);
         const schoolSnap = await getDoc(schoolRef);
@@ -181,19 +141,20 @@ const handleSubmit = async () => {
                 return {
                     ...member,
                     userRole: "Teacher",
-                    classes: [...new Set([...memberClasses, ...selectedClasses])]
+                    classes: [...new Set([...memberClasses, ...selectedClasses])]  // Prevents duplicates
                 };
             }
             return member;
         });
 
+
         await updateDoc(schoolRef, { members: updatedMembers });
 
         console.log("Updated school members:", updatedMembers);
         alert("Teacher assigned successfully!");
+        setIsVisible(false);
 
         fetchMembers();
-        setIsVisible(false);
     } catch (error) {
         console.error("Error updating teacher:", error.message);
         alert(`Error assigning teacher: ${error.message}`);

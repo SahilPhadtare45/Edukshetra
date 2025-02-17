@@ -181,3 +181,24 @@
     background-color: #000;
     margin-top: 5px; /* Add spacing between navbar and static line */     
 }
+.teacherscreen .edit-btn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 0px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .teacherscreen .edit-btn:hover {
+    background-color: #667EEA;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .teacherscreen input[type="text"] {
+    padding: 5px;
+    font-size: 14px;
+    width: 150px;
+    margin-right: 10px;
+  }

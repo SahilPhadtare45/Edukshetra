@@ -4,11 +4,11 @@ import Sidebar from "../../Comman/sidebar";
 import PageInfo from "../../Comman/pageinfo";
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus, faTrash, faUser, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Addteachers from "./Addteachers/addteachers";
 import { useUserStore } from "../../../Firebase/userstore";
 import { db } from "../../../Firebase/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 
 const Teachers = () => {
     const [members, setMembers] = useState([]);
@@ -18,6 +18,9 @@ const Teachers = () => {
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
     const [addTrpage, setAddTrpage] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editTeacherId, setEditTeacherId] = useState(null);
+    const [editSubject, setEditSubject] = useState("");
     const { currentSchool } = useUserStore();
     const schoolId = currentSchool?.schoolId || undefined;
 
@@ -55,9 +58,6 @@ const Teachers = () => {
         }
     };
     
-    
-
-
     useEffect(() => {
         console.log("useEffect triggered with schoolId:", schoolId); // 🔍 Debug log
         fetchMembers();
@@ -106,7 +106,6 @@ const Teachers = () => {
         }
     
         try {
-            // 🔥 Step 1: Fetch school data
             const schoolRef = doc(db, "schools", currentSchool.schoolId);
             const schoolSnap = await getDoc(schoolRef);
     
@@ -116,9 +115,7 @@ const Teachers = () => {
             }
     
             const schoolData = schoolSnap.data();
-    
-            // 🔥 Step 2: Remove teacher from school's members list
-            const updatedMembers = schoolData.members.map((member) => {
+                const updatedMembers = schoolData.members.map((member) => {
                 if (member.memberId === teacherId) {
                     const updatedClasses = member.classes?.filter((cls) => cls !== selectedClass) || [];
     
@@ -134,30 +131,80 @@ const Teachers = () => {
             // 🔥 Step 3: Update the schools collection
             await setDoc(schoolRef, { members: updatedMembers }, { merge: true });
     
-            // 🔥 Step 4: Update the users collection
-            const userRef = doc(db, "Users", teacherId);
-            const userSnap = await getDoc(userRef);
-    
-            if (userSnap.exists()) {
-                const userData = userSnap.data();
-                const updatedUserClasses = userData.classes?.filter((cls) => cls !== selectedClass) || [];
-    
-                await setDoc(userRef, { classes: updatedUserClasses }, { merge: true });
-            }
-    
-            // ✅ Step 5: Update local state
+
             setMembers(updatedMembers);
             setFilteredTeachers(
                 updatedMembers.filter((member) => member.userRole === "Teacher" && member.classes?.includes(selectedClass))
             );
-    
+            fetchMembers();
             console.log(`✅ Teacher ${teacherId} removed from ${selectedClass} in both collections.`);
         } catch (error) {
             console.error("🔥 Error removing teacher:", error);
         }
     };
     
-    
+    useEffect(() => {
+        if (!schoolId) return;
+
+        const schoolRef = doc(db, "schools", schoolId);
+
+        // Real-time listener for teachers
+        const unsubscribe = onSnapshot(schoolRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const schoolData = docSnap.data();
+                console.log("🔄 Real-time update received:", schoolData);
+                setMembers(schoolData.members || []);
+            } else {
+                console.log("❌ No school data found!");
+                setMembers([]);
+            }
+        });
+
+        return () => unsubscribe(); // Cleanup function
+    }, [schoolId]);
+
+     // Start editing the subject
+    // Start editing subject for a teacher
+  const startEditing = (teacherId, currentSubject) => {
+    setEditTeacherId(teacherId);
+    setEditSubject(currentSubject || "");
+    setIsEditing(true);
+  };
+
+  // Handle subject input change
+  const handleSubjectChange = (e) => {
+    setEditSubject(e.target.value);
+  };
+
+  // Save the subject change to Firestore
+  const saveSubjectChange = async () => {
+    if (!editTeacherId || !editSubject) return;
+
+    try {
+      const schoolRef = doc(db, "schools", schoolId);
+      const schoolSnap = await getDoc(schoolRef);
+      if (schoolSnap.exists()) {
+        const schoolData = schoolSnap.data();
+        const updatedMembers = schoolData.members.map((member) =>
+          member.memberId === editTeacherId
+            ? { ...member, subjects: editSubject } // Update subject for the teacher
+            : member
+        );
+
+        await setDoc(schoolRef, { members: updatedMembers }, { merge: true });
+        setMembers(updatedMembers); // Update state with the modified members array
+        setFilteredTeachers(updatedMembers.filter(
+          (member) => member.userRole === "Teacher" && member.classes?.includes(selectedClass)
+        ));
+        setIsEditing(false); // End editing mode
+        setEditTeacherId(null);
+        setEditSubject("");
+        console.log("Subject updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating subject:", error);
+    }
+  };
     return (
         <div className="teacherscreen">
             <Header />
@@ -215,9 +262,34 @@ const Teachers = () => {
                             <div key={teacher.memberId} className="table_row">
                                 <ul className="list-group list-group-flush llist">
                                     <li className="li-item">
-                                        <div className="item-text text-truncate">{teacher.email}</div>
-                                        <div className="sub_name text-truncate">{teacher.subjects || "Not Assigned"}</div>
-                                        <FontAwesomeIcon className="prof_icon" icon={faUser} />
+                                        <div className="item-text text-truncate">{teacher.username}</div>
+                                            <div className="sub_name text-truncate"> 
+                                                {isEditing && editTeacherId === teacher.memberId ? (
+                                                    <>
+                                                        <input
+                                                            type="text"
+                                                            value={editSubject}
+                                                            onChange={handleSubjectChange}
+                                                            onBlur={saveSubjectChange}
+                                                            autoFocus
+                                                        />
+                                                    </>
+                                                    ) : (
+                                                        <>
+                                                            {teacher.subjects || "Not Assigned"}
+                                                            {currentSchool.userRole === "Admin" && (
+
+                                                            <button
+                                                                className="edit-btn"
+                                                                onClick={() => startEditing(teacher.memberId, teacher.subjects)}
+                                                            >
+                                                                <FontAwesomeIcon  icon={faEdit} />                                                    
+                                                                </button>
+                                                                )}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            <FontAwesomeIcon className="prof_icon" icon={faUser} />
                                         {currentSchool.userRole === "Admin" && (
                                             <FontAwesomeIcon
                                                 className="trash_icon"
