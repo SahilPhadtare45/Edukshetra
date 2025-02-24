@@ -8,7 +8,7 @@ import { faUserPlus, faTrash, faUser, faEdit } from "@fortawesome/free-solid-svg
 import Addteachers from "./Addteachers/addteachers";
 import { useUserStore } from "../../../Firebase/userstore";
 import { db } from "../../../Firebase/firebase";
-import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, setDoc, onSnapshot,updateDoc } from "firebase/firestore";
 
 const Teachers = () => {
     const [members, setMembers] = useState([]);
@@ -21,18 +21,14 @@ const Teachers = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editTeacherId, setEditTeacherId] = useState(null);
     const [editSubject, setEditSubject] = useState("");
-    const { currentSchool } = useUserStore();
+    const { currentSchool, currentRole, currentUser } = useUserStore();
     const schoolId = currentSchool?.schoolId || undefined;
 
 
     const classesList = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
-    const { currentUser } = useUserStore(); // Assuming Zustand store has currentUser data
-
-
-
+    
     // Fetch members from Firestore
     const fetchMembers = async () => {
-        console.log("🔄 fetchMembers function triggered!"); // 🔥 Check if function runs
     
         console.log("Current schoolId:", schoolId); // 🔍 Log schoolId
         if (!schoolId) {
@@ -64,20 +60,20 @@ const Teachers = () => {
     }, [schoolId]);
     
     console.log("🔍 Current User:", currentUser);
-    console.log("🔍 Current User Role:", currentUser?.userRole);
-    console.log("🔍 Current School:", currentSchool);
-    
+    console.log("🔍 Current  Role:", currentRole);
+        console.log("🔍 Current School:", currentSchool);
+        
     // Filter teachers when class selection changes
     useEffect(() => {
-        const filtered = members.filter(member => 
-            member.userRole === "Teacher" && 
-            member.classes && // Ensure classes exist
-            Array.isArray(member.classes) && 
-            member.classes.includes(selectedClass)
+        const filtered = members.filter(member =>
+            member.userRole === "Teacher" &&
+            Array.isArray(member.classes) && // Ensure classes exist
+            member.classes.some(cls => cls.className === selectedClass) // Updated to check objects
         );
         console.log(`Filtered teachers for ${selectedClass}:`, filtered);
         setFilteredTeachers(filtered);
     }, [selectedClass, members]);
+    
     
     
 
@@ -95,7 +91,7 @@ const Teachers = () => {
 
     
     const removeTeacherFromClass = async (teacherId) => {
-        if (currentSchool.userRole !== "Admin") {
+        if (currentRole !== "Admin") {
             alert("You do not have permission to remove members!");
             return;
         }
@@ -130,7 +126,16 @@ const Teachers = () => {
     
             // 🔥 Step 3: Update the schools collection
             await setDoc(schoolRef, { members: updatedMembers }, { merge: true });
-    
+            
+             // Fetch updated member after removing from the class
+        const updatedMember = updatedMembers.find((member) => member.memberId === teacherId);
+
+        // If the teacher has no assigned classes, update their role in Users collection
+        if (updatedMember && updatedMember.userRole === "Guest") {
+            const userRef = doc(db, "Users", teacherId); // Reference to Users collection
+            await updateDoc(userRef, { userRole: "Guest" }); // Update role
+            console.log(`✅ User ${teacherId} role updated to Guest in Users collection.`);
+        }
 
             setMembers(updatedMembers);
             setFilteredTeachers(
@@ -165,11 +170,16 @@ const Teachers = () => {
 
      // Start editing the subject
     // Start editing subject for a teacher
-  const startEditing = (teacherId, currentSubject) => {
-    setEditTeacherId(teacherId);
-    setEditSubject(currentSubject || "");
-    setIsEditing(true);
-  };
+    const startEditing = (teacherId, teacherClasses) => {
+        setEditTeacherId(teacherId);
+    
+        // Find the subject for the active class
+        const currentClassData = teacherClasses?.find(cls => cls.className === selectedClass);
+        
+        setEditSubject(currentClassData?.subject || ""); // Prefill input with subject if available
+        setIsEditing(true);
+    };
+    
 
   // Handle subject input change
   const handleSubjectChange = (e) => {
@@ -177,34 +187,58 @@ const Teachers = () => {
   };
 
   // Save the subject change to Firestore
-  const saveSubjectChange = async () => {
-    if (!editTeacherId || !editSubject) return;
+  // Save the subject change to Firestore
+const saveSubjectChange = async () => {
+    if (!editTeacherId || !currentSchool?.schoolId) return;
 
     try {
-      const schoolRef = doc(db, "schools", schoolId);
-      const schoolSnap = await getDoc(schoolRef);
-      if (schoolSnap.exists()) {
-        const schoolData = schoolSnap.data();
-        const updatedMembers = schoolData.members.map((member) =>
-          member.memberId === editTeacherId
-            ? { ...member, subjects: editSubject } // Update subject for the teacher
-            : member
-        );
+        const schoolRef = doc(db, "schools", currentSchool.schoolId);
+        const schoolSnap = await getDoc(schoolRef);
 
-        await setDoc(schoolRef, { members: updatedMembers }, { merge: true });
-        setMembers(updatedMembers); // Update state with the modified members array
+        if (!schoolSnap.exists()) {
+            console.log("❌ School document not found!");
+            return;
+        }
+
+        const schoolData = schoolSnap.data();
+
+        // Find and update the teacher's subject in the selected class
+        const updatedMembers = schoolData.members.map((member) => {
+            if (member.memberId === editTeacherId) {
+                const updatedClasses = member.classes.map(cls => 
+                    cls === selectedClass // If class is stored as a string
+                        ? { className: selectedClass, subject: editSubject || "Not Assigned" }
+                        : cls.className === selectedClass // If class is stored as an object
+                            ? { ...cls, subject: editSubject || "Not Assigned" }
+                            : cls
+                );
+
+                return { ...member, classes: updatedClasses };
+            }
+            return member;
+        });
+
+        // ✅ Update Firestore
+        await updateDoc(schoolRef, { members: updatedMembers });
+
+        // ✅ Update local state
+        setMembers(updatedMembers);
         setFilteredTeachers(updatedMembers.filter(
-          (member) => member.userRole === "Teacher" && member.classes?.includes(selectedClass)
+            (member) => member.userRole === "Teacher" && member.classes?.some(cls => cls.className === selectedClass)
         ));
-        setIsEditing(false); // End editing mode
+
+        // Reset editing state
+        setIsEditing(false);
         setEditTeacherId(null);
         setEditSubject("");
-        console.log("Subject updated successfully");
-      }
+
+        console.log(`✅ Subject updated successfully for ${selectedClass}`);
     } catch (error) {
-      console.error("Error updating subject:", error);
+        console.error("🔥 Error updating subject:", error);
     }
-  };
+};
+
+
     return (
         <div className="teacherscreen">
             <Header />
@@ -247,9 +281,11 @@ const Teachers = () => {
                 <div className="tr">
                     <p>Teachers</p>
                 </div>
+                {currentRole === "Admin" && (
                 <div className="cricon">
                     <FontAwesomeIcon className="adicon" onClick={() => setAddTrpage((prev) => !prev)} icon={faUserPlus} />
                 </div>
+                )}
                 {addTrpage && <Addteachers schoolId={currentSchool?.schoolId} />}
                 <div className="table_title" style={{ display: "flex" }}>
                     <div style={{ marginLeft: "4%", marginTop: "1%", fontWeight: "bold" }}>Name</div>
@@ -263,34 +299,35 @@ const Teachers = () => {
                                 <ul className="list-group list-group-flush llist">
                                     <li className="li-item">
                                         <div className="item-text text-truncate">{teacher.username}</div>
-                                            <div className="sub_name text-truncate"> 
-                                                {isEditing && editTeacherId === teacher.memberId ? (
-                                                    <>
-                                                        <input
-                                                            type="text"
-                                                            value={editSubject}
-                                                            onChange={handleSubjectChange}
-                                                            onBlur={saveSubjectChange}
-                                                            autoFocus
-                                                        />
-                                                    </>
-                                                    ) : (
-                                                        <>
-                                                            {teacher.subjects || "Not Assigned"}
-                                                            {currentSchool.userRole === "Admin" && (
-
-                                                            <button
-                                                                className="edit-btn"
-                                                                onClick={() => startEditing(teacher.memberId, teacher.subjects)}
-                                                            >
-                                                                <FontAwesomeIcon  icon={faEdit} />                                                    
-                                                                </button>
-                                                                )}
-                                                        </>
+                                        <div className="sub_name text-truncate">
+                                            {isEditing && editTeacherId === teacher.memberId ? (
+                                                <input
+                                                    type="text"
+                                                    value={editSubject}
+                                                    onChange={handleSubjectChange}
+                                                    onBlur={saveSubjectChange}
+                                                    onKeyDown={(e) => e.key === "Enter" && saveSubjectChange()} // ✅ Save on Enter
+                                                    autoFocus
+                                                />
+                                            ) : (
+                                                <>
+                                                    {
+                                                        teacher.classes?.find(cls => cls.className === selectedClass)?.subject || "Not Assigned"
+                                                    }
+                                                    {currentRole === "Admin" && (
+                                                        <button
+                                                            className="edit-btn"
+                                                            onClick={() => startEditing(teacher.memberId, teacher.classes)}
+                                                        >
+                                                            <FontAwesomeIcon icon={faEdit} />                                                    
+                                                        </button>
                                                     )}
-                                                </div>
+                                                </>
+                                            )}
+                                        </div>
+
                                             <FontAwesomeIcon className="prof_icon" icon={faUser} />
-                                        {currentSchool.userRole === "Admin" && (
+                                            {currentRole === "Admin" && (
                                             <FontAwesomeIcon
                                                 className="trash_icon"
                                                 icon={faTrash}

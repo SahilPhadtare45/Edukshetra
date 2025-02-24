@@ -24,11 +24,12 @@
     margin-top: 10px;
     font-weight: 500;
 }
-.addteachers .nameinsr{
+.addteachers .nameins{
     border-radius: 50px;
     border: none !important;
     box-shadow:0.1px 1px 4px 2px  #525252;
     margin-top: 4%;
+    width: 100% !important;
 }
 .addteachers .srbtn{
     margin-top: -14.5%;

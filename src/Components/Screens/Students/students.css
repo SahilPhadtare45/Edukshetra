@@ -19,10 +19,9 @@
     position: relative;
     color: rgb(0, 0, 0);
     display: flex;
-     /* Centers the navbar horizontally */
     align-items: center;
     padding: 10px 0; /* Add vertical padding for spacing */
-    margin-left: 12%;
+    margin-left: 12%; 
 }
 .studentscreen .navbar-nav {
     list-style: none;
@@ -34,7 +33,7 @@
 /* Nav items */
 .studentscreen .nav-item {
     position: relative; /* Allows the underline to align with this element */
-    margin: 0 20px; /* Uniform horizontal spacing between nav items */  
+    margin: 0 20px; /* Uniform horizontal spacing between nav items */   
 }
 .studentscreen .nav-item.active .nav-link {
     color: #667EEA; /* Highlight active nav item */
@@ -44,10 +43,10 @@
 .studentscreen .nav-link {
     text-decoration: none;
     color: rgb(0, 0, 0);
-    font-size: 25px;   
+    font-size: 25px;  
     padding: 8px 0; /* Add vertical padding for better alignment */
     display: inline-block; /* Ensure consistent sizing */
-    text-align: center; /* Center text inside nav items */   
+    text-align: center; /* Center text inside nav items */ 
 }
 /* Sliding underline */
 .studentscreen .active-underline {
@@ -67,15 +66,14 @@
     width: 100%;
     height: 1px;
     background-color: #000;
-    margin-top: 5px; /* Add spacing between navbar and static line */
-    clip-path: polygon(0% 0%,100% 0%, 0% 100%, 00% 100%);  
+    margin-top: 5px; /* Add spacing between navbar and static line */     
 }
 .studentscreen .tr{
     position: relative;
     margin-top: 2%;
     height: 10%;
     width: 15%;
-    background-color: #F7A0A5;
+    background-color: #667EEA;
     font-family: "Montserrat Alternates", serif !important;  
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
@@ -91,7 +89,6 @@
         transform: translate(-50%, -50%);
         color: #fff;
         text-shadow: 1px 1px 2px black;
-
     } 
 }
 .studentscreen .cricon{
@@ -106,7 +103,7 @@
     transition: ease 0.2s;
 }
 .studentscreen .cricon:hover{
-    background-color: #F7A0A5;
+    background-color: #667EEA;
     .adicon{
         color:#fff ;
     }
@@ -116,13 +113,14 @@
     height: 25px;
     position: absolute;
     margin-top: 27%;
-    color: #000000;   
+    color: #000000;  
 }
 .studentscreen .tr_section{
-    max-height: 500px;
-    width: 100%;
+    max-height: 500px !important;
+    all: unset !important; /* Resets all inherited styles */
+    width: 100% !important;
     background-color: transparent !important;
-    position:absolute !important;
+    position:absolute !important;  
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
@@ -132,7 +130,6 @@
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }
-
 .studentscreen .tr_section::-webkit-scrollbar-thumb {
     background-color:#52658F!important;
     border-radius: 10px !important;
@@ -152,11 +149,12 @@
 .studentscreen .sub_name{
     margin-left: 54%;
     font-size: 20px;
-    color: #827f7f;
+    color: #000000;
     max-width: 20%;
 }
 .studentscreen .list-group {
     background-color: transparent;
+    width: 100%;
   }
 .studentscreen .list-group-item {
     background-color: transparent;  
@@ -177,7 +175,7 @@
 .studentscreen .trash_icon:hover{
     color: red;
 }
-.studentscreen .navbar-line1{
+.studentscreen .navbar_line{
     position: static;
     width: 95%;
     height: 1px;
@@ -185,3 +183,25 @@
     background-color: #000;
     margin-top: 5px; /* Add spacing between navbar and static line */     
 }
+.studentscreen .edit-btn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 0px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .studentscreen .edit-btn:hover {
+    background-color: #667EEA;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .studentscreen input[type="text"] {
+    padding: 5px;
+    font-size: 14px;
+    width: 150px;
+    margin-right: 10px;
+  }
+  

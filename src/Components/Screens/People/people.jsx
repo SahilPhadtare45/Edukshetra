@@ -11,7 +11,7 @@ import { useUserStore } from "../../../Firebase/userstore"; // Zustand store
 import { collection, query, where, getDoc, updateDoc, doc,addDoc } from "firebase/firestore";
 
 const People = () => {
-     const { currentSchool } = useUserStore();
+     const { currentSchool,currentRole } = useUserStore();
      const [members, setMembers] = useState([]);
      const [filteredMembers, setFilteredMembers] = useState([]); // For search results
      const [searchQuery, setSearchQuery] = useState("");
@@ -29,13 +29,17 @@ const People = () => {
     
                 if (schoolSnap.exists()) {
                     const schoolData = schoolSnap.data();
-                    const timestamp = schoolData.createdAt?.seconds || Date.now(); // Use created timestamp or fallback
-    
+                    const schoolCreatedAt = schoolData.createdAt?.seconds || Math.floor(Date.now() / 1000); // School creation timestamp
+                    const userJoiningTime = Math.floor(Date.now() / 1000); // Current timestamp in seconds (simulating joining time)
+                
+                    const timestamp = `${schoolCreatedAt.toString().slice(-4)}${userJoiningTime.toString().slice(-4)}`; 
+                    // Combines last 4 digits of school creation time + last 4 digits of current time
+                
                     let updatedMembers = schoolData.members.map((member, index) => {
-                        if (!member.memberId,member.memberId === "") {
+                        if (!member.memberId || member.memberId === "") {
                             return {
                                 ...member,
-                                memberId: `${timestamp.toString().slice(-6)}${(index + 1).toString().padStart(4, "0")}`
+                                memberId: `${timestamp}${(index + 1).toString().padStart(4, "0")}`
                             };
                         }
                         return member;
@@ -60,7 +64,7 @@ const People = () => {
         fetchMembers();
     }, [currentSchool]);
     console.log("Current School Data:", currentSchool);
-    console.log("Current User Role:", currentSchool?.userRole);
+    console.log("Current User Role:", currentRole);
     const handleSearch = () => {
         if (searchQuery.trim() === "") {
             setFilteredMembers(members);
@@ -74,7 +78,7 @@ const People = () => {
     };
 
     const handleDelete = async (memberUid) => {
-        if (currentSchool.userRole !== "Admin") {
+        if (currentRole !== "Admin") {
             alert("You do not have permission to remove members!");
             return;
         }
@@ -85,6 +89,7 @@ const People = () => {
         }
     
         try {
+            // Fetch school data
             const schoolRef = doc(db, "schools", currentSchool.schoolId);
             const schoolSnap = await getDoc(schoolRef);
     
@@ -95,23 +100,25 @@ const People = () => {
                 let updatedMembers = schoolData.members.filter(member => member.uid !== memberUid);
                 await updateDoc(schoolRef, { members: updatedMembers });
     
-                 // Get the user's document from Users collection
-            const userRef = doc(db, "Users", memberUid);
-            const userSnap = await getDoc(userRef);
-
-            if (userSnap.exists()) {
-                let userData = userSnap.data();
-
-                // Remove only the current school from schoolData
-                let updatedSchoolData = userData.schoolData.filter(school => school.schoolId !== currentSchool.schoolId);
-
-                await updateDoc(userRef, {
-                    schoolData: updatedSchoolData.length > 0 ? updatedSchoolData : null, // Keep other schools, remove only this one
-                    deletedSchool: updatedSchoolData.length > 0 ? updatedSchoolData[0].schoolId : null // Assign a new school or null if none left
-                });
-
-                console.log("Member removed from school and Users collection!");
-            }
+                // Fetch the user's document from Users collection
+                const userRef = doc(db, "Users", memberUid);
+                const userSnap = await getDoc(userRef);
+    
+                if (userSnap.exists()) {
+                    let userData = userSnap.data();
+    
+                    // ✅ Properly update schoolData (which is an object, not an array)
+                    let updatedSchoolData = { ...userData.schoolData };
+                    delete updatedSchoolData[currentSchool.schoolId]; // Remove only the current school
+    
+                    await updateDoc(userRef, {
+                        [`schoolData.${currentSchool.schoolId}`]: null, // Remove only this school
+                        "userRole": "Guest" // Change role to Guest
+                    });
+    
+                    console.log("Member removed from school and updated in Users collection!");
+                }
+    
                 // Update state to reflect changes
                 setMembers(updatedMembers);
                 setFilteredMembers(updatedMembers);
@@ -122,6 +129,7 @@ const People = () => {
             alert("Failed to remove member. Please try again.");
         }
     };
+    
     if (!currentSchool) {
         return <p>Loading...</p>;
     }
@@ -155,7 +163,7 @@ const People = () => {
                                             <div className='sub_name text-truncate'>{member.memberId}</div>
 
                                             {/* Show delete icon only if the current user is an admin */}
-                                            {currentSchool.userRole === "Admin" && (
+                                            {currentRole === "Admin" && (
                                                 <FontAwesomeIcon 
                                                     className='trash_icon' 
                                                     icon={faTrash} 

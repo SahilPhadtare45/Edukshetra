@@ -1,0 +1,78 @@
+/* Background overlay */
+.popup-overlay {
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.528) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -980px;
+    margin-left: -540px;
+    z-index: 1;
+}
+
+/* Popup container */
+.popup-content {
+    height: 550px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 180px;
+    border: 1px solid black;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+
+.popup-overlay .notice-item{
+    max-width: 93%;
+    word-wrap: break-word; /* Break long words if needed */
+    white-space: normal; /* Allow the text to wrap */
+    overflow: visible; /* Ensure no truncation */
+    position: relative;
+    margin-top: 0%;
+}
+.popup-content h2{
+ margin-left: 43%;
+}
+.popup-content .notice-date{
+    font-size: 14px;
+    margin-top: -10px;
+    font-weight: bold;
+
+}
+.popup-content .content-area{
+    height: 80%;
+    width: 90%;
+    background-color: #5555553b;
+    margin-left:5%;
+    z-index: 999;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    border: 1px solid #667EEA;
+    margin-top: 3%;
+
+}
+.popup-overlay .content-area::-webkit-scrollbar {
+    width: 13px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.popup-overlay .content-area::-webkit-scrollbar-thumb {
+    background-color:#667EEA!important;
+    border-radius: 10px !important;
+    border: none;
+}

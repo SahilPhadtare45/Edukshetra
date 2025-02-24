@@ -24,11 +24,12 @@
     margin-top: 10px;
     font-weight: 500;
 }
-.addstudents .nameinsr{
+.addstudents .nameins{
     border-radius: 50px;
     border: none !important;
     box-shadow:0.1px 1px 4px 2px  #525252;
-    margin-top: 2%;
+    margin-top: 4%;
+    width: 100% !important;
 }
 .addstudents .srbtn{
     margin-top: -14.5%;
@@ -40,15 +41,17 @@
     border-radius: 50px;
 }
 .addstudents .sritems{
-    max-height: 180px;
+    max-height: 190px;
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
+    margin-top: -20px;
+    position: absolute;
+    width: 92%;
 }
 .addstudents .sritems::-webkit-scrollbar {
     width: 15px !important;
     background-color: transparent !important;
-    border-top-left-radius: 10px !important;
 }
 .addstudents .sritems::-webkit-scrollbar-thumb {
     background-color:#52658F!important;
@@ -57,8 +60,9 @@
 }
 .addstudents .srrow{
     display: flex;
-    max-width: 85%;
-    margin-top: 10px;
+    margin-top: 7.2px;
+    margin-left: 12px;
+
 }
 .addstudents .srimg{
     height: 50px;
@@ -74,25 +78,36 @@
     width: 20%;
     height: 8% !important;
     font-size: 15px;
-    margin-top: 5%;
+    margin-top: 25%;
     margin-left: 40%;
     border-radius: 50px !important;
     border: 2px solid rgb(0, 0, 0) !important;
     background-color:cornflowerblue !important;
     color: rgb(255, 255, 255) !important;
-    position: absolute;
+    position: absolute !important;
 }
-.addstudents .sradd:hover {
+.sradd:hover {
     background-color: #d41d1d !important; 
     border-color: #d41d1d !important; 
 }
-.addstudents .navbarline{
+.addstudents .navbar-line{
     position: static;
-    width: 80%;
+    width: 85%;
     height: 1px;
     background-color: #ffffff;
     margin-left: 10%;
     
-    margin-top: 2%;
     box-shadow: 1px 0.5px 1px black;
+}
+.addstudents .CB{
+    margin-left: 28px;
+    margin-top: 6px;
+}
+.addstudents .Cbox-bg{
+    margin-left: 34px;
+    background-color: #ffd2d24b;
+    height: 70px;
+    width: 89%;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.143);
 }

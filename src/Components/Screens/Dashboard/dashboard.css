@@ -155,11 +155,41 @@
     margin-left:2%;
     margin-top: 1%;
     width: 95%;
+    border: none;
+}
+.dashboard .item-text{
+    max-width: 80% !important;
+    font-size: 20px;
+    margin-top: 1.5%;
+    margin-left: 2%;
 }
 .dashboard .icon{
     position:absolute;  
-    margin-left: 90%;
+    margin-left: 95%;
+    height: 20px;
+    margin-top: 1%;
 }
 .dashboard .icon:hover{
     color: red;
+}
+
+.dashboard .class-display{
+    z-index: 3;
+    font-size: 35px;  
+    margin-left: 7%;
+}
+.dashboard .under-line{
+    position: static;
+    width: 95%;
+    height: 1px;
+    margin-left: 3%;
+    background-color: #000000;
+    margin-top: 1px; /* Add spacing between navbar and static line */     
+}
+.dashboard .notice-time{
+    position: absolute;
+    font-size: small;
+    margin-top: 0px;
+    margin-left: 1%;
+    color: #a4a4a4;
 }

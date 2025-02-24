@@ -19,16 +19,59 @@ const Homepage = () => {
     const [underlineStyle, setUnderlineStyle] = useState({});
     const navItemsRef = useRef([]);
     
-    const { userSchools, fetchUserSchools, currentUser,setSchools } = useUserStore();
+    const { userSchools, fetchUserSchools, currentUser,currentSchool,fetchRoleForSchool,setRole,schoolData,currentRole } = useUserStore();
     const [showAddComponent, setShowAddComponent] = useState(false);
     const navigate = useNavigate();
     const setCurrentSchool = useUserStore((state) => state.setCurrentSchool); // Zustand action
+    const [userRoleInSchool, setUserRoleInSchool] = useState("");
 
-    const handleSchoolClick = (school) => {
-        setCurrentSchool(school); // Set the current school in the Zustand store
-        navigate(`/dashboard`); // Navigate to the dashboard or desired route
+    useEffect(() => {
+        if (!currentSchool || !currentUser) return;
+    
+        if (currentRole === "Admin") {
+            // Admin is assigned to the school directly
+            if (currentSchool.schoolOwnerId === currentUser.uid) {
+                setUserRoleInSchool("Admin");
+            } else {
+                setUserRoleInSchool("Unknown"); // If somehow they're not the admin of this school
+            }
+        } else if (schoolData?.members) {
+            // Find user in members for the specific school
+            const member = schoolData.members.find(m => m.uid === currentUser.uid);
+            if (member) {
+                setUserRoleInSchool(member.userRole);
+            } else {
+                setUserRoleInSchool("Unknown"); // Not found in the members list
+            }
+        }
+    }, [currentSchool, schoolData, currentUser, currentRole]);
+
+
+    const handleSchoolClick = async (school) => {
+        if (!school || !school.schoolId) {
+            console.error("Invalid school data:", school);
+            return;
+        }
+    
+        const currentSchool = useUserStore.getState().currentSchool;
+    
+        if (currentSchool?.schoolId === school.schoolId) {
+            console.log("School already selected. Updating role...");
+        } else {
+            setCurrentSchool(school);
+        }
+    
+        try {
+            // ✅ Pass both `school.schoolId` and `currentUser?.uid`
+            const userRole = await fetchRoleForSchool(school.schoolId, currentUser?.uid);
+            setRole(userRole);
+    
+            // ✅ Ensure navigation to dashboard
+            navigate(`/dashboard`);
+        } catch (error) {
+            console.error("Error fetching user role:", error);
+        }
     };
-
     
     const handleLogout = async () => {
         const auth = getAuth();
@@ -126,7 +169,7 @@ const Homepage = () => {
                                     Password: <strong>{school.password || "Not available"}</strong>
                                 </div>
                                
-                                    <h5 className="card-text role"><small>Role:{school.userRole}</small></h5>
+                                    <h5 className="card-text role"><small>Role:{userRoleInSchool || "Unknown"}</small></h5>
                                     <div className="card-title title text-truncate">{school.schoolName}</div>
                                     <div style={{display:'flex'}}>
                                         <img className="school-logo" src={school.logoUrl} alt='...'/>

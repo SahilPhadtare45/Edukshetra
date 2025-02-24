@@ -94,72 +94,91 @@ const AddTeachers = ({ schoolId }) => {
     };
 
 
-const handleSubmit = async () => {
-    console.log("Submitting Teacher Assignment...");
-    console.log("School ID:", schoolId);
-    console.log("Selected User:", selectedUser);
-    console.log("Selected Classes:", selectedClasses);
-
-    if (!selectedUser || !selectedUser.uid) {
-        alert("Please select a user before submitting.");
-        return;
-    }
-
-    if (!schoolId) {
-        alert("Error: School ID is missing.");
-        return;
-    }
-
-    if (selectedClasses.length === 0) {
-        alert("Please select at least one class.");
-        return;
-    }
-
+    const handleSubmit = async () => {
+        console.log("Submitting Teacher Assignment...");
+        console.log("School ID:", schoolId);
+        console.log("Selected User:", selectedUser);
+        console.log("Selected Classes:", selectedClasses);
     
-    try {
-        // Fetch school document
-        const schoolRef = doc(db, "schools", schoolId);
-        const schoolSnap = await getDoc(schoolRef);
-
-        if (!schoolSnap.exists()) {
-            console.error("Error: School document not found.");
+        if (!selectedUser || !selectedUser.uid) {
+            alert("Please select a user before submitting.");
             return;
         }
-
-        const schoolData = schoolSnap.data();
-        const updatedMembers = schoolData.members.map(member => {
-            if (member.memberId === selectedUser.memberId) {
-                const memberClasses = member.classes || [];
-                const alreadyAssignedInSchool = selectedClasses.filter(cls => memberClasses.includes(cls));
-
-                // Prevent duplicate assignment in school members array
-                if (alreadyAssignedInSchool.length > 0) {
-                    alert(`Error: Teacher is already assigned to class(es): ${alreadyAssignedInSchool.join(", ")}`);
-                    return member; // Return the original member without changes
-                }
-
-                return {
-                    ...member,
-                    userRole: "Teacher",
-                    classes: [...new Set([...memberClasses, ...selectedClasses])]  // Prevents duplicates
-                };
+    
+        if (!schoolId) {
+            alert("Error: School ID is missing.");
+            return;
+        }
+    
+        if (selectedClasses.length === 0) {
+            alert("Please select at least one class.");
+            return;
+        }
+    
+        try {
+            // Fetch school document
+            const schoolRef = doc(db, "schools", schoolId);
+            const schoolSnap = await getDoc(schoolRef);
+    
+            if (!schoolSnap.exists()) {
+                console.error("Error: School document not found.");
+                return;
             }
-            return member;
-        });
+    
+            const schoolData = schoolSnap.data();
+               // Find the selected user in the school's member list
+        const existingMember = schoolData.members.find(member => member.memberId === selectedUser.memberId);
 
+        if (existingMember) {
+            if (existingMember.userRole === "Student") {
+                alert("This user is already a student and cannot be assigned as a teacher.");
+                return;
+            }
+        }
 
-        await updateDoc(schoolRef, { members: updatedMembers });
-
-        console.log("Updated school members:", updatedMembers);
-        alert("Teacher assigned successfully!");
-        setIsVisible(false);
-
-        fetchMembers();
-    } catch (error) {
-        console.error("Error updating teacher:", error.message);
-        alert(`Error assigning teacher: ${error.message}`);
-    }
-};
+            const updatedMembers = schoolData.members.map(member => {
+                if (member.memberId === selectedUser.memberId) {
+                    const memberClasses = member.classes || [];
+                    
+                    // Ensure each new class has { className, subject: "Not Assigned" }
+                    const newClasses = selectedClasses.map(cls => ({
+                        className: cls,
+                        subject: "Not Assigned"
+                    }));
+    
+                    // Filter out already assigned classes to prevent duplicates
+                    const existingClassNames = memberClasses.map(c => c.className);
+                    const classesToAdd = newClasses.filter(cls => !existingClassNames.includes(cls.className));
+    
+                    // Prevent duplicate assignment
+                    if (classesToAdd.length === 0) {
+                        alert("Teacher is already assigned to the selected class(es).");
+                        return member; // Return the original member without changes
+                    }
+    
+                    return {
+                        ...member,
+                        userRole: "Teacher",
+                        classes: [...memberClasses, ...classesToAdd]  // ✅ Store as objects, not just names
+                    };
+                }
+                return member;
+            });
+    
+            // Update Firestore
+            await updateDoc(schoolRef, { members: updatedMembers });
+    
+            console.log("Updated school members:", updatedMembers);
+            alert("Teacher assigned successfully!");
+            setIsVisible(false);
+    
+            fetchMembers(); // Refresh data after updating
+        } catch (error) {
+            console.error("Error updating teacher:", error.message);
+            alert(`Error assigning teacher: ${error.message}`);
+        }
+    };
+    
 
 
     const handleClose = () => {
@@ -195,7 +214,7 @@ const handleSubmit = async () => {
                     <div className="form-floating mb-3 name">               
                         <input
                             type="text"
-                            className="form-control nameinsr"
+                            className="form-control nameins"
                             placeholder="Search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
