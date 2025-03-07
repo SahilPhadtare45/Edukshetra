@@ -4,26 +4,93 @@ import Header from "../../Comman/header";
 import Sidebar from "../../Comman/sidebar";
 import PageInfo from "../../Comman/pageinfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faAnglesRight, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+import { faAdd, faAnglesRight, faTrash, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useUserStore } from "../../../Firebase/userstore"; 
-import { getDoc, doc, updateDoc, arrayRemove, onSnapshot  } from "firebase/firestore";
+import { getDoc, doc, updateDoc, arrayRemove, onSnapshot, query, collection, where, orderBy, arrayUnion,getDocs  } from "firebase/firestore";
 import { db } from "../../../Firebase/firebase";
 import Addnotice from "../Dashboard/Addnotice/addnotice";
 import Notice from "../Dashboard/Addnotice/notice.jsx"
+import AddComplaints from "../Dashboard/Addcomplaints.jsx"; 
+
 const Dashboard = () => {
-    const { currentSchool, fetchSchoolData, schoolData } = useUserStore();
+    const { fetchSchoolData, schoolData } = useUserStore();
     const currentUser = useUserStore((state) => state.currentUser);
     const currentRole = useUserStore((state) => state.currentRole);
-    
+    const currentSchool = useUserStore((state) => state.currentSchool);
     const schoolId = currentSchool?.schoolId || undefined;
-    const [selectedClass, setSelectedClass] = useState("All");
+  
+  console.log("Extracted schoolId:", schoolId);
+      const [selectedClass, setSelectedClass] = useState("All");
     const [teacherCount, setTeacherCount] = useState(0);
     const [studentCount, setStudentCount] = useState(0);
     const [addMode, setAddMode] = useState(false);
     const [notices, setNotices] = useState([]);
     const [addnotices, setAddNotices] = useState(false);
     const [selectedNotice, setSelectedNotice] = useState(null);
+    const [complaints, setComplaints] = useState([]);
+    const [addcomplaints, setAddComplaints] = useState(false);
+    const [showComplaintList, setShowComplaintList] = useState(false);
+const [selectedComplaint, setSelectedComplaint] = useState(null);
+const [replyText, setReplyText] = useState("");
+
+if (!schoolId) {
+    console.error("No school ID found in schoolData!");
+  } else {
+    console.log("Extracted schoolId:", schoolId);
+  }
+
+  console.log("currentSchool:", currentSchool)
+
+  
+  
+  const fetchComplaints = async () => {
+    try {
+        const schoolRef = doc(db, "schools", schoolId);
+        const schoolSnap = await getDoc(schoolRef);
+        if (schoolSnap.exists()) {
+            const allComplaints = schoolSnap.data().complaints || [];
+            console.log("All Complaints from Firestore:", allComplaints);
+            // Filter complaints: Only admin and the sender can see their own complaints
+            const filteredComplaints = currentRole?.toLowerCase() === "admin"
+                ? allComplaints
+                : allComplaints.filter(complaint => complaint.senderId === currentUser?.uid);
+
+            setComplaints(filteredComplaints);
+        }
+    } catch (error) {
+        console.error("Error fetching complaints:", error);
+    }
+};
+
+  // Open Complaint Details
+  const openComplaint = (complaint) => {
+    setSelectedComplaint(complaint);
+};
+
+// Submit Reply
+const handleReply = async () => {
+    if (!selectedComplaint || !replyText) return;
+
+    try {
+        const schoolRef = doc(db, "schools", schoolId);
+        const updatedReplies = [
+            ...selectedComplaint.replies,
+            { adminId: currentUser?.uid, message: replyText, timestamp: new Date() }
+        ];
+
+        await updateDoc(schoolRef, {
+            complaints: complaints.map(comp =>
+                comp.id === selectedComplaint.id ? { ...comp, replies: updatedReplies } : comp
+            )
+        });
+
+        setReplyText("");
+        setSelectedComplaint(null);
+    } catch (error) {
+        console.error("Error sending reply:", error);
+    }
+};
+
 
     const handleNoticeClick = (notice) => {
         console.log("Clicked Notice:", notice); // Debugging
@@ -112,7 +179,6 @@ const Dashboard = () => {
         setStudentCount(students);
     }, [selectedClass, schoolData, currentUser, currentRole]);
     
-    console.log("School Data:", currentSchool);
     console.log("Current Role:", currentRole);
     console.log("Dropdown Options:", getDropdownOptions());
     console.log("Members Data:", currentSchool?.members);
@@ -169,12 +235,19 @@ const filteredNotices = notices.filter((notice) => {
         const unsubscribe = onSnapshot(schoolRef, (snapshot) => {
             if (snapshot.exists()) {
                 setNotices(snapshot.data().notices || []);
+                setComplaints(snapshot.data().complaints || []);
             }
         });
     
         // Cleanup listener when component unmounts
         return () => unsubscribe();
     }, [schoolId])
+    useEffect(() => {
+        if (schoolId && currentUser && !schoolData) {
+            fetchSchoolData(schoolId);
+        }
+    }, [schoolId, currentUser, schoolData]);
+    
     return (
         <div className="dashboard">
             <Header />
@@ -215,10 +288,123 @@ const filteredNotices = notices.filter((notice) => {
                 <div className="students-no">{studentCount > 0 ? studentCount : "--"}</div>
                 </div>
 
-            <div className="complaints">
-                <div className="complaints-title"> Complaints</div>
-                <div className="complaints-no">2</div>
+                <div className="complaints" onClick={() => setShowComplaintList(true)}>
+                <div className="complaints-title">Complaint Box</div>
             </div>
+  {/* Complaints List Popup */}
+  {showComplaintList && (
+                <div className="complaints-popup">
+                    <div className="popup-header">
+                        <h3>Complaints</h3>
+                        <FontAwesomeIcon
+                            icon={faClose}
+                            className="close-icon"
+                            onClick={() => setShowComplaintList(false)}
+                        />
+                    </div>
+
+                   
+                    <ul className="complaints-list">
+    {complaints.length > 0 ? (
+        complaints.slice().reverse().map((complaint, index) => (
+            <div key={complaint.id}>
+                <li className={`complaint-row ${selectedComplaint?.id === complaint.id ? "selected" : ""}`}
+                    onClick={() => openComplaint(complaint)}
+                >
+                    <span className="complaint-number">{index + 1}.</span>{" "}
+                    <div className="complaint-text">{complaint.message}</div>
+                    <span className="complaint-date">
+                        {new Date(complaint.timestamp.seconds * 1000).toLocaleDateString()}
+                    </span>
+                </li>
+                <div className="underline" />
+            </div>
+        ))
+    ) : (
+        <li>No complaints available</li>
+    )}
+</ul>
+                    <div className="addcomplaint">
+                    {(currentRole === "Student" || currentRole === "Teacher") && (
+                        <div className="addinput" style={{display:"flex",marginLeft:"2%"}}>
+                        <FontAwesomeIcon
+                            className="addicon"
+                            icon={faAdd}
+                            onClick={() => setAddComplaints((prev) => !prev)}
+                            style={{height:"22px"}}
+                        /> &nbsp;
+                        <span>Add Complaint</span>
+                        </div>
+                    )}
+                    </div>
+                    <div className="addcomp-compo">
+                    {addcomplaints && <AddComplaints schoolId={schoolId} />}
+                    </div>
+                </div>
+            )}
+
+            {/* Complaint Details Popup */}
+            {selectedComplaint && (
+                <div className="complaint-details-popup">
+                    <div className="popup-header1">
+                        <h3>Complaint Details</h3>
+                        <FontAwesomeIcon
+                            icon={faClose}
+                            className="close-icon"
+                            onClick={() => setSelectedComplaint(null)}
+                        />
+                    </div>
+                    <p>
+                        <strong>From:</strong> {selectedComplaint.senderEmail || "Unknown"}
+                    </p>
+                    <p>
+                        <strong>Sender's Role:</strong> {selectedComplaint.senderRole}
+                    </p>
+                    <p>
+                        <small>Complaint:</small> {selectedComplaint.message}
+                    </p>
+
+                    {/* Reply Box for Admin */}
+
+                    {currentRole === "Admin" && (
+                        <div >
+                            <textarea id="customParagraphInput"
+                            className="reply-box"
+                                placeholder="Write a reply..."
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                            />
+                            <button className="snd-btn" onClick={handleReply}>Send Reply 
+                                            <FontAwesomeIcon
+                                            icon={faAnglesRight}
+                                        
+                                        /></button>
+                        </div>
+                    )}
+
+                    {/* Replies Section */}
+                    <div className="replies">
+                        <h5>Replies</h5>
+                        {selectedComplaint.replies?.length > 0 ? (
+                            selectedComplaint.replies.map((reply, index) => (
+                                <div key={index} className="reply text-truncate">
+                                    <p>
+                                        <strong>Admin:</strong> {reply.message}
+                                    </p>
+                                    <span>
+                                        {new Date(reply.timestamp.seconds * 1000).toLocaleString()}
+                                    </span>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No replies yet.</p>
+                        )}
+                    </div>
+
+                    
+                </div>
+            )}
+
         
     <div className="notice">
         <div className="notice-header">

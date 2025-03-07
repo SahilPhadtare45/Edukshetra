@@ -41,6 +41,7 @@ const Students = () => {
         fetchMembers();
     }, [schoolId]);
 
+
     useEffect(() => {
         if (!members || !Array.isArray(members)) return;
     
@@ -141,6 +142,8 @@ const Students = () => {
         });
         return () => unsubscribe();
     }, [schoolId]);
+    console.log("Current User:", currentUser);
+    console.log("Current Role:", currentRole);
 
     return (
         <div className="studentscreen">
@@ -177,7 +180,7 @@ const Students = () => {
                 {addStudentPage && <AddStudents schoolId={schoolId} />}
                 <div className="table_title" style={{ display: "flex" }}>
                     <div style={{ marginLeft: "4%", marginTop: "1%", fontWeight: "bold" }}>Name</div>
-                    <div style={{ marginLeft: "44%", marginTop: "1%", fontWeight: "bold" }}>Roll No</div>
+                    <div style={{ marginLeft: "44%", marginTop: "1%", fontWeight: "bold" }}>Email-ID</div>
                 </div>
                 <div className="tr_section">
                     {filteredStudents.length > 0 ? (
@@ -186,7 +189,7 @@ const Students = () => {
                                 <ul className="list-group list-group-flush llist">
                                     <li className="li-item">
                                         <div className="item-text">{student.username}</div>
-                                        <div className="sub_name text-truncate"> {student.rollNo}</div>
+                                        <div className="sub_name text-truncate"> {student.email}</div>
                                         <FontAwesomeIcon className="prof_icon" icon={faUser} />
                                         {(currentRole === "Admin" || currentRole === "Teacher") && (
                                             <FontAwesomeIcon

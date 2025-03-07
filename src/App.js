@@ -12,6 +12,7 @@ import LeaveSchool from './Components/Screens/Leave/leave';
 import Creatework from "./Components/Screens/Classwork/Creatework/creatework";
 import Addmarks from "./Components/Screens/Profile/Addmarks/addmarks";
 import Login from "./Components/Login/login";
+import ClassworkDetails from './Components/Screens/Classwork/classworkDetails';
 import { children } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
@@ -59,6 +60,8 @@ function App() {
                         <Route path="/leave-school" element={<RequireAuth><LeaveSchool /></RequireAuth>} />
                         <Route path="/creatework" element={<RequireAuth><Creatework /></RequireAuth>} />
                         <Route path="/addmarks" element={<RequireAuth><Addmarks /></RequireAuth>} />
+                        <Route path="/classwork/:classworkId" element={<RequireAuth><ClassworkDetails /></RequireAuth>} />
+
                     </Routes>
         </Router>
         <ToastContainer />

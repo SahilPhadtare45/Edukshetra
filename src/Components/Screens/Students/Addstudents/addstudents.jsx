@@ -2,7 +2,7 @@ import "./addstudents.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect } from "react";
-import { getDoc, updateDoc, doc } from "firebase/firestore";
+import { getDoc, updateDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../Firebase/firebase";
 import acclogo from "../../../../images/acclogo.png";
 import { useUserStore } from "../../../../Firebase/userstore";
@@ -15,10 +15,15 @@ const AddStudents = ({ schoolId }) => {
     const { currentSchool } = useUserStore();
     const [members, setMembers] = useState([]);
     const [filteredMembers, setFilteredMembers] = useState([]);
-
+    const currentRole = useUserStore((state) => state.currentRole);
+    const [classOptions, setClassOptions] = useState([]);
+    const currentUser = useUserStore((state) => state.currentUser);
+    const { fetchRoleForSchool,setRole } = useUserStore();
     useEffect(() => {
         fetchMembers();
     }, [currentSchool]);
+
+    
 
     const fetchMembers = async () => {
         if (!currentSchool || !currentSchool.schoolId) {
@@ -96,86 +101,134 @@ const AddStudents = ({ schoolId }) => {
             return;
         }
     
-        if (!selectedClasses) {
+        if (!selectedClasses || selectedClasses.length === 0) {
             alert("Please select a class.");
             return;
         }
     
-        const classesArray = Array.isArray(selectedClasses) ? selectedClasses : [selectedClasses];
-    
         try {
             const schoolRef = doc(db, "schools", schoolId);
             const schoolSnap = await getDoc(schoolRef);
+            const userRef = doc(db, "Users", selectedUser.uid);
+            const userSnap = await getDoc(userRef);
     
-            if (!schoolSnap.exists()) {
-                console.error("Error: School document not found.");
+            if (!schoolSnap.exists() || !userSnap.exists()) {
+                console.error("Error: School or User document not found.");
                 return;
             }
     
             const schoolData = schoolSnap.data();
-             // Check if the user is already a student
-        const existingMember = schoolData.members.find(member => member.memberId === selectedUser.memberId);
-        if (existingMember && existingMember.userRole === "Student") {
-            alert("This user is already assigned as a student and cannot be added as a teacher.");
-            return;
-        }
-            const updatedMembers = schoolData.members.map(member => {
-                if (member.memberId === selectedUser.memberId) {
-                    const memberClasses = member.classes || [];
+            const userData = userSnap.data();
     
-                    const updatedClasses = classesArray.map(cls => {
-                        // Get students already in this class
-                        const studentsInClass = schoolData.members.filter(m =>
+            // --- Updating Schools Collection ---
+            const updatedMembers = schoolData.members.map(member => {
+                if (member.uid === selectedUser.uid) {
+                    let memberClasses = member.classes || [];
+    
+                    const newClasses = selectedClasses.map(cls => {
+                        const studentsInClass = schoolData.members.filter(m => 
                             m.classes?.some(c => c.className === cls)
                         );
     
-                        const rollNo = studentsInClass.length + 1; // Assign roll number based on class count
-    
-                        // If the student is already in this class, keep their existing roll number
                         const existingClass = memberClasses.find(c => c.className === cls);
-                        return existingClass || { className: cls, rollNo };
+                        return existingClass || { className: cls };
                     });
     
                     return {
                         ...member,
                         userRole: "Student",
-                        classes: [...new Set([...memberClasses, ...updatedClasses])] // Ensure unique classes
+                        classes: [...memberClasses, ...newClasses]
                     };
                 }
                 return member;
             });
     
-            await updateDoc(schoolRef, { members: updatedMembers });
+            // --- Updating Users Collection ---
+            const updatedSchoolData = userData.schoolData.map(school => {
+                if (school.schoolId === schoolId) {
+                    let schoolClasses = school.classes || [];
     
-            // ✅ Update in the 'Users' collection
-            const userRef = doc(db, "Users", selectedUser.uid);
-            await updateDoc(userRef, {
-                [`schoolData.${schoolId}`]: {
-                    ...(selectedUser.schoolData?.[schoolId] || {}), // Preserve existing data
-                    userRole: "Student", // Update role
-                    classes: [
-                        ...((selectedUser.schoolData?.[schoolId]?.classes) || []), // Keep existing classes
-                        ...(updatedMembers.find(m => m.memberId === selectedUser.memberId)?.classes || []) // Add new class
-                    ]
+                    const newClasses = selectedClasses.map(cls => {
+                        const studentsInClass = updatedMembers.filter(m =>
+                            m.classes?.some(c => c.className === cls)
+                        );
+    
+                        const existingClass = schoolClasses.find(c => c.className === cls);
+                        return existingClass || { className: cls };
+                    });
+    
+                    return {
+                        ...school,
+                        userRole: "Student",
+                        classes: [...schoolClasses, ...newClasses]
+                    };
                 }
+                return school;
             });
     
+            await updateDoc(schoolRef, { members: updatedMembers });
+            await updateDoc(userRef, { schoolData: updatedSchoolData });
+            
+            console.log("Updated school members and user schoolData:", updatedMembers, updatedSchoolData);
             alert("Student assigned successfully!");
             setIsVisible(false);
-            fetchMembers(); // Refresh members list
+    
+            fetchMembers(); // Refresh the data
         } catch (error) {
+            console.error("Error updating student:", error.message);
             alert(`Error assigning student: ${error.message}`);
         }
     };
+          
     
-    
-    
-
     const handleClose = () => {
         setIsVisible(false);
     };
 
-    const classOptions = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
+
+// Real-time listener for class options
+useEffect(() => {
+    if (!currentSchool || !currentSchool.schoolId) return;
+
+    const schoolRef = doc(db, "schools", currentSchool.schoolId);
+
+    const unsubscribe = onSnapshot(schoolRef, (snapshot) => {
+        if (!snapshot.exists()) {
+            setClassOptions([]); // Set empty array if no school data
+            return;
+        }
+
+        const schoolData = snapshot.data();
+        if (!schoolData.members) {
+            setClassOptions([]); // Ensure members exist
+            return;
+        }
+
+        // Find the current user
+        const userDetails = Object.values(schoolData.members || {}).find(
+            (member) => member.uid === currentUser?.uid
+        );
+
+        if (userDetails?.userRole === "Teacher" && userDetails.classes?.length) {
+            // ✅ If Teacher, show only assigned classes
+            setClassOptions(userDetails.classes.map((cls) => cls.className));
+        } else if (currentRole === "Admin") {
+            // ✅ If Admin, show hardcoded classes
+            setClassOptions([
+                "1st", "2nd", "3rd", "4th", "5th",
+                "6th", "7th", "8th", "9th", "10th"
+            ]);
+        } else {
+            // ✅ Show all available classes in the school
+            const allClasses = Object.values(schoolData.members || {})
+                .flatMap((member) => member.classes?.map((cls) => cls.className) || []);
+            setClassOptions([...new Set(allClasses)] || []); // Ensure it's always an array
+        }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+}, [currentSchool, currentUser, currentRole, db]); // Dependencies
+
 
     return (
         isVisible && (

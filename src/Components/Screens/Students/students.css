@@ -142,16 +142,16 @@
 .studentscreen .item-text{
     font-size: 20px;
     margin-left: 4%;
-    position: absolute;
     max-width: 40%;
     color: #000000;
 }
 .studentscreen .sub_name{
-    margin-left: 54%;
+    margin-left: 52%;
     font-size: 20px;
     color: #000000;
     max-width: 20%;
-}
+    position: absolute;
+    }
 .studentscreen .list-group {
     background-color: transparent;
     width: 100%;

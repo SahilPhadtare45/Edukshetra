@@ -21,7 +21,6 @@
     schoolData: null, // ✅ New state for storing school data
     teachersCount: 0, // ✅ New state for teachers count
     studentsCount: 0, // ✅ New state for students count
-    currentRole: null,
 
     
     // ✅ Fetch school data and count teachers/students
@@ -93,6 +92,12 @@
 
 
     setRole: (role) => set({ currentRole: role }),
+    
+    // ✅ Add this function to refresh the role
+    refreshUserRole: async (schoolId, userId, fetchRoleForSchool) => {
+        const userRole = await fetchRoleForSchool(schoolId, userId);
+        set({ currentRole: userRole });
+    },
 
     fetchRoleForSchool: async (schoolId, userId) => {
         try {
@@ -186,51 +191,58 @@
         set({ currentUser: null, userRole: "Guest", isLoading: false });
     }
 },
-    fetchUserSchools: async (uid) => {
-      if (!uid) return;
-  
-      try {
-          const userRef = doc(db, "Users", uid);
-          const userSnap = await getDoc(userRef);
-  
-          let userJoinedSchools = [];
-          if (userSnap.exists()) {
-            const userData = userSnap.data();
-            if (Array.isArray(userData.schoolData)) {
-                userJoinedSchools = userData.schoolData;
-            }
-        }
-  
-          const schoolsRef = collection(db, "schools");
-          const querySnapshot = await getDocs(schoolsRef);
-          const schools = querySnapshot.docs
-              .map((doc) => ({ id: doc.id, ...doc.data() }))
-              .filter((school) =>
-                  school.members?.some(member => member.uid === uid)
-              );
-  
-          // **Map to store unique schools**
-          const schoolMap = new Map();
-  
-          [...userJoinedSchools, ...schools].forEach((school) => {
-              if (!schoolMap.has(school.schoolId)) {
-                  schoolMap.set(school.schoolId, school);
-              }
-          });
-  
-          const uniqueSchools = Array.from(schoolMap.values());
-  
-          // Ensure the current school is still valid
-          if (!get().currentSchool || !uniqueSchools.some(s => s.id === get().currentSchool?.id)) {
-            set({ currentSchool: uniqueSchools[0] });
-        }
 
-        set({ userSchools: uniqueSchools });
-    } catch (error) {
-        console.error("Error fetching schools:", error);
-        set({ userSchools: [] });
-    }
+addSchool: (newSchool) => 
+    set((state) => ({ userSchools: [...state.userSchools, newSchool] })),
+
+fetchUserSchools: async (uid) => {
+    if (!uid) return;
+
+    try {
+        const userRef = doc(db, "Users", uid);
+        const userSnap = await getDoc(userRef);
+
+        let userJoinedSchools = [];
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          if (Array.isArray(userData.schoolData)) {
+              userJoinedSchools = userData.schoolData;
+          }
+      }
+
+        const schoolsRef = collection(db, "schools");
+        const querySnapshot = await getDocs(schoolsRef);
+        const schools = querySnapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .filter((school) =>
+                school.members?.some(member => member.uid === uid)
+            );
+
+        // **Map to store unique schools**
+        const schoolMap = new Map();
+
+        [...userJoinedSchools, ...schools].forEach((school) => {
+            if (!schoolMap.has(school.schoolId)) {
+                schoolMap.set(school.schoolId, school);
+            }
+        });
+
+        const uniqueSchools = Array.from(schoolMap.values());
+
+        // Ensure the current school is still valid
+        if (!get().currentSchool || !uniqueSchools.some(s => s.id === get().currentSchool?.id)) {
+          set({ currentSchool: uniqueSchools[0] });
+      }
+
+      set({ userSchools: uniqueSchools });
+  } catch (error) {
+      console.error("Error fetching schools:", error);
+      set({ userSchools: [] });
+  }
 },
+
+
+
   fetchSchoolById: async (schoolId) => {
     try {
         const schoolDoc = await getDoc(doc(db, "schools", schoolId)); // Fetch school

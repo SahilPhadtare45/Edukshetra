@@ -91,62 +91,59 @@ const Teachers = () => {
 
     
     const removeTeacherFromClass = async (teacherId) => {
-        if (currentRole !== "Admin") {
-            alert("You do not have permission to remove members!");
-            return;
-        }
-    
-        if (!currentSchool || !currentSchool.schoolId) {
-            console.log("No school selected.");
-            return;
-        }
+        if (!currentSchool || !schoolId) return;
     
         try {
-            const schoolRef = doc(db, "schools", currentSchool.schoolId);
+            const schoolRef = doc(db, "schools", schoolId);
             const schoolSnap = await getDoc(schoolRef);
-    
-            if (!schoolSnap.exists()) {
-                console.log("❌ No school found in Firestore!");
-                return;
-            }
+            if (!schoolSnap.exists()) return;
     
             const schoolData = schoolSnap.data();
-                const updatedMembers = schoolData.members.map((member) => {
+            const updatedMembers = schoolData.members.map(member => {
                 if (member.memberId === teacherId) {
-                    const updatedClasses = member.classes?.filter((cls) => cls !== selectedClass) || [];
+                    // 🔥 Remove only the selected class
+                    const updatedClasses = (member.classes || []).filter(cls => cls.className !== selectedClass);
     
                     return {
                         ...member,
                         classes: updatedClasses,
-                        userRole: updatedClasses.length > 0 ? "Teacher" : "Guest",
+                        userRole: updatedClasses.length === 0 ? "Guest" : "Teacher",
                     };
                 }
                 return member;
             });
     
-            // 🔥 Step 3: Update the schools collection
-            await setDoc(schoolRef, { members: updatedMembers }, { merge: true });
-            
-             // Fetch updated member after removing from the class
-        const updatedMember = updatedMembers.find((member) => member.memberId === teacherId);
-
-        // If the teacher has no assigned classes, update their role in Users collection
-        if (updatedMember && updatedMember.userRole === "Guest") {
-            const userRef = doc(db, "Users", teacherId); // Reference to Users collection
-            await updateDoc(userRef, { userRole: "Guest" }); // Update role
-            console.log(`✅ User ${teacherId} role updated to Guest in Users collection.`);
-        }
-
+            // 🔥 Update Firestore 'schools' collection
+            await updateDoc(schoolRef, { members: updatedMembers });
+    
+            // 🔥 Update user document in 'Users' collection
+            const userRef = doc(db, "Users", teacherId);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                let userData = userSnap.data();
+                let updatedUserClasses = (userData?.schoolData?.[schoolId]?.classes || []).filter(cls => cls !== selectedClass);
+    
+                let updateFields = {
+                    [`schoolData.${schoolId}.classes`]: updatedUserClasses,
+                };
+    
+                if (updatedUserClasses.length === 0) {
+                    updateFields["userRole"] = "Guest";
+                    updateFields[`schoolData.${schoolId}.className`] = null;
+                    updateFields[`schoolData.${schoolId}.subject`] = null;
+                }
+    
+                await updateDoc(userRef, updateFields);
+            }
+    
+            // 🔥 Update state to reflect changes
             setMembers(updatedMembers);
-            setFilteredTeachers(
-                updatedMembers.filter((member) => member.userRole === "Teacher" && member.classes?.includes(selectedClass))
-            );
-            fetchMembers();
-            console.log(`✅ Teacher ${teacherId} removed from ${selectedClass} in both collections.`);
         } catch (error) {
             console.error("🔥 Error removing teacher:", error);
         }
     };
+    
+           
     
     useEffect(() => {
         if (!schoolId) return;
@@ -187,8 +184,7 @@ const Teachers = () => {
   };
 
   // Save the subject change to Firestore
-  // Save the subject change to Firestore
-const saveSubjectChange = async () => {
+  const saveSubjectChange = async () => {
     if (!editTeacherId || !currentSchool?.schoolId) return;
 
     try {
@@ -202,15 +198,13 @@ const saveSubjectChange = async () => {
 
         const schoolData = schoolSnap.data();
 
-        // Find and update the teacher's subject in the selected class
+        // 🔍 Find and update the teacher's subject in the selected class (Schools Collection)
         const updatedMembers = schoolData.members.map((member) => {
             if (member.memberId === editTeacherId) {
                 const updatedClasses = member.classes.map(cls => 
-                    cls === selectedClass // If class is stored as a string
-                        ? { className: selectedClass, subject: editSubject || "Not Assigned" }
-                        : cls.className === selectedClass // If class is stored as an object
-                            ? { ...cls, subject: editSubject || "Not Assigned" }
-                            : cls
+                    cls.className === selectedClass
+                        ? { ...cls, subject: editSubject || "Not Assigned" }
+                        : cls
                 );
 
                 return { ...member, classes: updatedClasses };
@@ -218,25 +212,62 @@ const saveSubjectChange = async () => {
             return member;
         });
 
-        // ✅ Update Firestore
+        // ✅ Update Firestore (Schools Collection)
         await updateDoc(schoolRef, { members: updatedMembers });
 
-        // ✅ Update local state
+        // 🔥 Now update the Users Collection
+        const userRef = doc(db, "Users", editTeacherId);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            let userData = userSnap.data();
+            let updatedSchoolData = [...userData.schoolData]; // Clone the array to avoid mutating state directly
+
+            // 🔍 Find the correct school in schoolData
+            const schoolIndex = updatedSchoolData.findIndex(school => school.schoolId === currentSchool.schoolId);
+
+            if (schoolIndex !== -1) {
+                let updatedClasses = [...updatedSchoolData[schoolIndex].classes];
+
+                // 🔍 Find the correct class in classes array
+                const classIndex = updatedClasses.findIndex(cls => cls.className === selectedClass);
+
+                if (classIndex !== -1) {
+                    // ✅ Update subject for the found class
+                    updatedClasses[classIndex] = { 
+                        ...updatedClasses[classIndex], 
+                        subject: editSubject || "Not Assigned" 
+                    };
+                }
+
+                // ✅ Update the schoolData with modified classes
+                updatedSchoolData[schoolIndex] = { 
+                    ...updatedSchoolData[schoolIndex], 
+                    classes: updatedClasses 
+                };
+
+                // ✅ Update Firestore (Users Collection)
+                await updateDoc(userRef, { schoolData: updatedSchoolData });
+            }
+        }
+
+        // ✅ Update Local State
         setMembers(updatedMembers);
         setFilteredTeachers(updatedMembers.filter(
             (member) => member.userRole === "Teacher" && member.classes?.some(cls => cls.className === selectedClass)
         ));
 
-        // Reset editing state
+        // Reset Editing State
         setIsEditing(false);
         setEditTeacherId(null);
         setEditSubject("");
 
-        console.log(`✅ Subject updated successfully for ${selectedClass}`);
+        console.log(`✅ Subject updated successfully for ${selectedClass} in both collections`);
     } catch (error) {
         console.error("🔥 Error updating subject:", error);
     }
 };
+
 
 
     return (

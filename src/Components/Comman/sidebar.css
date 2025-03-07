@@ -11,7 +11,7 @@
     box-shadow: 4px 2px 8px rgba(0, 0, 0, 0.543);
     z-index: 1;
 }
-.sclimg{
+.sidebar .sclimg{
     margin-left: 25%;
     height: 18%;
     width: 48%;

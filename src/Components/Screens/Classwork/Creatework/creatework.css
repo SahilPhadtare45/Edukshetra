@@ -20,7 +20,7 @@
   margin-top: 3%;
   font-size: 24px;
   text-shadow: 1px 1px 2px black;
-  width: 13%;
+  width: 16%;
   background-color: #007bff;
   font-family: "Montserrat Alternates", serif !important;  
   border-top-right-radius: 50px;
@@ -48,7 +48,7 @@
     }
 }
 .creatework .con_box{
-    height:20%;
+    height:15%;
     width: 90%;
     margin-left: 5%;  
     box-shadow:0.1px 1px 2px 2px  #525252;
@@ -91,12 +91,12 @@
 }
 /* Change calendar width */
 .creatework .react-calendar {
-    margin-top: 40px;
+    margin-top: 15px;
     width: 250px; /* Set the width */
-    height: 250px; /* Set the height */
+    height: 285px; /* Set the height */
     font-size: 14px; /* Optional: Customize font size */
     background-color: #f8f9fa; /* Optional: Set background color */
-    margin-left: -30%;
+    margin-left: -28%;
     font-family: "Montserrat alternates",serif !important;
     border-top-left-radius: 25px !important;
     border-bottom-right-radius:25px !important;
@@ -107,14 +107,14 @@
      /* Set background color */
     color: white; /* Text color */
     margin-bottom: 0px; 
-    height: 30px !important;
+    height: 40px !important;
     font-size: 10px !important;
   }
   /* Style the date cells */
   .creatework .react-calendar__tile {
     border-radius: 50%;
     transition: background-color 0.3s ease;
-    height: 2% !important;  
+    height: 1% !important;  
   }
   .creatework .react-calendar__tile:active {
     background-color: #007bff;
@@ -128,28 +128,28 @@
   .creatework .duedate{
     display: flex;  
     p{
-        margin-top:2%;
+        margin-top:1%;
         margin-left: 5%;
+        font-size: 16px;
     }
   }
   .creatework .calbtn{
     height: 50px;
     margin-left: 4%;
-    margin-top: 4%;
+    margin-top: 2%;
 }
   .creatework .datedis{
     margin-top: 2%;
   }
+  .creatework .classselection{
+    position: absolute;
+    margin-left: 60%;
+  }
   .creatework .classdropdowns{
-    margin-left: 70%;
-    margin-top: -5.5%;
-    display: flex;
-    select{
-        margin-top: 6%;
-        margin-left: 4%;
-        height: 50px;
-        width: 150px;  
-    }
+        margin-top: 1%;
+        margin-left: 1px;
+        width: 50px;  
+
   }
   .creatework .Create-Button{
     border: none;
@@ -167,4 +167,5 @@
     transform: scale(1.1);
     transition-duration: 0.2s;
     font-size: 16px;
+    position: absolute;
 }

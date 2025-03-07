@@ -25,11 +25,18 @@
 }
 .work-container{
     position: relative;
-    background-color: #E8E8E8;
-    margin-top: 2%;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    margin-top: 3%;
     width: 90%; /* Full width relative to .classwork */
+}
+.work-card{
+    border: 1px ghostwhite solid;
+    margin-top: 2%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    margin-left: 5%;
 }
 .classwork .head{
     display:flex;
@@ -42,18 +49,20 @@
     overflow: visible; /* Ensure no truncation */
     max-width:80%;
     margin-left: 2%;
-    margin-top: 1%;
+    margin-top: 0%;
 }
 .classwork .timeposted{
-    font-size: 15px !important;
+    font-size: 12px !important;
     position: absolute;
-    margin-left: 88%;
+    margin-left: 80%;
     margin-top: 1%;
 }
 .classwork .content{
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 1%;
+    font-size: 14px;
+    font-weight: 600;
 }
 .classwork .createbg{
     flex-direction: row;
@@ -95,4 +104,61 @@
     height: 30px;
     margin-left: 2%;
     margin-top: 20%;
+}
+.upload-section {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.upload-section input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.upload-section button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-section button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.submissions {
+    margin-top: 15px;
+}
+
+.submissions h4 {
+    font-size: 16px;
+    color: #333;
+}
+
+.submissions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.submissions li {
+    margin-bottom: 5px;
+}
+
+.submissions a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.submissions a:hover {
+    text-decoration: underline;
 }

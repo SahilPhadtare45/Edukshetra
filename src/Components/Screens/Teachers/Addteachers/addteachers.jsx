@@ -110,76 +110,85 @@ const AddTeachers = ({ schoolId }) => {
             return;
         }
     
-        if (selectedClasses.length === 0) {
+        if (!selectedClasses || selectedClasses.length === 0) {
             alert("Please select at least one class.");
             return;
         }
     
         try {
-            // Fetch school document
             const schoolRef = doc(db, "schools", schoolId);
             const schoolSnap = await getDoc(schoolRef);
+            const userRef = doc(db, "Users", selectedUser.uid);
+            const userSnap = await getDoc(userRef);
     
-            if (!schoolSnap.exists()) {
-                console.error("Error: School document not found.");
+            if (!schoolSnap.exists() || !userSnap.exists()) {
+                console.error("Error: School or User document not found.");
                 return;
             }
     
             const schoolData = schoolSnap.data();
-               // Find the selected user in the school's member list
-        const existingMember = schoolData.members.find(member => member.memberId === selectedUser.memberId);
-
-        if (existingMember) {
-            if (existingMember.userRole === "Student") {
-                alert("This user is already a student and cannot be assigned as a teacher.");
-                return;
-            }
-        }
-
+            const userData = userSnap.data();
+    
+            // --- Updating Schools Collection ---
             const updatedMembers = schoolData.members.map(member => {
-                if (member.memberId === selectedUser.memberId) {
-                    const memberClasses = member.classes || [];
-                    
-                    // Ensure each new class has { className, subject: "Not Assigned" }
+                if (member.uid === selectedUser.uid) {
+                    let memberClasses = member.classes || [];
+    
                     const newClasses = selectedClasses.map(cls => ({
                         className: cls,
                         subject: "Not Assigned"
                     }));
     
-                    // Filter out already assigned classes to prevent duplicates
                     const existingClassNames = memberClasses.map(c => c.className);
                     const classesToAdd = newClasses.filter(cls => !existingClassNames.includes(cls.className));
-    
-                    // Prevent duplicate assignment
-                    if (classesToAdd.length === 0) {
-                        alert("Teacher is already assigned to the selected class(es).");
-                        return member; // Return the original member without changes
-                    }
     
                     return {
                         ...member,
                         userRole: "Teacher",
-                        classes: [...memberClasses, ...classesToAdd]  // ✅ Store as objects, not just names
+                        classes: [...memberClasses, ...classesToAdd]
                     };
                 }
                 return member;
             });
     
-            // Update Firestore
-            await updateDoc(schoolRef, { members: updatedMembers });
+            // --- Updating Users Collection ---
+            const updatedSchoolData = userData.schoolData.map(school => {
+                if (school.schoolId === schoolId) {
+                    let schoolClasses = school.classes || [];
     
-            console.log("Updated school members:", updatedMembers);
+                    const newClasses = selectedClasses.map(cls => ({
+                        className: cls,
+                        subject: "Not Assigned"
+                    }));
+    
+                    const existingClassNames = schoolClasses.map(c => c.className);
+                    const classesToAdd = newClasses.filter(cls => !existingClassNames.includes(cls.className));
+    
+                    return {
+                        ...school,
+                        userRole: "Teacher",
+                        classes: [...schoolClasses, ...classesToAdd]
+                    };
+                }
+                return school;
+            });
+    
+            await updateDoc(schoolRef, { members: updatedMembers });
+            await updateDoc(userRef, { schoolData: updatedSchoolData });
+    
+            console.log("Updated school members and user schoolData:", updatedMembers, updatedSchoolData);
             alert("Teacher assigned successfully!");
             setIsVisible(false);
     
-            fetchMembers(); // Refresh data after updating
+            fetchMembers(); // Refresh the data
+            
         } catch (error) {
             console.error("Error updating teacher:", error.message);
             alert(`Error assigning teacher: ${error.message}`);
         }
     };
     
-
+    
 
     const handleClose = () => {
         setIsVisible(false);

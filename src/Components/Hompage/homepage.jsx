@@ -23,29 +23,6 @@ const Homepage = () => {
     const [showAddComponent, setShowAddComponent] = useState(false);
     const navigate = useNavigate();
     const setCurrentSchool = useUserStore((state) => state.setCurrentSchool); // Zustand action
-    const [userRoleInSchool, setUserRoleInSchool] = useState("");
-
-    useEffect(() => {
-        if (!currentSchool || !currentUser) return;
-    
-        if (currentRole === "Admin") {
-            // Admin is assigned to the school directly
-            if (currentSchool.schoolOwnerId === currentUser.uid) {
-                setUserRoleInSchool("Admin");
-            } else {
-                setUserRoleInSchool("Unknown"); // If somehow they're not the admin of this school
-            }
-        } else if (schoolData?.members) {
-            // Find user in members for the specific school
-            const member = schoolData.members.find(m => m.uid === currentUser.uid);
-            if (member) {
-                setUserRoleInSchool(member.userRole);
-            } else {
-                setUserRoleInSchool("Unknown"); // Not found in the members list
-            }
-        }
-    }, [currentSchool, schoolData, currentUser, currentRole]);
-
 
     const handleSchoolClick = async (school) => {
         if (!school || !school.schoolId) {
@@ -98,13 +75,14 @@ const Homepage = () => {
                 id: doc.id, 
                 ...doc.data(),
             }));
+    
             console.log("Updated Schools from Firestore:", schools); // Debugging log
-
-            useUserStore.getState().setSchools(schools); // Ensure Zustand state is updated
+    
+            useUserStore.getState().setSchools(schools); // Update Zustand store
         });
     
-        return () => unsubscribe();
-    }, [currentUser]); 
+        return () => unsubscribe(); // Cleanup listener
+    }, [currentUser]);  
 
 
     useEffect(() => {
@@ -128,6 +106,43 @@ const Homepage = () => {
 
     console.log("userSchools:", userSchools, "Type:", typeof userSchools);
 
+    useEffect(() => {
+    if (currentUser) {
+        useUserStore.getState().fetchUserSchools(currentUser.uid);
+    }
+
+    return () => {
+        const unsubscribe = useUserStore.getState().unsubscribeFetchUserSchools;
+        if (unsubscribe) {
+            unsubscribe(); // Cleanup Firestore listener
+        }
+    };
+}, [currentUser]);
+
+useEffect(() => {
+    if (currentUser?.uid) {
+        fetchUserSchools(currentUser.uid);
+    }
+}, [currentUser]);
+
+
+
+const getUserRole = (school) => {
+    if (!school || !school.members || !Array.isArray(school.members)) {
+      console.log("School data missing or incorrect:", school);
+      return "Unknown";
+    }
+  
+    const member = school.members.find(m => m.uid === currentUser?.uid);
+  
+    if (!member) {
+      console.log(`User ${currentUser?.uid} not found in members`, school.members);
+      return "Not a Member";
+    }
+  
+    return member.userRole || "Unknown";
+  };
+  
     return (
         <>
         <div className="homepage">            
@@ -157,29 +172,35 @@ const Homepage = () => {
             {showAddComponent && <Add />}
             <div className="navbar-line"/>
             <div class="list-group">
-                <ul className="container maincon">
-                {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
-                        <p>No schools joined yet</p>
-                    ) : (
-                        userSchools.map((school, index) => (
-                            <li className='card concard' key={index} onClick={() => handleSchoolClick(school)}>                    
+            <ul className="container maincon">
+    {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
+        <p>No schools joined yet</p>
+    ) : (
+        userSchools.map((school, index) => (
+
+                              <li className="card concard" key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
-                                <div className='share_code'>
+                                  <div className='share_code'>
                                     Password: <strong>{school.password || "Not available"}</strong>
-                                </div>
-                               
-                                    <h5 className="card-text role"><small>Role:{userRoleInSchool || "Unknown"}</small></h5>
-                                    <div className="card-title title text-truncate">{school.schoolName}</div>
-                                    <div style={{display:'flex'}}>
-                                        <img className="school-logo" src={school.logoUrl} alt='...'/>
-                                        <h5 className="card-text shortform">{school.shortForm}</h5>
-                                    </div>
+                                  </div>
+                      
+                                  {/* Dynamically Display User Role */}
+                                  <h5 className="card-text role">
+                                    <small>Role: {school.userRole || "Unknown"}</small>
+                                  </h5>
+                      
+                                  <div className="card-title title text-truncate">{school.schoolName}</div>
+                                  <div style={{ display: 'flex' }}>
+                                    <img className="school-logo" src={school.logoUrl} alt="..." />
+                                    <h5 className="card-text shortform">{school.shortForm}</h5>
+                                  </div>
                                 </div>                        
-                            </li>                   
-                        ))
-                    )}              
-                </ul>
+                              </li>  
+        )))                 
+                          }
+                                      
+                      </ul>
             </div>
         </div>
         </>
