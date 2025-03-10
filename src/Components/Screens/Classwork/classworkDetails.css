@@ -6,85 +6,155 @@
 }
 
 .classworkDetails {
-    max-width: 800px;
-    margin: 80px auto 20px;
-    padding: 20px;
+    width: 70%;
+    height: 73%;
+    margin-left: 23%;    
+    margin-top: 4%;    
     background: white;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+
 }
 
+.classworkDetails .iconbg{
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    background-color: #0056b3;
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+.classworkDetails .clipicon{
+    color: aliceblue;
+    margin-left: 31%;
+    height: 30px;
+}
 .classworkDetails h2 {
-    font-size: 24px;
+    font-size: 34px;
     color: #333;
     margin-bottom: 10px;
+    margin-left: 2%;
+    margin-top: 2.5%;
+    max-width: 90%;
 }
 
 .classworkDetails p {
     font-size: 16px;
     color: #555;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
 }
 
-.attachments {
+.classworkDetails .due-date{
+    margin-left: 75%;
+    font-weight: bold;
+    margin-top: -1%;
+}
+.classworkDetails .clswork-title{
+    max-width: 900px;
+}
+.classworkDetails .clswrk-con{
+    margin-right: 2%;
+    margin-left: 7%;
+    margin-top: 2%;
+    overflow-x: hidden;
+    font-size: larger;
+    white-space: pre-wrap; /* ✅ Maintains spaces and line breaks */
+    word-wrap: break-word;  /* Prevents overflow issues */
+    font-family: Montserrat, sans-serif;
+}
+.classworkDetails .clswrk-con::-webkit-scrollbar{
+    display: none;
+}
+.classworkDetails .attachments {
     margin-top: 20px;
+    margin-left: 8%;
+
+    li{
+        float: left;
+        margin-left: 2%;
+    }
 }
 
-.attachments h3 {
+.classworkDetails .attachments h3 {
     font-size: 18px;
     color: #222;
     margin-bottom: 10px;
 }
 
-.attachments ul {
+.classworkDetails .attachments ul {
     list-style: none;
     padding: 0;
 }
 
-.attachments li {
+.classworkDetails .attachments li {
     margin-bottom: 8px;
 }
 
-.attachments a {
-    color: #007bff;
+.classworkDetails .attachments a {
     text-decoration: none;
     font-size: 16px;
 }
 
-.attachments a:hover {
-    text-decoration: underline;
-}
+.classworkDetails .uploads{
+    margin-top: 5%;
+    margin-left: 20%;
 
-.upload-section {
-    margin-top: 20px;
+    span{
+        margin-top:20px !important;
+    }
+
+    ul{
+        margin-left: 20%;
+
+    }
+}
+.classworkDetails .upload-section {
+    margin-top: -105px;
     display: flex;
-    flex-direction: column;
     gap: 10px;
+    margin-left: 40%;
 }
 
-.upload-section input {
-    padding: 8px;
+.classworkDetails .upload-section input {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
+    margin-top: -10%;
+    margin-left: -8%;
+    position: relative;
 }
 
-.upload-section button {
+.classworkDetails .upload-section button {
     padding: 10px;
     border: none;
-    background-color: #007bff;
     color: white;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
+    margin-top: -4% !important;
+    margin-left: 14%;
+    z-index: 1001;
+    position: absolute;
 }
 
-.upload-section button:hover {
-    background-color: #0056b3;
+.classworkDetails .uploads a{
+    margin-top: 2%;
+}
+.classworkDetails .upload-section button:hover {
+    background-color: #b3b3b3;
 }
 
-.upload-section button:disabled {
+.classworkDetails .upload-section button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+.classworkDetails .upload-no{
+    margin-top: -50px;
+    margin-left: 950px;
+    position: absolute;
 }

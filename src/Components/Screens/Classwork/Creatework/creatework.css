@@ -54,18 +54,13 @@
     box-shadow:0.1px 1px 2px 2px  #525252;
     border-top-left-radius: 25px;
     border-bottom-right-radius:25px; 
+    white-space: pre-wrap; /* ✅ Maintains spaces and line breaks */
+    word-wrap: break-word;  /* Prevents overflow issues */
 }
 .creatework .con_box::-webkit-scrollbar {
-    width: 15px !important;
-    background-color: transparent !important;
-    border-top-left-radius: 10px !important;
+    display: none;
 }
 
-.creatework .con_box::-webkit-scrollbar-thumb {
-    background-color:#52658F!important;
-    border-radius: 10px !important;
-    border: none;
-}
 .creatework .upload-in{
     margin-left:70px; 
     margin-right: 10%;

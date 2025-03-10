@@ -9,6 +9,7 @@ import { doc, updateDoc, arrayUnion, getDoc, onSnapshot} from "firebase/firestor
 import axios from "axios"; // For Cloudinary upload
 import { useUserStore } from '../../../../Firebase/userstore';
 import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
+import { useNavigate } from "react-router-dom";
 
 const Creatework = () => {
     const [title, setTitle] = useState("");
@@ -24,7 +25,8 @@ const Creatework = () => {
     const toggleUploads = () => setAllowUploads(!allowUploads);
     const [classes, setClasses] = useState([]);  
     const { currentUser, currentSchool, currentRole } = useUserStore();
-
+    const navigate = useNavigate();
+    
 
 
     useEffect(() => {
@@ -90,12 +92,22 @@ const Creatework = () => {
             }
         }
 
-        setAttachments(uploadedUrls);
+        setAttachments((prevAttachments) => [...prevAttachments, ...uploadedUrls]);
     };
 
     const handleCreateClasswork = async () => {
-        if (!title || !content) {
-            alert("Title and Content are required!");
+        if (!title.trim()) {
+            alert("⚠️ Title is required!");
+            return;
+        }
+    
+        if (!content.trim()) {
+            alert("⚠️ Content is required!");
+            return;
+        }
+    
+        if (!selectedClass) {
+            alert("⚠️ Please select a class!");
             return;
         }
 
@@ -108,6 +120,13 @@ const Creatework = () => {
             const schoolRef = doc(db, "schools", currentSchool.schoolId);
             const uniqueId = uuidv4(); // ✅ Generate a unique ID
 
+            let adjustedDueDate = null;
+            if (allowUploads && date) {
+                let dueDate = new Date(date);
+                dueDate.setHours(23, 59, 59, 999); // ✅ Force time to 23:59:59
+                adjustedDueDate = dueDate.toISOString();
+            }
+
             await updateDoc(schoolRef, {
                 classwork: arrayUnion({
                     id: uniqueId,  // ✅ Store unique ID
@@ -117,7 +136,7 @@ const Creatework = () => {
                     classworkContent: content,
                     attachments,
                     allowUploads,
-                    dueDate: allowUploads ? date.toISOString() : null,
+                    dueDate: adjustedDueDate, // ✅ Stores with correct time
                     to: selectedClass,
                     createdAt: new Date().toISOString(),
                     uploads: [], // ✅ Initialize empty uploads array
@@ -131,6 +150,7 @@ const Creatework = () => {
             setAttachments([]);
             setAllowUploads(false);
             setSelectedClass("1st");
+            navigate("/classwork");
         } catch (error) {
             console.error("Error updating document:", error);
             alert("Error adding classwork.");
@@ -190,7 +210,7 @@ const Creatework = () => {
 
                 <label for="formGroupExampleInput" className="form-label lbl">Enter Title</label>
                 <div class="form-floating mb-3 subin  ">
-                    <input type="text" className="form-control box" placeholder="Enter Subject/Topic" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                    <input type="text" className="form-control box" placeholder="Enter Subject/Topic" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={50}/>
                     <label  for="floatingInput ">Enter Subject/Topic</label>
                 </div>
                 
@@ -234,7 +254,7 @@ const Creatework = () => {
 
                         {showCalendar && (
                             <div className="mt-3">
-                                <Calendar onChange={handleDateChange} value={date} />
+                                <Calendar onChange={handleDateChange} value={date} tileDisabled={({ date }) => date < new Date()}/>
                             </div>
                         )}
 

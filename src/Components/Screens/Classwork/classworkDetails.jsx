@@ -6,7 +6,8 @@ import { useUserStore } from "../../../Firebase/userstore";
 import Header from "../../Comman/header";
 import Sidebar from "../../Comman/sidebar";
 import "./classworkDetails.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dnj7emmrm/upload";
 const CLOUDINARY_UPLOAD_PRESET = "unsigned_preset";
 
@@ -16,6 +17,7 @@ const ClassworkDetails = () => {
     const [classwork, setClasswork] = useState(null);
     const [uploadFile, setUploadFile] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [uploadComplete, setUploadComplete] = useState(false);
 
     useEffect(() => {
         if (!currentSchool || !currentSchool.schoolId || !classworkId) return;
@@ -41,80 +43,88 @@ const ClassworkDetails = () => {
         return () => unsubscribe();
     }, [currentSchool, classworkId]);
     
+    const handleFileUpload = async () => {
+        if (!uploadFile || !classwork || uploading || uploadComplete) return; // Prevent duplicate execution
     
-const handleFileUpload = async () => {
-    if (!uploadFile || !classwork) return;
+        setUploading(true);
+        setUploadComplete(false); // Reset upload completion
 
-    setUploading(true);
-    try {
-        // Upload file to Cloudinary
-        const formData = new FormData();
-        formData.append("file", uploadFile);
-        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-        formData.append("resource_type", "raw");
-
-        const response = await fetch(CLOUDINARY_UPLOAD_URL, {
-            method: "POST",
-            body: formData,
-        });
-
-        const data = await response.json();
-        const fileUrl = data.secure_url;
-
-        // Reference to the school document
-        const schoolRef = doc(db, "schools", currentSchool.schoolId);
-        
-        // 🔥 Fetch the latest school document snapshot
-        const schoolSnapshot = await getDoc(schoolRef);
-        if (!schoolSnapshot.exists()) {
-            console.error("School document does not exist!");
+        try {
+            // Upload file to Cloudinary
+            const formData = new FormData();
+            formData.append("file", uploadFile);
+            formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+            formData.append("resource_type", "raw");
+    
+            const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+                method: "POST",
+                body: formData,
+            });
+    
+            const data = await response.json();
+            const fileUrl = data.secure_url;
+    
+            // Reference to the school document
+            const schoolRef = doc(db, "schools", currentSchool.schoolId);
+            const schoolSnapshot = await getDoc(schoolRef);
+    
+            if (!schoolSnapshot.exists()) {
+                console.error("School document does not exist!");
+                setUploading(false);
+                return;
+            }
+    
+            const schoolData = schoolSnapshot.data();
+            const updatedClasswork = schoolData.classwork.map((cw) =>
+                cw.id === classworkId
+                    ? { 
+                        ...cw, 
+                        uploads: cw.uploads 
+                            ? [...cw.uploads, { fileUrl, uploadedBy: currentUser.email }]
+                            : [{ fileUrl, uploadedBy: currentUser.email }]
+                    }
+                    : cw
+            );
+    
+            // Update only the specific classwork array
+            await updateDoc(schoolRef, { classwork: updatedClasswork });
+    
+           
+            
+    
+            setUploadFile(null);
+            alert("File uploaded successfully!");
+        } catch (error) {
+            console.error("File upload error:", error);
+        } finally {
             setUploading(false);
-            return;
         }
-
-        const schoolData = schoolSnapshot.data();
-        const allClasswork = schoolData.classwork || {}; // ✅ Ensure classwork is an object
-
-        // ✅ Fetch the existing classwork entry, or create an empty object if it doesn't exist
-        const currentClasswork = allClasswork[classworkId] || {};
-
-        // ✅ Ensure uploads array exists, then append the new upload
-        const updatedUploads = [...(currentClasswork.uploads || []), {
-            fileUrl,
-            uploadedBy: currentUser.email,
-        }];
-
-        // ✅ Update ONLY the `uploads` field inside the correct classwork ID
-        await updateDoc(schoolRef, {
-            [`classwork.uploads`]: updatedUploads, // 👈 This ensures ONLY uploads is modified
-        });
-
-        setUploadFile(null);
-        alert("File uploaded successfully!");
-    } catch (error) {
-        console.error("File upload error:", error);
-    } finally {
-        setUploading(false);
-    }
-};
-
-    
-
+    };
+      
     
     if (!classwork) return <p>Loading classwork details...</p>;
 
     const isStudent = currentRole === "Student";
     const isCreator = currentUser.uid === classwork.assignedByUID;
-
+    console.log("Uploads Data:", classwork.uploads);
+    console.log("Current User Email:", currentUser.email);
+    console.log("Current User UID:", currentUser.uid);
+    
     return (
         <div className="classworkDetailsPage">
             <Header />
             <Sidebar />
             <div className="classworkDetails">
-                <h2>{classwork.classworkTitle}</h2>
-                <p>{classwork.classworkContent}</p>
-                <p><strong>Assigned By:</strong> {classwork.assignedByEmail}</p>
-                <p><strong>Due Date:</strong> {classwork.dueDate ? new Date(classwork.dueDate).toLocaleString() : "No due date"}</p>
+                <div style={{display:"flex"}}>
+                <div className="iconbg">
+                <FontAwesomeIcon className="clipicon" icon={faClipboardList} />
+                </div>
+                <h2 className="clswork-title text-truncate">{classwork.classworkTitle}</h2>
+                </div>
+                <p style={{marginTop:"-1%",marginLeft:"8.5%"}}>Assigned By: {classwork.assignedByEmail}</p>
+                <p className="due-date">Due Date: {classwork.dueDate ? new Date(classwork.dueDate).toLocaleString() : "No due date"}</p>
+
+                <pre className="clswrk-con" >{classwork.classworkContent}</pre>
     
                 {/* Display Attachments */}
                 {classwork.attachments?.length > 0 && (
@@ -123,40 +133,39 @@ const handleFileUpload = async () => {
                         <ul>
                             {classwork.attachments.map((file, index) => (
                                 <li key={index}>
-                                    <a href={file} target="_blank" rel="noopener noreferrer">View File {index + 1}</a>
+                                    <a href={file} target="_blank" className="btn btn-outline-secondary" rel="noopener noreferrer">View File {index + 1}</a>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
     
-                {/* Student Uploads - Visible only to Creator */}
-                {/* Display Student Uploads - Only visible to assignedByUID */}
-{classwork.uploads && classwork.uploads.length > 0 && currentUser.uid === classwork.assignedByUID && (
+{/* Display Student Uploads - Visible to Assigned Teacher & Student Themselves */}
+{classwork.uploads && classwork.uploads.length > 0 && (
     <div className="uploads">
-        <h3>Student Submissions:</h3>
+        <h5 style={{marginLeft:"-10%"}}>Student Submissions:</h5>
         <ul>
-            {classwork.uploads.map((file, index) => (
-                <li key={index}>
-                    📄 
-                    <a 
-                        href={file.fileUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        style={{ color: "blue", textDecoration: "underline", marginLeft: "5px" }}
-                    >
-                        View File {index + 1}
-                    </a>
-                    <span> (Uploaded by: {file.uploadedBy})</span>
-                </li>
-            ))}
+            {classwork.uploads
+                .filter(file => file.uploadedBy === currentUser.email || currentUser.uid === classwork.assignedByUID)
+                .map((file, index) => (
+                    <li key={index}>
+                         
+                        <a 
+                            className="btn btn-outline-secondary"
+                            href={file.fileUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            View File {index + 1}
+                        </a>
+                        <span> (Uploaded by: {file.uploadedBy})</span>
+                    </li>
+                ))}
         </ul>
     </div>
 )}
 
-    
-                {/* Upload Section - Only for Students & if allowed */}
-                {isStudent && classwork.allowUploads && (
+{isStudent && classwork.allowUploads && (
                     <div className="upload-section">
                         <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
                         <button onClick={handleFileUpload} disabled={uploading}>
@@ -164,6 +173,13 @@ const handleFileUpload = async () => {
                         </button>
                     </div>
                 )}
+
+{isStudent && classwork.uploads && classwork.uploads.filter(file => file.uploadedBy === currentUser.email).length > 0 && (
+    <p className="upload-no">
+        ✅ You have uploaded {classwork.uploads.filter(file => file.uploadedBy === currentUser.email).length} file(s).
+    </p>
+)}
+
             </div>
         </div>
     );
