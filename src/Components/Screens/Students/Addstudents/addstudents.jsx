@@ -120,6 +120,13 @@ const AddStudents = ({ schoolId }) => {
             const schoolData = schoolSnap.data();
             const userData = userSnap.data();
     
+             // **Check if the student is already assigned to any class**
+        const existingMember = schoolData.members.find(member => member.uid === selectedUser.uid);
+        if (existingMember && existingMember.classes && existingMember.classes.length > 0) {
+            alert(`This student is already assigned to class: ${existingMember.classes.map(c => c.className).join(", ")}.`);
+            return;
+        }
+        
             // --- Updating Schools Collection ---
             const updatedMembers = schoolData.members.map(member => {
                 if (member.uid === selectedUser.uid) {

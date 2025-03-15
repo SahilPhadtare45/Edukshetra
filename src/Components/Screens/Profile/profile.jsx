@@ -51,7 +51,7 @@ const totalValue = chartData.reduce((sum, entry) => sum + entry.value, 0);
                     case 1:
                         return (
                             <div className='attend_sec' style={{  marginTop:'1%' }}>             
-                                    <PieChart width={850} height={300} >
+                                    <PieChart width={850} height={500} >
                                         <Pie
                                             data={[{ name: 'Total', value: totalValue }]}  // Only one value to cover the entire pie
                                             cx="25%"

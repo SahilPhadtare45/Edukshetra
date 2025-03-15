@@ -306,24 +306,33 @@ const filteredNotices = notices.filter((notice) => {
                    
                     <ul className="complaints-list">
     {complaints.length > 0 ? (
-        complaints.slice().reverse().map((complaint, index) => (
-            <div key={complaint.id}>
-                <li className={`complaint-row ${selectedComplaint?.id === complaint.id ? "selected" : ""}`}
-                    onClick={() => openComplaint(complaint)}
-                >
-                    <span className="complaint-number">{index + 1}.</span>{" "}
-                    <div className="complaint-text">{complaint.message}</div>
-                    <span className="complaint-date">
-                        {new Date(complaint.timestamp.seconds * 1000).toLocaleDateString()}
-                    </span>
-                </li>
-                <div className="underline" />
-            </div>
-        ))
+        complaints
+            .filter(
+                (complaint) =>
+                    complaint.senderId === currentUser.uid || currentRole === "Admin"
+            )
+            .slice()
+            .reverse()
+            .map((complaint, index) => (
+                <div key={complaint.id}>
+                    <li
+                        className={`complaint-row ${selectedComplaint?.id === complaint.id ? "selected" : ""}`}
+                        onClick={() => openComplaint(complaint)}
+                    >
+                        <span className="complaint-number">{index + 1}.</span>{" "}
+                        <div className="complaint-text">{complaint.message}</div>
+                        <span className="complaint-date">
+                            {new Date(complaint.timestamp.seconds * 1000).toLocaleDateString()}
+                        </span>
+                    </li>
+                    <div className="underline" />
+                </div>
+            ))
     ) : (
         <li>No complaints available</li>
     )}
 </ul>
+
                     <div className="addcomplaint">
                     {(currentRole === "Student" || currentRole === "Teacher") && (
                         <div className="addinput" style={{display:"flex",marginLeft:"2%"}}>
