@@ -11,9 +11,9 @@
     width: 70%;
     margin-left: 25%;
     margin-top: 8%;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 1px solid rgba(128, 128, 128, 0.435);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
 }
 .studentscreen .navbar {
     position: relative;

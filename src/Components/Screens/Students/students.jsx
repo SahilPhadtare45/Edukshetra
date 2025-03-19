@@ -9,6 +9,7 @@ import AddStudents from "../Students/Addstudents/addstudents";
 import { useUserStore } from "../../../Firebase/userstore";
 import { db } from "../../../Firebase/firebase";
 import { doc, getDoc, setDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Students = () => {
     const [members, setMembers] = useState([]);
@@ -20,6 +21,7 @@ const Students = () => {
     const [addStudentPage, setAddStudentPage] = useState(false);
     const { currentSchool, currentUser, currentRole } = useUserStore();
     const schoolId = currentSchool?.schoolId || undefined;
+    const navigate = useNavigate(); // ✅ React Router Navigation
 
     const classesList = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
 
@@ -190,7 +192,7 @@ const Students = () => {
                                     <li className="li-item">
                                         <div className="item-text">{student.username}</div>
                                         <div className="sub_name text-truncate"> {student.email}</div>
-                                        <FontAwesomeIcon className="prof_icon" icon={faUser} />
+                                        <FontAwesomeIcon className="prof_icon" onClick={() => navigate(`/profile/${student.uid}`)} icon={faUser} />
                                         {(currentRole === "Admin" || currentRole === "Teacher") && (
                                             <FontAwesomeIcon
                                                 className="trash_icon"

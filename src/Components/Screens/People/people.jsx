@@ -4,11 +4,11 @@ import Sidebar from "../../Comman/sidebar";
 import PageInfo from "../../Comman/pageinfo";
 import acclogo from '../../../images/acclogo.png';
 import { useState, useEffect } from "react";
-import { db, auth } from "../../../Firebase/firebase"; // Ensure correct Firebase imports
+import { db } from "../../../Firebase/firebase"; // Ensure correct Firebase imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTrash,faUser } from '@fortawesome/free-solid-svg-icons';
 import { useUserStore } from "../../../Firebase/userstore"; // Zustand store
-import { collection, query, where, getDoc, updateDoc, doc,addDoc } from "firebase/firestore";
+import { getDoc, updateDoc, doc,addDoc } from "firebase/firestore";
 
 const People = () => {
      const { currentSchool,currentRole } = useUserStore();
@@ -21,8 +21,7 @@ const People = () => {
             if (!currentSchool || !currentSchool.schoolId) {
                 console.log("No school selected.");
                 return;
-            }
-    
+            }  
             try {
                 const schoolRef = doc(db, "schools", currentSchool.schoolId);
                 const schoolSnap = await getDoc(schoolRef);
@@ -44,7 +43,6 @@ const People = () => {
                         }
                         return member;
                     });
-    
                     setMembers(updatedMembers);
                     setFilteredMembers(updatedMembers); // Initialize filtered members
 

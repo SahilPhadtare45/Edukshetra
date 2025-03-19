@@ -87,7 +87,6 @@
     margin-top: 5%;
 }
 .profilepage .info_container{
-    height: 45%;
     width: 90%;
     margin-left: 5%;
     margin-top: 1%;
@@ -121,11 +120,16 @@
 .slide-2 {
     transform: translateX(-100%);
 }
+.profilepage .all-items{
+    margin-top: 2%;
+    margin-left: 4%;
+}
 .profilepage .info_item{
     display: flex;
     font-size: 24px;
-    margin-top: 3%;
+    margin-top: 2%;
     width: 100%;
+    margin-bottom: 4%;
 }
 .profilepage .pro_icon{
     height: 40px;   
@@ -141,7 +145,9 @@
     width: 80%;
 }
 .profilepage .attend_sec{
-    margin-left: 50%; 
+    margin-left: 56%; 
+    margin-bottom: 7.9% !important;
+
 }
 .profilepage .recharts-legend-item {
     margin-bottom: 20px; /* Adjust the spacing as needed */
@@ -150,7 +156,7 @@
   }
 .profilepage .attendtotal_text{
     font-size: 20px;   
-    margin-top: -17%;
+    margin-top: -25%;
     margin-left: 580px;
     color: rgba(0, 0, 0, 1);
     z-index: 100;

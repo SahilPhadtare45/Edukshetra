@@ -18,7 +18,12 @@ const PageInfo = () => {
       };
 
   // Get the current page name from the path
-  const currentPage = pageNames[location.pathname] || 'Unknown Page';
+  let currentPage = pageNames[location.pathname] || 'Unknown Page';
+
+   // ✅ Handle dynamic profile routes (e.g., /profile/uid)
+   if (location.pathname.startsWith('/profile/')) {
+    currentPage = 'Profile';
+  }
 
   return (
     <div className="page-info">

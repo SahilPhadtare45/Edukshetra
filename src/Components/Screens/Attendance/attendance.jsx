@@ -11,6 +11,7 @@ import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../../../Firebase/firebase"; // Ensure this path is correct based on your project structure
 import { useUserStore } from '../../../Firebase/userstore';
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { useLocation } from 'react-router-dom';
 
 const Attendance = () => {
         const [activeIndex, setActiveIndex] = useState(0);
@@ -31,6 +32,10 @@ const [isAttendanceMarked, setIsAttendanceMarked] = useState({}); // Track per c
 const [attendanceRecords, setAttendanceRecords] = useState([]);
 const [presentCount, setPresentCount] = useState(0);
 const [absentCount, setAbsentCount] = useState(0);
+
+const location = useLocation();
+const params = new URLSearchParams(location.search);
+const uid = params.get("uid");
 const handleAttendanceChange = (studentId, status) => {
     setAttendance(prevState => ({
         ...prevState,
@@ -280,7 +285,7 @@ console.log("Filtered Students:", filteredStudents);
     ];
 
     const COLORS = ["#00C49F", "#FF4848"]; // Green for Present, Red for Absent
-            
+            console.log("currentRole",currentRole)
     return ( 
         <div className='attendancepage'>
             <Header/>
@@ -381,17 +386,18 @@ console.log("Filtered Students:", filteredStudents);
 
             ) : (
                 <div className='contain1'>
+                  <h2 className='OV-txt'>Attendance Overview</h2>
                     <div className='pie'>
                                 {/* Pie Chart for Attendance */}
                         {attendanceRecords.length > 0 ? (
-                            <PieChart width={850} height={300}>
+                            <PieChart width={700} height={500}>
                             {/* Background Donut Pie */}
                             <Pie
                                 data={[{ name: "Total", value: totalAttendance }]}
                                 cx="25%"
                                 cy="40%"
-                                innerRadius={20}
-                                outerRadius={50}
+                                innerRadius={70}
+                                outerRadius={100}
                                 fill="#E8E8E8"
                                 dataKey="value"
                             >
@@ -403,8 +409,8 @@ console.log("Filtered Students:", filteredStudents);
                                 data={chartData}
                                 cx="25%"
                                 cy="40%"
-                                innerRadius={50}
-                                outerRadius={90}
+                                innerRadius={100}
+                                outerRadius={150}
                                 dataKey="value"
                                 label
                             >

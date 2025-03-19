@@ -62,7 +62,7 @@ const Createform = () => {
       schoolName: schoolName,
       shortForm: shortForm,
       phone: schoolPhone,
-      email: schoolEmail,
+      schoolemail: schoolEmail,
       createdAt: new Date(),
       logoUrl: logoUrl, // Use the uploaded logo or a default
       userRole: "Admin",

@@ -61,6 +61,8 @@ function App() {
                         <Route path="/creatework" element={<RequireAuth><Creatework /></RequireAuth>} />
                         <Route path="/addmarks" element={<RequireAuth><Addmarks /></RequireAuth>} />
                         <Route path="/classwork/:classworkId" element={<RequireAuth><ClassworkDetails /></RequireAuth>} />
+                        <Route path="/profile/:uid" element={<RequireAuth><Profile /></RequireAuth>} />
+                        <Route path="/attendance/:uid" element={<RequireAuth><Attendance /></RequireAuth>} />
 
                     </Routes>
         </Router>

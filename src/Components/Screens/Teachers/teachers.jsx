@@ -9,6 +9,7 @@ import Addteachers from "./Addteachers/addteachers";
 import { useUserStore } from "../../../Firebase/userstore";
 import { db } from "../../../Firebase/firebase";
 import { doc, getDoc, setDoc, onSnapshot,updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Teachers = () => {
     const [members, setMembers] = useState([]);
@@ -23,6 +24,7 @@ const Teachers = () => {
     const [editSubject, setEditSubject] = useState("");
     const { currentSchool, currentRole, currentUser } = useUserStore();
     const schoolId = currentSchool?.schoolId || undefined;
+    const navigate = useNavigate(); // ✅ React Router Navigation
 
 
     const classesList = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
@@ -142,9 +144,7 @@ const Teachers = () => {
             console.error("🔥 Error removing teacher:", error);
         }
     };
-    
-           
-    
+       
     useEffect(() => {
         if (!schoolId) return;
 
@@ -176,7 +176,6 @@ const Teachers = () => {
         setEditSubject(currentClassData?.subject || ""); // Prefill input with subject if available
         setIsEditing(true);
     };
-    
 
   // Handle subject input change
   const handleSubjectChange = (e) => {
@@ -268,8 +267,6 @@ const Teachers = () => {
     }
 };
 
-
-
     return (
         <div className="teacherscreen">
             <Header />
@@ -357,7 +354,7 @@ const Teachers = () => {
                                             )}
                                         </div>
 
-                                            <FontAwesomeIcon className="prof_icon" icon={faUser} />
+                                            <FontAwesomeIcon className="prof_icon" onClick={() => navigate(`/profile/${teacher.uid}`)} icon={faUser} />
                                             {currentRole === "Admin" && (
                                             <FontAwesomeIcon
                                                 className="trash_icon"
