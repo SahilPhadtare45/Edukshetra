@@ -147,7 +147,7 @@
 .profilepage .attend_sec{
     margin-left: 56%; 
     margin-bottom: 7.9% !important;
-
+    height: 197px;
 }
 .profilepage .recharts-legend-item {
     margin-bottom: 20px; /* Adjust the spacing as needed */
@@ -157,17 +157,19 @@
 .profilepage .attendtotal_text{
     font-size: 20px;   
     margin-top: -25%;
-    margin-left: 580px;
+    margin-left: 610px;
     color: rgba(0, 0, 0, 1);
     z-index: 100;
 }
 .profilepage .attendhistory_text{
     font-size: 16px;
     margin-top: 3%;
-    margin-left: 58%;
+    margin-left: 60%;
     color: rgb(108, 108, 108);
-    z-index: 100;
+    position: absolute;
+    width: 100%;
 }
+
 .profilepage .tr_section{
     max-height: 245px;
     width: 100%;

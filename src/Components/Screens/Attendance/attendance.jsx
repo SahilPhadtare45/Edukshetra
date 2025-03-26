@@ -12,6 +12,7 @@ import { db } from "../../../Firebase/firebase"; // Ensure this path is correct 
 import { useUserStore } from '../../../Firebase/userstore';
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { useLocation } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const Attendance = () => {
         const [activeIndex, setActiveIndex] = useState(0);
@@ -19,23 +20,23 @@ const Attendance = () => {
         const navItemsRef = useRef([]);
         const calendarRef = useRef(null); // Ref for the calendar
         const toggleButtonRef = useRef(null); // Ref for the toggle button
-const [members, setMembers] = useState([]);
-const [selectedClass, setSelectedClass] = useState("1st"); 
-const [filteredStudents, setFilteredStudents] = useState([]);
-const classesList = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
-const { currentSchool, currentUser, currentRole } = useUserStore();
+        const [members, setMembers] = useState([]);
+        const [selectedClass, setSelectedClass] = useState("1st"); 
+        const [filteredStudents, setFilteredStudents] = useState([]);
+        const classesList = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
+        const { currentSchool, currentUser, currentRole } = useUserStore();
 
-const schoolId = currentSchool?.schoolId || undefined;
-const [attendance, setAttendance] = useState({});
-const [studentStatus, setStudentStatus] = useState({}); // Stores status per student
-const [isAttendanceMarked, setIsAttendanceMarked] = useState({}); // Track per class
-const [attendanceRecords, setAttendanceRecords] = useState([]);
-const [presentCount, setPresentCount] = useState(0);
-const [absentCount, setAbsentCount] = useState(0);
+        const schoolId = currentSchool?.schoolId || undefined;
+        const [attendance, setAttendance] = useState({});
+        const [studentStatus, setStudentStatus] = useState({}); // Stores status per student
+        const [isAttendanceMarked, setIsAttendanceMarked] = useState({}); // Track per class
+        const [attendanceRecords, setAttendanceRecords] = useState([]);
+        const [presentCount, setPresentCount] = useState(0);
+        const [absentCount, setAbsentCount] = useState(0);
 
-const location = useLocation();
-const params = new URLSearchParams(location.search);
-const uid = params.get("uid");
+        const location = useLocation();
+        const params = new URLSearchParams(location.search);
+    const { uid } = useParams(); // ✅ Get UID from URL
 const handleAttendanceChange = (studentId, status) => {
     setAttendance(prevState => ({
         ...prevState,
@@ -244,15 +245,16 @@ console.log("Filtered Students:", filteredStudents);
             
             useEffect(() => {
                 const fetchAttendance = async () => {
-                    if (!currentUser || !schoolId) return;
-        
+                    let userId = uid || currentUser?.uid; // Always prioritize uid from URL
+                    if (!userId || !schoolId) return;
+
                     try {
                         const schoolRef = doc(db, "schools", schoolId);
                         const schoolSnap = await getDoc(schoolRef);
         
                         if (schoolSnap.exists()) {
                             const schoolData = schoolSnap.data();
-                            const studentData = schoolData.members.find(member => member.uid === currentUser.uid);
+                            const studentData = schoolData.members.find(member => member.uid === userId);
         
                             if (studentData && Array.isArray(studentData.attendance)) {
                                 setAttendanceRecords(studentData.attendance);
@@ -268,6 +270,8 @@ console.log("Filtered Students:", filteredStudents);
         
                                 setPresentCount(present);
                                 setAbsentCount(absent);
+                            } else {
+                                setAttendanceRecords([]); // If no attendance data
                             }
                         }
                     } catch (error) {
@@ -276,8 +280,8 @@ console.log("Filtered Students:", filteredStudents);
                 };
         
                 fetchAttendance();
-            }, [currentUser, schoolId]);
-           // Data for Pie Chart
+            }, [uid, schoolId, currentUser, currentRole]);
+            // Data for Pie Chart
     const totalAttendance = presentCount + absentCount;
     const chartData = [
         { name: "Present", value: presentCount },
@@ -286,14 +290,32 @@ console.log("Filtered Students:", filteredStudents);
 
     const COLORS = ["#00C49F", "#FF4848"]; // Green for Present, Red for Absent
             console.log("currentRole",currentRole)
+
+            const isViewingOwnAttendance = !uid || currentUser?.uid === uid; // If no uid in URL, user is viewing own attendance
+            const isAdminOrTeacher = currentRole === "Admin" || currentRole === "Teacher";
+            
+            // Admin/Teacher should see Contain only if they are viewing their own attendance
+            const showContain = isAdminOrTeacher && isViewingOwnAttendance;
+            
+            // Contain1 should be shown if a student is viewing their own attendance OR an Admin/Teacher is viewing a student's attendance
+            const showContain1 = !showContain;
+            
+            console.log("showContain:", showContain);
+            console.log("showContain1:", showContain1);
+            console.log("currentRole:", currentRole);
+            console.log("isViewingOwnAttendance:", isViewingOwnAttendance);
+            console.log("URL uid:", uid);
+            console.log("Current User UID:", currentUser?.uid);
+               
+
     return ( 
         <div className='attendancepage'>
             <Header/>
             <Sidebar/>
             <PageInfo/>
             <div className='attendance'>
-                {currentRole === "Admin" || currentRole === "Teacher" ? (
-                <div className='contain'>
+            {showContain ? (
+                                <div className='contain'>
 
                     <nav className="navbar navbar-expand-lg">                
                         <div className="container-fluid">

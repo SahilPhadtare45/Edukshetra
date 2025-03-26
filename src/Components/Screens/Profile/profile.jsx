@@ -12,6 +12,7 @@ import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useUserStore } from "../../../Firebase/userstore"; // ✅ Zustand Store for currentUser
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { db } from "../../../Firebase/firebase"; // Ensure this path is correct based on your project structure
+import { useCallback } from 'react';
 
 const Profile = () => {
     const { uid } = useParams(); // ✅ Get UID from URL
@@ -41,8 +42,7 @@ const Profile = () => {
                 }
             }, [activeIndex]);
 
-
-        
+            console.log(currentUser)
                 const fetchProfileData = async () => {
                     let userId = uid || currentUser?.uid; // If UID exists in URL, fetch that user; otherwise, fetch logged-in user
                     if (!userId) return;
@@ -129,10 +129,11 @@ const Profile = () => {
             
                     if (uid) {
                         fetchAttendance(uid);
-                    } else if (currentUser?.role === "Student") {
+                    } else if (currentRole === "Student") {
                         fetchAttendance(currentUser.uid);
                     }
                 }, [uid, currentUser, currentSchool]);
+                console.log("viewedUserId:", viewedUserId);
 
 const renderContent = () => {
 const totalValue = presentCount + absentCount;
@@ -141,6 +142,7 @@ const totalValue = presentCount + absentCount;
             { name: "Absent", value: absentCount },
         ];
         const COLORS = ["#00C49F", "#FF4848"];
+
                 switch (activeIndex) {
                     case 0:
                         return (
@@ -164,7 +166,7 @@ const totalValue = presentCount + absentCount;
                             <div className='attend_sec' style={{  marginTop:'1%' }}>             
                                     {totalValue > 0 ? (
                                     <>
-                                        <PieChart width={850} height={365}>
+                                        <PieChart width={850} height={405}>
                                             <Pie data={chartData} cx="25%" cy="30%" innerRadius={50} outerRadius={90} fill="blue" dataKey="value" label>
                                                 {chartData.map((entry, index) => (
                                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -180,10 +182,10 @@ const totalValue = presentCount + absentCount;
                                             />
                                         </PieChart>
                                         <p className='attendtotal_text'>Total no. of working days ({totalValue})</p> 
-                                        <p className='attendhistory_text' onClick={() => {
-        console.log("Navigating to:", `/attendance/${viewedUserId}`);
-        navigate(`/attendance/${viewedUserId}`);
-    }}
+                                            <p className='attendhistory_text' onClick={() => {
+                                                console.log("Navigating to:", `/attendance/${viewedUserId}`);
+                                                navigate(`/attendance/${viewedUserId}`);
+                                        }}
                                         style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
                                             View attendance history
                                         </p>
