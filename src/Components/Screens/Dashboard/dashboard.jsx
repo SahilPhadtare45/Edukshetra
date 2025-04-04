@@ -4,7 +4,7 @@ import Header from "../../Comman/header";
 import Sidebar from "../../Comman/sidebar";
 import PageInfo from "../../Comman/pageinfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faAnglesRight, faTrash, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faAnglesRight, faTrash, faClose, faChalkboardTeacher, faUsers, faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { useUserStore } from "../../../Firebase/userstore"; 
 import { getDoc, doc, updateDoc, arrayRemove, onSnapshot, query, collection, where, orderBy, arrayUnion,getDocs  } from "firebase/firestore";
 import { db } from "../../../Firebase/firebase";
@@ -253,8 +253,9 @@ const filteredNotices = notices.filter((notice) => {
             <Header />
             <Sidebar />
             <PageInfo />
-
+            <div className="bg-con">
             <div className="classes">
+                
                 <div className="classes-title">Classes</div>
                 <div className="class-no">
                 {currentRole === "Student" ? (
@@ -265,7 +266,7 @@ const filteredNotices = notices.filter((notice) => {
                 </div>
                     ) : (
                         <div className="class-dropdowns">
-                            <select onChange={(e) => setSelectedClass(e.target.value)}>
+                            <select className="custom-dropdown"  onChange={(e) => setSelectedClass(e.target.value)}>
                                 {getDropdownOptions().map((classItem, index) => (
                                     <option key={index} value={classItem}>
                                         {classItem}
@@ -288,50 +289,13 @@ const filteredNotices = notices.filter((notice) => {
                 <div className="students-no">{studentCount > 0 ? studentCount : "--"}</div>
                 </div>
 
-                <div className="complaints" onClick={() => setShowComplaintList(true)}>
-                <div className="complaints-title">Complaint Box</div>
-            </div>
+                
   {/* Complaints List Popup */}
-  {showComplaintList && (
+  
                 <div className="complaints-popup">
                     <div className="popup-header">
                         <h3>Complaints</h3>
-                        <FontAwesomeIcon
-                            icon={faClose}
-                            className="close-icon"
-                            onClick={() => setShowComplaintList(false)}
-                        />
                     </div>
-
-                   
-                    <ul className="complaints-list">
-    {complaints.length > 0 ? (
-        complaints
-            .filter(
-                (complaint) =>
-                    complaint.senderId === currentUser.uid || currentRole === "Admin"
-            )
-            .slice()
-            .reverse()
-            .map((complaint, index) => (
-                <div key={complaint.id}>
-                    <li
-                        className={`complaint-row ${selectedComplaint?.id === complaint.id ? "selected" : ""}`}
-                        onClick={() => openComplaint(complaint)}
-                    >
-                        <span className="complaint-number">{index + 1}.</span>{" "}
-                        <div className="complaint-text">{complaint.message}</div>
-                        <span className="complaint-date">
-                            {new Date(complaint.timestamp.seconds * 1000).toLocaleDateString()}
-                        </span>
-                    </li>
-                    <div className="underline" />
-                </div>
-            ))
-    ) : (
-        <li>No complaints available</li>
-    )}
-</ul>
 
                     <div className="addcomplaint">
                     {(currentRole === "Student" || currentRole === "Teacher") && (
@@ -346,23 +310,57 @@ const filteredNotices = notices.filter((notice) => {
                         </div>
                     )}
                     </div>
+                    <ul className="complaints-list">
+                        {complaints.length > 0 ? (
+                            complaints
+                                .filter(
+                                    (complaint) =>
+                                        complaint.senderId === currentUser.uid || currentRole === "Admin"
+                                )
+                                .slice()
+                                .reverse()
+                                .map((complaint, index) => (
+                                    <div key={complaint.id}>
+                                        <li
+                                            className={`complaint-row ${selectedComplaint?.id === complaint.id ? "selected" : ""}`}
+                                            onClick={() => openComplaint(complaint)}
+                                        >
+                                            <span className="complaint-number">{index + 1}.</span>{" "}
+                                            <div className="complaint-text text-truncate">{complaint.message}</div>
+                                            <span className="complaint-date">
+                                                {new Date(complaint.timestamp.seconds * 1000).toLocaleDateString()}
+                                            </span>
+                                        </li>
+                                        <div className="underline" />
+                                    </div>
+                                ))
+                        ) : (
+                            <li>No complaints available</li>
+                        )}
+                    </ul>
+
+                    
                     <div className="addcomp-compo">
                     {addcomplaints && <AddComplaints schoolId={schoolId} />}
                     </div>
                 </div>
-            )}
+            
 
             {/* Complaint Details Popup */}
             {selectedComplaint && (
+                <div className="complaint-bg">
                 <div className="complaint-details-popup">
-                    <div className="popup-header1">
-                        <h3>Complaint Details</h3>
-                        <FontAwesomeIcon
+                <FontAwesomeIcon
                             icon={faClose}
                             className="close-icon"
                             onClick={() => setSelectedComplaint(null)}
                         />
+                    <div className="popup-header1">
+
+                        <div className="pop-title">Complaint Details</div>
+                        
                     </div>
+                    <div className="complaint-bg-con">
                     <p>
                         <strong>From:</strong> {selectedComplaint.senderEmail || "Unknown"}
                     </p>
@@ -400,17 +398,19 @@ const filteredNotices = notices.filter((notice) => {
                                     <p>
                                         <strong>Admin:</strong> {reply.message}
                                     </p>
-                                    <span>
+                                    <span style={{marginLeft:'2%'}}>
                                         {new Date(reply.timestamp.seconds * 1000).toLocaleString()}
                                     </span>
+                                    <div className="btm-line"/>
                                 </div>
                             ))
                         ) : (
                             <p>No replies yet.</p>
                         )}
                     </div>
-
+                    </div>
                     
+                </div>
                 </div>
             )}
 
@@ -467,6 +467,7 @@ const filteredNotices = notices.filter((notice) => {
                 </div>
             {/* Show Notice Popup if a notice is selected */}
         {addnotices && <Notice notice={selectedNotice} onClose={handleClosePopup} />}
+        </div>
     </div>
 </div> 
     );

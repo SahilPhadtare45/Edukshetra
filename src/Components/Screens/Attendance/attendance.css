@@ -1,38 +1,50 @@
 .attendancepage{
-    background: #F7F5E6;
-    height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
+  background: #ffffff;
+  height: 100vh;  
+  font-family: Outfit;  
+  overflow: hidden; 
 }
 .attendancepage .contain{
-    position: absolute;
-    background-color: #E8E8E8;
-    height: 70%;
-    width: 70%;
-    margin-left: 25%;
-    margin-top: 8%;
-    border-radius: 20px;
-    border: 1px solid rgba(128, 128, 128, 0.435);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
+  height: 870px;
+  width: 79%;
+  margin-left: 20%;
+  margin-top: 0.6%;
+  position: absolute;
+  background-color:  rgba(220, 228, 230, 0.923);
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px rgb(105, 105, 105);
 }
 .attendancepage .navbar {
-    position: relative;
-    color: rgb(0, 0, 0);
-    display: flex;
-    align-items: center;
-    padding: 4px 0; /* Add vertical padding for spacing */
-    margin-left: 12%;
+  position: relative;
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  padding: 10px 0; /* Add vertical padding for spacing */
+  margin-left: 2%; 
+  margin-top: 10%;
+}
+.attendancepage .navdiv{
+  width: 95%;
+  height: 9.2%;
+  background-color: white;
+  margin-left: 2.5%;
+  border-radius: 15px;
+  box-shadow: 1px 4px 25px rgb(105, 105, 105);
+  font-family:"Montserrat Alternates", serif !important
 }
 .attendancepage .navbar-nav {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    position: relative; /* Set position relative for underline alignment */
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  position: relative; /* Set position relative for underline alignment */
+  color: rgb(0, 0, 0);
 }
 /* Nav items */
 .attendancepage .nav-item {
-    position: relative; /* Allows the underline to align with this element */
-    margin: 0 20px; /* Uniform horizontal spacing between nav items */   
+  position: relative; /* Allows the underline to align with this element */
+  margin: 0 30px; /* Uniform horizontal spacing between nav items */   
+  margin-left: 5%;
 }
 .attendancepage .nav-item.active .nav-link {
     color: #667EEA; /* Highlight active nav item */
@@ -70,35 +82,39 @@
 }
 .attendancepage .tr{
   position: relative;
-  margin-top: 0%;
-  height: 30%;
-  width: 15%;
-  background-color: #667EEA;
-  font-family: "Montserrat Alternates", serif !important;  
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  box-shadow:  2px 4px 4px rgba(0, 0, 0, 0.333) !important;
-  justify-content: center;
-  border-bottom: none;
-  text-align: center;
+    margin-top: 2%;
+    height: 10%;
+    width: 15%;
+    background-color: #ffffff;
+    font-family: "Montserrat Alternates", serif !important;    
+    box-shadow: 1px 4px 25px rgb(105, 105, 105);
+    justify-content: center;
+    border-bottom: none;
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+    text-align: center;
   p{
-      font-size: 30px;
-      position: absolute;
-      top: 30%;
-      left: 40%;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      text-shadow: 1px 1px 2px black;
+    font-size: 30px;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    color: rgb(24, 40, 64);
+    text-shadow: 1px 1px 2px rgb(93, 93, 93);
+    font-family: Outfit;
   } 
 }
 .attendancepage .tr_section{
-    max-height: 180px;
-    width: 100%;
-    background-color: transparent !important;
-    position:absolute !important; 
-    overflow: scroll !important;
-    overflow-x: hidden !important;
-    cursor: pointer !important;
+  height: 55%;
+  width: 90%;
+  margin-top: 2%;
+  margin-left: 5%;
+  border-radius: 30px;
+  background-color: white !important;
+  position:absolute !important;  
+  overflow: scroll !important;
+  overflow-x: hidden !important;
+  cursor: pointer !important;
+  box-shadow: 1px 4px 35px rgb(105, 105, 105);
 }
 .attendancepage .tr_section::-webkit-scrollbar {
     width: 15px !important;
@@ -159,7 +175,7 @@
         background-color: #fff;
     }    
 }
-.attendancepage .cricon{
+/* .attendancepage .cricon{
     height: 50px;
     width: 65px;
     background-color: #5FB9A2;
@@ -178,14 +194,13 @@
 .attendancepage .calendar-container {
     position: relative;
     z-index: 1000;   
-    width: 300px !important; /* Set the width */
+    width: 300px !important; 
 }
-/* Change calendar width */
 .attendancepage .react-calendar{
     margin-top: 30px;
-    height:290px; /* Set the height */
-    font-size: 14px; /* Optional: Customize font size */
-    background-color: #f8f9fa; /* Optional: Set background color */
+    height:290px; 
+    font-size: 14px; 
+    background-color: #f8f9fa; 
     margin-left: 300% !important;
     font-family: "Montserrat alternates",serif !important;
     border-top-left-radius: 25px !important;
@@ -193,34 +208,34 @@
     position: absolute;
     z-index: 1;
    }
-  /* Adjust the month view header */
+ 
   .attendancepage .react-calendar__navigation {
-    color: white !important; /* Text color */
-    height: 40px !important; /* Set a fixed height for the navigation bar */
-    margin: 0 !important; /* Remove extra margin */
-    padding: 0 !important; /* Remove extra padding */
-    display: flex; /* Ensure proper alignment */
+    color: white !important; 
+    height: 40px !important; 
+    margin: 0 !important; 
+    padding: 0 !important;
+    display: flex;
     align-items: center; 
     justify-content: space-between;
-    width: 100% !important; /* Ensure it spans the full calendar width */
-    border-radius: 25px 25px 0 0; /* Match calendar border */
+    width: 100% !important; 
+    border-radius: 25px 25px 0 0; 
   }
   .attendancepage .react-calendar__navigation__arrow,
 .attendancepage .react-calendar__navigation__label {
-    flex: 1; /* Make the arrows and label responsive */
+    flex: 1; 
     height: 20px;
-    font-size: 12px !important; /* Adjust font size if needed */
+    font-size: 12px !important;
 }
   .attendancepage .react-calendar__navigation__arrow:hover {
     background-color: #0056b3 !important;
   }
-  /* Style the date cells */
+
   .attendancepage .react-calendar__tile {
-    width: auto !important; /* Allow flexibility */
-    height: auto !important; /* Allow flexibility */
-    padding: 10px !important; /* Adjust spacing */
+    width: auto !important; 
+    height: auto !important; 
+    padding: 10px !important; /* Adjust spacing 
     text-align: center;
-    border-radius: 50% !important; /* Keep circular style */
+    border-radius: 50% !important; /* Keep circular style 
     transition: background-color 0.3s ease;    
   }
   .attendancepage .react-calendar__tile:active {
@@ -238,7 +253,7 @@
     font-size: 16px;
     position: absolute;
     margin-left: 75%;
-  }
+  } */
   .attendancepage .radiobtn{
     padding: 5px;
     border-radius: 30px;
@@ -318,7 +333,7 @@
   color: #ffffff;
   background-color: #067af6;
   margin-left: 80%;
-  margin-top: -6%;
+  margin-top: 6%;
   border-radius: 30px;
 
   p{

@@ -315,8 +315,8 @@ console.log("Filtered Students:", filteredStudents);
             <PageInfo/>
             <div className='attendance'>
             {showContain ? (
-                                <div className='contain'>
-
+            <div className='contain'>
+                <div className='navdiv'>
                     <nav className="navbar navbar-expand-lg">                
                         <div className="container-fluid">
                             <ul className="navbar-nav">
@@ -334,11 +334,19 @@ console.log("Filtered Students:", filteredStudents);
                         </div>
                         <div className="active-underline md-none" style={underlineStyle}></div>
                     </nav>
-                    <div className="navbar-line"></div>
+                    </div> 
                     <div className='stu'>   
+                    <button 
+                            className="attendance-submit" 
+                            onClick={handleSubmitAttendance} 
+                            disabled={isAttendanceMarked[selectedClass]} // ✅ Disable only for the selected class
+                        >
+                            Upload Attendance
+                        </button>
                         <div className='tr'>     
                             <p>Students</p>
                         </div>
+                        
                         {isAttendanceMarked[selectedClass] && (
                             <div className="attendance-marked-message">
                             ✅ Attendance is marked for {selectedClass}.
@@ -395,15 +403,8 @@ console.log("Filtered Students:", filteredStudents);
                                 ))
                             )}
                     </div>
-                        <button 
-                            className="attendance-submit" 
-                            onClick={handleSubmitAttendance} 
-                            disabled={isAttendanceMarked[selectedClass]} // ✅ Disable only for the selected class
-                        >
-                            Upload Attendance
-                        </button>
-          
-                </div> 
+                        
+                    </div>
             </div>
 
             ) : (

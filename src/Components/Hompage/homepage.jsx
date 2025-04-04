@@ -5,8 +5,9 @@ import { faPlus,faGear,faCopy } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Comman/header';
 import workplace from '../Hompage/workplace.jpg';
 import Add from './Add/add.jsx';
-import desk from '../../images/deskbg.jpg';
-import books from '../../images/download.jpg';
+import desk from '../../images/pens.jpg';
+import books from '../../images/composition-with-office-tools-desk.jpg';
+import bg from '../../images/desk-workspace-with-various-elements.jpg';
 import { useUserStore } from "../../Firebase/userstore.js"; // Import Zustand store
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -91,7 +92,7 @@ const Homepage = () => {
         }
       }, [currentUser, fetchUserSchools, userSchools.length]);
      // Precompute images for schools
-     const images = [workplace, desk, books];
+     const images = [bg, desk, books];
      const schoolImages = userSchools.map((_, index) => images[index % images.length]); // Cyclic assignment
  
     useEffect(() => {
@@ -171,30 +172,28 @@ const getUserRole = (school) => {
                 </nav>
             {showAddComponent && <Add />}
             <div className="navbar-line"/>
-            <div class="list-group">
-            <ul className="container maincon">
-    {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
-        <p>No schools joined yet</p>
-    ) : (
-        userSchools.map((school, index) => (
-
+            <div class=" maincon">
+            <ul >
+                {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
+                    <p>No schools joined yet</p>
+                ) : (
+                    userSchools.map((school, index) => (
                               <li className="card concard" key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
                                   <div className='share_code'>
-                                    Password: <strong>{school.password || "Not available"}</strong>
+                                    Pass: <strong>{school.password || "Not available"}</strong>
                                   </div>
                       
                                   {/* Dynamically Display User Role */}
                                   <h5 className="card-text role">
-                                    <small>Role: {school.userRole || "Unknown"}</small>
+                                    <strong>Role: </strong>{school.userRole || "Unknown"}
                                   </h5>
-                      
+                                  <img className="school-logo" src={school.logoUrl} alt="..." />
+
                                   <div className="card-title title text-truncate">{school.schoolName}</div>
-                                  <div style={{ display: 'flex' }}>
-                                    <img className="school-logo" src={school.logoUrl} alt="..." />
-                                    <h5 className="card-text shortform">{school.shortForm}</h5>
-                                  </div>
+                                  <h5 className="card-text shortform">{school.shortForm}</h5>
+
                                 </div>                        
                               </li>  
         )))                 

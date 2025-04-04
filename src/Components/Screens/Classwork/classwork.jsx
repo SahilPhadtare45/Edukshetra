@@ -85,6 +85,7 @@ setClassworkList(filteredClasswork);
             <Sidebar />
             <PageInfo />
             <div className="classwork">
+                <div className="contain">
                 {currentRole !== "Student" && (
                     <button className="createbg" onClick={() => navigate("/creatework")}>
                         <div className="cricon">
@@ -110,6 +111,7 @@ setClassworkList(filteredClasswork);
                         <p>No classwork available</p>
                     )}
                 </div>
+            </div>
             </div>
         </div>
     );

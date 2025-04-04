@@ -12,7 +12,7 @@ const Header = () => {
     return (         
         <div className="header">
             <div className="left-rec">
-                <div className="logo"><img  src={ edulogo} alt=""></img></div>
+                <div className="logo"><p>EDUKSHETRA</p></div>
                     <div className="tri-left"></div>
             </div>        
             <div className="parlelo">

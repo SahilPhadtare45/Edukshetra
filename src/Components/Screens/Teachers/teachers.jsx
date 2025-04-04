@@ -273,7 +273,8 @@ const Teachers = () => {
             <Sidebar />
             <PageInfo />
             <div className="contain">
-                <nav className="navbar navbar-expand-lg">
+                <div className="navdiv">
+                <nav className="navbar navbar-expand-lg ">
                     <div className="container-fluid">
                         <ul className="navbar-nav">
                             <button
@@ -305,7 +306,8 @@ const Teachers = () => {
                     </div>
                     <div className="active-underline md-none" style={underlineStyle}></div>
                 </nav>
-                <div className="navbar-line"></div>
+                </div>
+
                 <div className="tr">
                     <p>Teachers</p>
                 </div>
@@ -315,12 +317,14 @@ const Teachers = () => {
                 </div>
                 )}
                 {addTrpage && <Addteachers schoolId={currentSchool?.schoolId} />}
+
+                
+
+                <div className="tr_section">
                 <div className="table_title" style={{ display: "flex" }}>
                     <div style={{ marginLeft: "4%", marginTop: "1%", fontWeight: "bold" }}>Name</div>
                     <div style={{ marginLeft: "44%", marginTop: "1%", fontWeight: "bold" }}>Subjects</div>
                 </div>
-
-                <div className="tr_section">
                     {filteredTeachers.length > 0 ? (
                         filteredTeachers.map((teacher) => (
                             <div key={teacher.memberId} className="table_row">

@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+ @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 .homepage{
-    background: linear-gradient(rgb(207, 231, 255), rgb(126, 222, 182));
+    background: rgba(255, 255, 255, 0.066);
     background-size: cover;
     height: 100vh;
-    font-family: "Montserrat Alternates", serif !important;
+    font-family: "Outfit"  !important;
+
 }
 /* Navbar styles */
 .homepage .navbar {
@@ -15,6 +16,7 @@
     align-items: center;
     padding: 8px 0; /* Add vertical padding for spacing */
     margin-left: 20%;
+    font-family: "Montserrat Alternates",sans-serif;
 }
 .homepage .navbar-nav {
     list-style: none;
@@ -60,56 +62,66 @@
     height: 1px;
     background-color: #000;
     margin-top: 5px; /* Add spacing between navbar and static line */
+    position: absolute;
 }
-.homepage .container{
-    background-color: #DCFFA8;
-    height: 71% !important ;
-    width: 60% !important;
-    margin-top: 1% !important;
+.homepage .maincon{
+    background-color: transparent;
+    height: 810px !important ;
+    width: 1760px !important;
+    margin-top: 0.5% !important;
     position:absolute;
     border-radius: 5px;
-    box-shadow: 1px 4px 4px  #525252;
-    overflow: scroll !important;
-    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden;
     cursor: pointer !important;
-    margin-left: 20%;
+    margin-left: 8%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* ✅ Aligns items from the start */
 }
-.homepage .maincon::-webkit-scrollbar {
-    width: 15px !important;
-    background-color: transparent !important;
-    border-top-left-radius: 10px !important;
-}
-.homepage .maincon::-webkit-scrollbar-thumb {
-    background-color:rgb(105, 105, 105)!important;
-    border-radius: 10px !important;
-    border: none;
+.homepage .maincon li{
+    display: inline;
+    float: left;
 }
 .homepage .concard{
-    margin-top: 4%;
-    margin-left: 10%;
-    height: 30%;
-    width: 80%;
-    box-shadow: 0px 2px 2px #6d6d6d;
-    flex-direction: column;
+    margin: 40px; /* ✅ Adds spacing between each card */
+    height: 330px;
+    width: 430px;
     margin-bottom: 2%;
+    border-radius: 20px;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 4px 4px 15px 4px rgba(128, 128, 128, 0.358);
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    
 }
 .homepage .cardimg{   
-    width: 48%;
-    height: 100%;
+    width: 100%;
+    height: 40%;
     object-fit: cover;
-    opacity: 0.8;
-    margin-left: 52.2%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-left: 0%;
 }
 .homepage .title{
-    margin-top: 9%;
-    margin-left: 1%;
-    font-size: 30px;
+    margin-top: 42%;
+    font-weight: 600;
+    font-size: 24px;
 }
 .homepage .role{
-    margin-left: 82%;
+    margin-left: 66%;
+    position: absolute;
+    margin-top: 65%;
+    font-size: 16px;
 }
 .homepage .shortform{
-    margin-left: 1%;
+    font-weight: 300;
 }
 
 @media (max-width: 768px) {
@@ -157,14 +169,18 @@
     width: 20px;
 }
 .homepage .school-logo{
-    height: 40px;
-    width: 40px;
-    margin-left: 2%;
+    height: 90px;
+    width: 90px;
+    margin-left: -9%;
     border-radius: 50px;
     box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.343);
-    margin-top: -1%;
+    margin-top: 17%;
     border: 0.5px solid rgba(0, 0, 0, 0.285);
+    position: absolute;
 }
 .homepage .share_code{
     position: absolute;
+    margin-top: 65%;
+    font-size: 16px;
+    margin-left: 3%;
 }

@@ -1,18 +1,24 @@
 .classworkpage{
-    background: #F7F5E6;
+    background: #ffffff;
     height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
+    font-family: Outfit;  
+    overflow: hidden; 
 }
 .classwork{
-    margin-top: 7%;
-    margin-left: 23%;
-    height: 70%;
-    max-height:80%;
+    height: 870px;
+    width: 79%;
+    margin-left: 20%;
+    margin-top: 0.6%;
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
     margin-bottom: 2%;
-}
+    position: absolute;
+    background-color:  rgba(220, 228, 230, 0.923);
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px rgb(105, 105, 105);
+}   
+    
 .classwork::-webkit-scrollbar {
     width: 15px !important;
     background-color: transparent !important;
@@ -23,11 +29,21 @@
     border-radius: 10px !important;
     border: none;
 }
-.work-container{
-    position: relative;
+.classwork .contain{
+    margin-top: 5%;
     background-color: transparent;
-    margin-top: 3%;
+    height: 80%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10%;
+    border-radius: 30px;
+
+}
+.work-container{
+    position: absolute;
+    background-color: transparent;
     width: 90%; /* Full width relative to .classwork */
+    margin-top: 2% !important;
 }
 .work-card{
     border: 1px ghostwhite solid;
@@ -66,12 +82,12 @@
 }
 .classwork .createbg{
     flex-direction: row;
-    background-color: #fff;
+    background-color: #A3B1D1;
     height: 50px;
     width: 150px;
     position: absolute;
-    margin-left: 60%;
-    margin-top: -3%;
+    margin-left: 0%;
+    margin-top: -2%;
     border-radius: 50px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: 0.2s;
@@ -79,21 +95,23 @@
     p{
         font-size: 23px;
         margin-left: 40%;
+        text-shadow: 1px 1px black;
     }
 }
 .classwork .createbg:hover{
-    background-color: #7EDEB6;
+    background-color: rgb(24, 40, 64);
     p{
-        color: #fff;
+        color: white;
     }
-    .cricon{
-        background-color: #fff;
+    .cricon,.createicon{
+        background-color: #A3B1D1;
+        color: black;
     }  
 }
 .classwork .cricon{
     height: 50px;
     width: 50px;
-    background-color: #5FB9A2;
+    background-color: rgb(24, 40, 64);
    position: absolute;
     margin-left: -5%;
     margin-top: -1%;
@@ -104,6 +122,7 @@
     height: 30px;
     margin-left: 2%;
     margin-top: 20%;
+    color: white;
 }
 .upload-section {
     margin-top: 10px;

@@ -5,8 +5,8 @@
     background-color: rgba(0, 0, 0, 0.528) !important;
     border-radius: 10px !important;
     position:absolute !important;
-    margin-top: -980px;
-    margin-left: -540px;
+    margin-top: -960px;
+    margin-left: -770px;
     z-index: 1;
 }
 
@@ -19,7 +19,7 @@
     position: absolute !important;
     margin-left:32%;
     margin-top: 180px;
-    border: 1px solid black;
+    border: none;
 }
 
 /* Close button */
@@ -43,7 +43,15 @@
     margin-top: 0%;
 }
 .popup-content h2{
- margin-left: 43%;
+ margin-left: 30%;
+ color: black;
+}
+.popup-content .nt-bg{
+    height: 40px;
+    width: 198px;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-top-right-radius:10px ;
+    border-bottom-right-radius: 10px;
 }
 .popup-content .notice-date{
     font-size: 14px;
@@ -54,17 +62,17 @@
 .popup-content .content-area{
     height: 80%;
     width: 90%;
-    background-color: #5555553b;
+    background-color: #ffffff3b;
     margin-left:5%;
     z-index: 999;
     color: rgb(0, 0, 0);
-    border-radius: 5px;
+    border-radius: 20px;
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
-    border: 1px solid #667EEA;
+    border: none;
     margin-top: 3%;
-
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
 }
 .popup-overlay .content-area::-webkit-scrollbar {
     width: 13px !important;

@@ -171,10 +171,9 @@
 }
 
 .profilepage .tr_section{
-    max-height: 245px;
+    min-height: 295px;
     width: 100%;
     background-color: transparent !important;
-    position:absolute !important; 
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
@@ -223,8 +222,9 @@
     margin-top: 10px; /* Add spacing between navbar and static line */  
 }
 .profilepage .addmarks_btn{
-    margin-left: 65%;
-    margin-top: 16%;
+    margin-left: 105px;
+    margin-top: -30%;
+    position: absolute;
 }
   .profilepage .createbg{
     flex-direction: row;

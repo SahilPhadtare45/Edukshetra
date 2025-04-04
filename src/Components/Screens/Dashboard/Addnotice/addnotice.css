@@ -4,8 +4,8 @@
     background-color: rgba(0, 0, 0, 0.528) !important;
     border-radius: 10px !important;
     position:absolute !important;
-    margin-top: -700px;
-    margin-left: -540px;
+    margin-top: -680px;
+    margin-left: -770px;
     z-index: 1;
 }
 .addnotice{
@@ -76,8 +76,17 @@ p{
     border-bottom-right-radius:25px;
     margin-top: -5%;
     margin-left: 12%;
+    border: none;
 }
 .addnotice .To-dropdowns select{
+    outline: 0;
+    background: transparent;
+    background-image: none;
+    width: 100%;
+    height: 100%;
+    color: black !important;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
     font-size: 20px;
-    margin-left: 2px;
 }

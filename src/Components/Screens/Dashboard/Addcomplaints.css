@@ -1,7 +1,7 @@
 
 .add-complaint {
-    background-color: #a7a7a765;
-    height: 170px;
+    background-color: rgba(220, 228, 230, 0.923);
+    height: 190px;
     width: 100%;
     z-index: 1000;
     border-radius: 20px;

@@ -28,7 +28,8 @@ const Profile = () => {
     const [absentCount, setAbsentCount] = useState(0);
     const [userUid, setUserUid] = useState(null);
     const [viewedUserId, setViewedUserId] = useState(null); // ✅ Store viewed user's UID
-
+    const [marksData, setMarksData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const handleNavClick = (index) => {
                 setActiveIndex(index);
             };
@@ -135,6 +136,34 @@ const Profile = () => {
                 }, [uid, currentUser, currentSchool]);
                 console.log("viewedUserId:", viewedUserId);
 
+                useEffect(() => {
+                    const fetchMarks = async () => {
+                        if (!currentSchool?.schoolId) return;
+            
+                        try {
+                            const schoolRef = doc(db, "schools", currentSchool.schoolId);
+                            const schoolSnap = await getDoc(schoolRef);
+            
+                            if (schoolSnap.exists()) {
+                                const schoolData = schoolSnap.data();
+                                const members = schoolData.members || [];
+            
+                                // Find the user in members array
+                                const user = members.find(member => member.uid === viewedUserId);
+                                if (user && user.marks) {
+                                    setMarksData(user.marks);
+                                }
+                            }
+                        } catch (error) {
+                            console.error("Error fetching marks:", error);
+                        } finally {
+                            setLoading(false);
+                        }
+                    };
+            
+                    fetchMarks();
+                }, [viewedUserId, currentSchool]);
+
 const renderContent = () => {
 const totalValue = presentCount + absentCount;
         const chartData = [
@@ -199,18 +228,32 @@ const totalValue = presentCount + absentCount;
                         return (
                             <div>
                                 <div className='tr_section'>
-                                    <div className='table_row'>
-                                        <ul class="list-group list-group-flush llist" onClick={() => setViewMarks((prev) => !prev)}>
-                                        <li class="li-item">
-                                            <div className="item-text text-truncate">IndulekhIndulekhIndulekhIndulekhIndulekhIndulekhIndulekhIndulekh </div>
-                                            <div className='sub_name text-truncate'>Total Percentage: 81%</div>
-                                        </li>
-                                        <div className="item-line"></div>
-                                        </ul>
-                                    </div>                                                
+                                    {loading ? (
+                                        <p>Loading...</p>
+                                    ) : marksData.length > 0 ? (
+                                        marksData.map((exam, index) => {
+                                            const examTitle = Object.keys(exam)[0]; // Get exam title dynamically
+                                            const percentage = exam[examTitle][0]?.percentage || "N/A";
+
+                                            return (
+                                                <div key={index} className='table_row'>
+                                                    <ul className="list-group list-group-flush llist">
+                                                        <li className="li-item">
+                                                            <div className="item-text text-truncate">{examTitle}</div>
+                                                            <div className='sub_name text-truncate'>Total Percentage: {percentage}</div>
+                                                        </li>
+                                                        <div className="item-line"></div>
+                                                    </ul>
+                                                </div>
+                                            );
+                                        })
+                                    ) : (
+                                        <p>No marks available.</p>
+                                    )}
                                 </div>
-                                <div className='addmarks_btn'>               
-                                    <button className='createbg' onClick={() => navigate('/addmarks')}>
+
+                                <div className='addmarks_btn'>
+                                    <button className='createbg' onClick={() => navigate(`/addmarks/${viewedUserId}`)}>
                                         <div className='cricon'>   
                                             <FontAwesomeIcon className='cal_icon' icon={faFileCirclePlus}/>
                                         </div>

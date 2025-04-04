@@ -9,8 +9,8 @@ const Notice = ({ notice, onClose }) => {
         <div className="popup-overlay">
             <div className="popup-content">
                     <FontAwesomeIcon className="xicon" onClick={onClose} icon={faCircleXmark} />
-
-                <h2>{notice.title || "Notice"}</h2>
+                <div className="nt-bg">
+                <h2>{notice.title || "Notice"}</h2></div>
                 <div className="content-area">
 
               <p><strong>To:</strong> {notice.to}</p>

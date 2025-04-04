@@ -74,7 +74,7 @@ const Addnotice = () => {
                     />
             <p>To:</p>
             <div className="To-dropdowns">
-                <select value={toWhom} onChange={(e) => setToWhom(e.target.value)}>
+                <select value={toWhom} onChange={(e) => setToWhom(e.target.value)} className='custom-dropdown'>
                     <option value="All">All</option>
                     <option value="Teacher">Teachers</option>
                     <option value="Student">Students</option>            

@@ -153,6 +153,7 @@ const Students = () => {
             <Sidebar />
             <PageInfo />
             <div className="contain">
+                <div className="navdiv">
                 <nav className="navbar navbar-expand-lg">
                     <div className="container-fluid">
                         <ul className="navbar-nav">
@@ -170,7 +171,7 @@ const Students = () => {
                     </div>
                     <div className="active-underline md-none" style={underlineStyle}></div>
                 </nav>
-                <div className="navbar-line"></div>
+                </div>
                 <div className="tr">
                     <p>Students</p>
                 </div>
@@ -180,11 +181,12 @@ const Students = () => {
                     </div>
                 )}
                 {addStudentPage && <AddStudents schoolId={schoolId} />}
+                
+                <div className="tr_section">
                 <div className="table_title" style={{ display: "flex" }}>
                     <div style={{ marginLeft: "4%", marginTop: "1%", fontWeight: "bold" }}>Name</div>
                     <div style={{ marginLeft: "44%", marginTop: "1%", fontWeight: "bold" }}>Email-ID</div>
                 </div>
-                <div className="tr_section">
                     {filteredStudents.length > 0 ? (
                         filteredStudents.map((student) => (
                             <div key={student.memberId} className="table_row">
