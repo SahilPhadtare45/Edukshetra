@@ -83,7 +83,7 @@
 .attendancepage .tr{
   position: relative;
     margin-top: 2%;
-    height: 10%;
+    height: 8%;
     width: 15%;
     background-color: #ffffff;
     font-family: "Montserrat Alternates", serif !important;    
@@ -103,29 +103,7 @@
     font-family: Outfit;
   } 
 }
-.attendancepage .tr_section{
-  height: 55%;
-  width: 90%;
-  margin-top: 2%;
-  margin-left: 5%;
-  border-radius: 30px;
-  background-color: white !important;
-  position:absolute !important;  
-  overflow: scroll !important;
-  overflow-x: hidden !important;
-  cursor: pointer !important;
-  box-shadow: 1px 4px 35px rgb(105, 105, 105);
-}
-.attendancepage .tr_section::-webkit-scrollbar {
-    width: 15px !important;
-    background-color: transparent !important;
-    border-top-left-radius: 10px !important;
-}
-.attendancepage .tr_section::-webkit-scrollbar-thumb {
-    background-color:#52658F!important;
-    border-radius: 10px !important;
-    border: none;
-}
+
 .attendancepage .li-item{
     display: flex;
     margin-top: 2%;
@@ -292,22 +270,25 @@
     max-width: 20%;
   }
   .attendancepage .stu_section{
-    max-height: 180px;
-    width: 100%;
-    height: 100%;
-    background-color: transparent !important;
-    position:absolute !important;   
+    height: 155%;
+    width: 90%;
+    margin-top: 2%;
+    margin-left: 5%;
+    border-radius: 30px;
+    background-color: white !important;
+    position:absolute !important;  
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
+    box-shadow: 1px 4px 35px rgb(105, 105, 105);
 }
 .attendancepage .stu_section::-webkit-scrollbar {
-    width: 15px !important;
+    width: 10px !important;
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }
 .attendancepage .stu_section::-webkit-scrollbar-thumb {
-    background-color:#52658F!important;
+    background-color:#8c8c8c!important;
     border-radius: 10px !important;
     border: none;
 }
@@ -331,9 +312,9 @@
   position: absolute;
   border: none;
   color: #ffffff;
-  background-color: #067af6;
+  background-color: #52658F;
   margin-left: 80%;
-  margin-top: 6%;
+  margin-top: 0%;
   border-radius: 30px;
 
   p{
@@ -341,8 +322,8 @@
   }
 }
 .attendancepage .attendance-submit:disabled{
-  color: #0056b3;
-  background-color: #067af6;
+  color: #7d7d7db4;
+  background-color: #A3B1D1;
 }
 
 .attendancepage .contain1{

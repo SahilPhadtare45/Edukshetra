@@ -1,24 +1,21 @@
 .peoplepage{
-    background: #F7F5E6;
+    background: #ffffff;
     height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
+    font-family: Outfit;  
+    overflow: hidden; 
 }
 .peoplepage .contain{
+    height: 870px;
+    width: 79%;
+    margin-left: 20%;
+    margin-top: 0.6%;
     position: absolute;
-    background-color: #E8E8E8;
-    height: 70%;
-    width: 70%;
-    margin-left: 25%;
-    margin-top: 8%;
+    background-color:  rgba(220, 228, 230, 0.923);
     border-radius: 10px;
-    border: 1px solid rgba(128, 128, 128, 0.435);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.411);
-    label{
-        margin-left: 1%;
-    }
+    box-shadow: 10px 10px 5px rgb(105, 105, 105);
 }
 .peoplepage .name{
-    margin-top: 4%;
+    margin-top: 10%;
 }
 .peoplepage .nameinsr{
     border-radius: 50px;
@@ -27,15 +24,15 @@
     margin-top: 2%;
 }
 .peoplepage .srbtn{
-    margin-top: -7%;
-    height: 59px;
+    margin-top: -6.2%;
+    height: 58px;
     width: 122px;
-    margin-left: 90% !important; 
+    margin-left: 91.1% !important; 
     border: none;
     border-radius: 50px;
     margin-left: 90%; 
-    background-color: #DCFFA8;  
-    color: #000000; 
+    background-color: rgb(24, 40, 64);  
+    color: #ffffff; 
     transition:0.2s ease;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.411);
 }
@@ -48,22 +45,26 @@
     color: #fff;
 }
 .peoplepage .tr_section{
-    max-height: 700px;
-    width: 100%;
-    background-color: transparent !important;
-    position:absolute !important;
+    height: 68%;
+    width: 90%;
+    margin-top: 0%;
+    margin-left: 5%;
+    border-radius: 30px;
+    background-color: white !important;
+    position:absolute !important;  
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
+    box-shadow: 1px 4px 35px rgb(105, 105, 105);
 }
 .peoplepage .tr_section::-webkit-scrollbar {
-    width: 15px !important;
+    width: 10px !important;
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }
 
 .peoplepage .tr_section::-webkit-scrollbar-thumb {
-    background-color:#52658F!important;
+    background-color:#8c8c8c!important;
     border-radius: 10px !important;
     border: none;
 }

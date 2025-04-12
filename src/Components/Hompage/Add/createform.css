@@ -6,7 +6,8 @@
     border-radius: 10px !important;
     position:absolute !important;
     margin-top: -265px;
-    margin-left: -1275px;
+    margin-left: -1270px;
+    font-family: Outfit;
 }
 .createform{
     height: 750px;
@@ -21,7 +22,7 @@
 }
 .createtitle{
     font-size: 30px;
-    margin-left: 125px;
+    margin-left: 165px;
     margin-top: 20px;
    
 }
@@ -74,7 +75,7 @@
 .eg{
     width: 20%;
     border-radius: 2%;
-    margin-top: -9.9%;
+    margin-top: -10%;
     margin-left: 80%;
     height: 58px;
     border-top-left-radius: 25px;
@@ -92,18 +93,21 @@
     border-bottom-right-radius:25px;
     
 }
-.createform .submit{
+.createform .btn-submit{
     width: 20%;
-    height: 8% !important;
+    height: 6% !important;
     font-size: 15px;
-    margin-top: 6%;
+    margin-top: 3%;
     margin-left: 40%;
     border-radius: 50px !important;
-    border: 2px solid rgb(0, 0, 0) !important;
-    background-color:cornflowerblue !important;
-    color: rgb(255, 255, 255) !important;
+    border: 2px solid rgb(24, 40, 64) !important;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(0, 0, 0) !important;
+    position: absolute;
 }
-.submit:hover {
-    background-color: #d41d1d !important; 
-    border-color: #d41d1d !important; 
+.createform .btn-submit:hover {
+    background-color: rgb(24, 40, 64) !important; 
+    border-color: rgb(24, 40, 64) !important; 
+    color: white !important;
+    transition: 200ms ease;
 }

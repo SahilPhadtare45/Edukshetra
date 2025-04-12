@@ -7,9 +7,10 @@
     margin-top: -680px;
     margin-left: -770px;
     z-index: 1;
+    font-family: Outfit;
 }
 .addnotice{
-    height: 500px;
+    height: 550px;
     width: 650px;
     background-color: rgba(255, 255, 255, 255) !important;
     border-radius: 10px !important;
@@ -34,20 +35,23 @@
     margin-left: 5%;
     font-size: larger;
 }
-.addnotice .sub1{
+.addnotice .btn-sub1{
     width: 20%;
     height: 8%;
     font-size: 15px;
     margin-top: 6%;
     margin-left: 40%;
     border-radius: 50px !important;
-    border: 2px solid rgb(0, 0, 0) !important;
-    background-color:cornflowerblue !important;
-    color: rgb(255, 255, 255) !important;
+    border: 2px solid rgb(24, 40, 64) !important;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(0, 0, 0) !important;
+    position: absolute;
 }
-.addnotice .sub1:hover {
-    background-color: #d41d1d !important; 
-    border-color: #d41d1d !important; 
+.addnotice .btn-sub1:hover {
+    background-color: rgb(24, 40, 64) !important; 
+    border-color: rgb(24, 40, 64) !important; 
+    color: white !important;
+    transition: 200ms ease;
 }
 .addnotice .name{  
     margin-left: 5%;

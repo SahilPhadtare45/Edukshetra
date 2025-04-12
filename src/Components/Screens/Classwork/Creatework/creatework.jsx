@@ -203,9 +203,7 @@ const Creatework = () => {
             <Sidebar />
             <div className='creatework'>
                 <div className='head'>
-                    <div className='htcon1'>
-                        <div className='headtext'>Add ClassWork</div>
-                    </div>
+                    <p>Add Classwork</p>
                 </div>
 
                 <label for="formGroupExampleInput" className="form-label lbl">Enter Title</label>
@@ -248,7 +246,7 @@ const Creatework = () => {
                 {allowUploads && (
                     <div className='duedate'>
                         <p>Enter Due Date: </p>
-                        <button className="btn btn-primary calbtn" onClick={toggleCalendar}>
+                        <button className="btn btn-dark calbtn" onClick={toggleCalendar}>
                             {showCalendar ? "Close Calendar" : "Open Calendar"}
                         </button>
 
@@ -283,7 +281,7 @@ const Creatework = () => {
     )}
 </div>
 
-                <button className='Create-Button primary' onClick={handleCreateClasswork}>
+                <button className='Create-Button' onClick={handleCreateClasswork}>
                     <p>Create</p>
                 </button>
             </div>

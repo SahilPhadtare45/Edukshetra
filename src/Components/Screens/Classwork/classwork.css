@@ -1,8 +1,8 @@
 .classworkpage{
-    background: #ffffff;
+    background: white;
     height: 100vh;  
-    font-family: Outfit;  
-    overflow: hidden; 
+    font-family: "Outfit" !important;   
+    overflow-x: hidden;
 }
 .classwork{
     height: 870px;
@@ -20,7 +20,7 @@
 }   
     
 .classwork::-webkit-scrollbar {
-    width: 15px !important;
+    width: 10px !important;
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }

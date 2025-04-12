@@ -123,10 +123,10 @@ const Createform = () => {
             <div class="form-floating mb-3 name">                      
                 <input type="text" class="form-control namein " onChange={(e) => setSchoolEmail(e.target.value)} id="floatingInput" placeholder="Enter Name"/>
                 <label  for="floatingInput" className="en">Enter mail</label>
-                <span class="input-group-text no" id="basic-addon3">gmail.com</span> 
+                <span class="input-group-text no" id="basic-addon3">eg.gmail.com</span> 
             </div>
 
-            <button class="btn submit"  type="submit">Submit</button>   
+            <button class="btn-submit"  type="submit">Submit</button>   
             </form>     
         </div>
     </div> 

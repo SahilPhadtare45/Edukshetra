@@ -1,21 +1,18 @@
 .profilepage{
-    background: #F7F5E6;
-    height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
+    background: #ffffff;
+  height: 100vh;  
+  font-family: Outfit;  
+  overflow: hidden; 
 }
 .profilepage .contain{
-    position: absolute;
-    background-color: #E8E8E8;
-    height: 70%;
-    width: 70%;
-    margin-left: 25%;
-    margin-top: 8%;
-    border-radius: 10px;
-    border: 1px solid rgba(128, 128, 128, 0.435);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.411);
-    label{
-        margin-left: 1%;
-    }
+    height: 870px;
+  width: 79%;
+  margin-left: 20%;
+  margin-top: 0.6%;
+  position: absolute;
+  background-color:  rgba(220, 228, 230, 0.923);
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px rgb(105, 105, 105);
 }
 .profilepage .navbar {
     position: relative;
@@ -70,7 +67,6 @@
     height: 1px;
     background-color: #000;
     margin-top: 5px; /* Add spacing between navbar and static line */
-    clip-path: polygon(0% 0%,100% 0%, 0% 100%, 00% 100%);  
 }
 .profilepage .heads{
     display: flex;
@@ -78,18 +74,18 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 60px;
 }
 .profilepage .profile_img{
     border-radius: 130px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
-    height: 100px;
+    height: 130px;
     margin-top: 5%;
 }
 .profilepage .info_container{
-    width: 90%;
-    margin-left: 5%;
-    margin-top: 1%;
+    width: 85%;
+    margin-left: 7.5%;
+    margin-top: 0%;
     background-color: white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
     border-radius: 20px; 
@@ -147,7 +143,7 @@
 .profilepage .attend_sec{
     margin-left: 56%; 
     margin-bottom: 7.9% !important;
-    height: 197px;
+    height: 200px;
 }
 .profilepage .recharts-legend-item {
     margin-bottom: 20px; /* Adjust the spacing as needed */
@@ -155,23 +151,23 @@
     margin-left: -20%;
   }
 .profilepage .attendtotal_text{
-    font-size: 20px;   
+    font-size: 24px;   
     margin-top: -25%;
     margin-left: 610px;
     color: rgba(0, 0, 0, 1);
     z-index: 100;
 }
 .profilepage .attendhistory_text{
-    font-size: 16px;
-    margin-top: 3%;
-    margin-left: 60%;
+    font-size: 20px;
+    margin-top: 1%;
+    margin-left: 56%;
     color: rgb(108, 108, 108);
     position: absolute;
     width: 100%;
 }
 
 .profilepage .tr_section{
-    min-height: 295px;
+    height: 295px;
     width: 100%;
     background-color: transparent !important;
     overflow: scroll !important;
@@ -181,13 +177,13 @@
     z-index: 100;
 }
 .profilepage .tr_section::-webkit-scrollbar {
-    width: 15px !important;
+    width: 10px !important;
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }
 
 .profilepage .tr_section::-webkit-scrollbar-thumb {
-    background-color:#52658F!important;
+    background-color:#8c8c8c!important;
     border-radius: 10px !important;
     border: none;
 }
@@ -222,13 +218,14 @@
     margin-top: 10px; /* Add spacing between navbar and static line */  
 }
 .profilepage .addmarks_btn{
-    margin-left: 105px;
-    margin-top: -30%;
-    position: absolute;
+    margin-left: 24%;
+    margin-top: 3%;
+    z-index: 999;
+   margin-bottom: 4%;
 }
   .profilepage .createbg{
     flex-direction: row;
-    background-color: #E8E8E8;
+    background-color: #A3B1D1;
     height: 50px;
     width: 170px;
     position: absolute;
@@ -240,18 +237,19 @@
     border: none;
     z-index: 100;
     p{
-        font-size: 14px;
+        font-size: 18px;
         margin-left: 35%;
-        margin-top: 8%;
+        margin-top: 6%;
+        text-shadow: 1px 1px black;
     }
 }
 .profilepage .createbg:hover{
-    background-color: #52658F;
+    background-color: rgb(24, 40, 64);
     p{
         color: #fff;
     }
     .cricon{
-        background-color: #E8E8E8;
+        background-color: #A3B1D1;
         
     }
     .cal_icon{
@@ -261,17 +259,17 @@
 .profilepage .cricon{
     height: 50.5px;
     width: 65px;
-    background-color: #52658F;
+    background-color: rgb(24, 40, 64);
    position: absolute;
     margin-left: -5%;
-    margin-top: -0.5%;
+    margin-top: -0.7%;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;   
     clip-path: polygon(0% 0%,100% 0%, 70% 100%, 00% 100%);   
 }
 .profilepage .cal_icon{
     height: 20px;
-    margin-left: -20%;
+    margin-left: -10%;
     margin-top: 20%;
     color: white;
 }

@@ -7,6 +7,18 @@
     font-family: "Outfit"  !important;
 
 }
+.homepage .bgtri{
+    height: 50%;
+    width: 30%;
+    background-color: #52658F;
+    clip-path: polygon(100% 0%,100% 0%, 100% 100%, 0% 100%);
+    position: absolute;
+    margin-left: 70%;
+    margin-top: 16.5%;
+    z-index: -1;
+    box-shadow: inset 0px 0px 8px 3px black !important;
+
+}
 /* Navbar styles */
 .homepage .navbar {
     position: relative;
@@ -79,6 +91,16 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start; /* ✅ Aligns items from the start */
+}
+.homepage .maincon::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.homepage .maincon::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
+    border-radius: 10px !important;
+    border: none;
 }
 .homepage .maincon li{
     display: inline;
@@ -183,4 +205,7 @@
     margin-top: 65%;
     font-size: 16px;
     margin-left: 3%;
+}
+.homepage .maincon p{
+    width: 100%;
 }

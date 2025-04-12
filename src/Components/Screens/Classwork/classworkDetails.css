@@ -1,20 +1,19 @@
 .classworkDetailsPage {
-    background: #F7F5E6;
+    background-color:  rgba(220, 228, 230, 0.923);
     height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
-    overflow: hidden; 
+    font-family: "Outfit" !important;   
+    overflow: hidden;
 }
 
 .classworkDetails {
     width: 70%;
-    height: 73%;
+    height: 75%;
     margin-left: 23%;    
     margin-top: 4%;    
-    background: white;
+    background-color:  rgba(255, 255, 255, 0.923);
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    overflow-y: scroll;
-
+    overflow-y: hidden;
 }
 
 .classworkDetails .iconbg{
@@ -59,19 +58,32 @@
     margin-right: 2%;
     margin-left: 7%;
     margin-top: 2%;
+    height: 46% !important;
+    width: 40%;
     overflow-x: hidden;
     font-size: larger;
     white-space: pre-wrap; /* ✅ Maintains spaces and line breaks */
     word-wrap: break-word;  /* Prevents overflow issues */
     font-family: Montserrat, sans-serif;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-radius: 10px;
+    position: absolute;
 }
-.classworkDetails .clswrk-con::-webkit-scrollbar{
-    display: none;
+
+.classworkDetails .clswrk-text{
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom:2%;
+    margin-top: 2%;
+    width: 98%;
+    font-family: Outfit;
 }
 .classworkDetails .attachments {
-    margin-top: 20px;
+    margin-top: 28%;
     margin-left: 8%;
-
+    position: absolute;
+    width: 50%;
     li{
         float: left;
         margin-left: 2%;
@@ -99,44 +111,57 @@
 }
 
 .classworkDetails .uploads{
-    margin-top: 5%;
-    margin-left: 20%;
-
+    margin-top: 16%;
+    margin-left: 0%;
+    height: 76%;
+    background-color: rgb(255, 255, 255);
+    overflow-y: scroll;
     span{
         margin-top:20px !important;
     }
 
     ul{
-        margin-left: 20%;
+        margin-left: 0%;
 
     }
 }
+.classworkDetails .uploads::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classworkDetails .uploads::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
 .classworkDetails .upload-section {
-    margin-top: -105px;
+    margin-top: 10%;
     display: flex;
     gap: 10px;
-    margin-left: 40%;
+    margin-left: 8%;
 }
 
 .classworkDetails .upload-section input {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-    margin-top: -10%;
-    margin-left: -8%;
+    margin-top: 0%;
+    margin-left: 0%;
     position: relative;
 }
 
 .classworkDetails .upload-section button {
-    padding: 10px;
+    padding: 8px;
+    width: 85%;
     border: none;
     color: white;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
-    margin-top: -4% !important;
-    margin-left: 14%;
+    margin-top: 25% !important;
+    margin-left: 0%;
     z-index: 1001;
     position: absolute;
 }
@@ -154,7 +179,27 @@
 }
 
 .classworkDetails .upload-no{
-    margin-top: -50px;
-    margin-left: 950px;
+    margin-top: 0%;
+    margin-left: 920px;
     position: absolute;
+}
+.classworkDetails .upload-sec{
+    position: absolute;
+    height: 58%;
+    width: 20%;
+    background-color: #ffffff;
+    margin-left: 48%;
+    margin-top: 2%;
+    border-radius: 10px;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+}
+.classworkDetails .upload-sec::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classworkDetails .upload-sec::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
 }

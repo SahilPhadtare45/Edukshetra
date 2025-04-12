@@ -81,7 +81,7 @@ const Addnotice = () => {
                 </select>
             </div>      
 
-            <button class="btn sub1" type="button" onClick={handleSubmit}>Submit</button>
+            <button class="btn-sub1" type="button" onClick={handleSubmit}>Submit</button>
         </div>
         </div>
         )

@@ -144,18 +144,18 @@ setSchools((prevSchools) => {
            
              <label for="formGroupExampleInput" class="form-label lbl">Enter Your Phone No.</label>
              <div class="form-floating mb-3 name">               
-                <input type="text" class="form-control namein " onChange={(e) => setPhone(e.target.value)} id="floatingInput" placeholder="Enter No."/>
+                <input type="text" className="form-control namein " onChange={(e) => setPhone(e.target.value)} id="floatingInput" placeholder="Enter No."/>
                 <label  for="floatingInput">Enter No.</label>
              </div>
 
             <label for="formGroupExampleInput" class="form-label lbl">Enter Code here</label>              
             <div class="form-floating mb-3 name">                      
-                <input type="text" class="form-control namein " onChange={(e) => setPassword(e.target.value)} id="floatingInput" placeholder="Enter Name"/>
+                <input type="text" className="form-control namein " onChange={(e) => setPassword(e.target.value)} id="floatingInput" placeholder="Enter Name"/>
                 <label  for="floatingInput" className="en">Enter here</label>
-                <span class="input-group-text eg" id="basic-addon3">eg.XUVcdc</span> 
+                <span className="input-group-text eg" id="basic-addon3">eg.XUVcdc</span> 
             </div>
 
-            <button class="btn sub1"  type="submit">Join</button>
+            <button className="btn-sub1"  type="submit">Join</button>
             </form>
         </div>
         </div>

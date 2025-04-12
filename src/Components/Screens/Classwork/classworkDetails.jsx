@@ -123,27 +123,30 @@ const ClassworkDetails = () => {
                 </div>
                 <p style={{marginTop:"-1%",marginLeft:"8.5%"}}>Assigned By: {classwork.assignedByEmail}</p>
                 <p className="due-date">Due Date: {classwork.dueDate ? new Date(classwork.dueDate).toLocaleString() : "No due date"}</p>
-
-                <pre className="clswrk-con" >{classwork.classworkContent}</pre>
-    
-                {/* Display Attachments */}
-                {classwork.attachments?.length > 0 && (
-                    <div className="attachments">
-                        <h3>Attachments:</h3>
-                        <ul>
-                            {classwork.attachments.map((file, index) => (
-                                <li key={index}>
-                                    <a href={file} target="_blank" className="btn btn-outline-secondary" rel="noopener noreferrer">View File {index + 1}</a>
-                                </li>
-                            ))}
-                        </ul>
+<div style={{display:"flex"}}>
+                <pre className="clswrk-con" >
+                    <div className="clswrk-text">
+                        {classwork.classworkContent}
                     </div>
-                )}
-    
+                </pre>
+                <div className="upload-sec">   
+    {isStudent && classwork.allowUploads ? (
+        <div className="upload-section">
+            <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
+            <button onClick={handleFileUpload} disabled={uploading}>
+                {uploading ? "Uploading..." : "Upload File"}
+            </button>
+        </div>
+    ) : isStudent ? (
+        <p>Upload option is disabled</p>
+    ) : isCreator ? ( 
+        <p>Student's Submissions will be uploaded here</p>
+    ) : null}
+
 {/* Display Student Uploads - Visible to Assigned Teacher & Student Themselves */}
 {classwork.uploads && classwork.uploads.length > 0 && (
     <div className="uploads">
-        <h5 style={{marginLeft:"-10%"}}>Student Submissions:</h5>
+        <h5 style={{marginLeft:"5%"}}>Student Submissions:</h5>
         <ul>
             {classwork.uploads
                 .filter(file => file.uploadedBy === currentUser.email || currentUser.uid === classwork.assignedByUID)
@@ -165,14 +168,23 @@ const ClassworkDetails = () => {
     </div>
 )}
 
-{isStudent && classwork.allowUploads && (
-                    <div className="upload-section">
-                        <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
-                        <button onClick={handleFileUpload} disabled={uploading}>
-                            {uploading ? "Uploading..." : "Upload File"}
-                        </button>
+
+</div>
+</div>
+    {/* Display Attachments */}
+    {classwork.attachments?.length > 0 && (
+                    <div className="attachments">
+                        <h3>Attachments:</h3>
+                        <ul>
+                            {classwork.attachments.map((file, index) => (
+                                <li key={index}>
+                                    <a href={file} target="_blank" className="btn btn-outline-secondary" rel="noopener noreferrer">View File {index + 1}</a>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
+                
 
 {isStudent && classwork.uploads && classwork.uploads.filter(file => file.uploadedBy === currentUser.email).length > 0 && (
     <p className="upload-no">

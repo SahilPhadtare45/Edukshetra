@@ -141,16 +141,17 @@ const People = () => {
                     <div class="form-floating mb-3 name">               
                         <input type="text" class="form-control nameinsr " id="floatingInput" placeholder="Search" value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}/>
-                        <label  for="floatingInput">Search&nbsp;<FontAwesomeIcon icon={faSearch} /></label>
+                        <label  for="floatingInput"><FontAwesomeIcon icon={faSearch} />&nbsp;Search</label>
                         <button class="btn btn-outline-secondary srbtn" type="button" id="button-addon1" onClick={handleSearch}>Search</button>
                     </div>
                 
-                    <div className='table_title' style={{display:"flex"}}>
-                        <div style={{marginLeft:'4%',marginTop:'1%',fontWeight:'bold'}}>EMAIL</div>
-                        <div style={{marginLeft:'54.5%',marginTop:'1%',fontWeight:'bold'}}>ID</div>
-                    </div>
+                    
                     {/* Members List */}
                     <div className='tr_section'>
+                    <div className='table_title' style={{display:"flex"}}>
+                        <div style={{marginLeft:'10%',marginTop:'1%',fontWeight:'bold'}}>EMAIL</div>
+                        <div style={{marginLeft:'50.5%',marginTop:'1%',fontWeight:'bold'}}>ID</div>
+                    </div>
                     {filteredMembers.length > 0 ? (
                         filteredMembers.map((member,index) => (
                                 <div key={member.uid} className='table_row'>

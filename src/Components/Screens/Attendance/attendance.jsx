@@ -335,24 +335,26 @@ console.log("Filtered Students:", filteredStudents);
                         <div className="active-underline md-none" style={underlineStyle}></div>
                     </nav>
                     </div> 
-                    <div className='stu'>   
+                    <div className='tr'>     
+                            <p>Students</p>
+                        </div>
                     <button 
                             className="attendance-submit" 
                             onClick={handleSubmitAttendance} 
                             disabled={isAttendanceMarked[selectedClass]} // ✅ Disable only for the selected class
                         >
                             Upload Attendance
-                        </button>
-                        <div className='tr'>     
-                            <p>Students</p>
-                        </div>
-                        
+                    </button>
+                    <div className='stu'>      
                         {isAttendanceMarked[selectedClass] && (
                             <div className="attendance-marked-message">
                             ✅ Attendance is marked for {selectedClass}.
                             </div>
                         )}
 
+                    
+
+                    <div className='stu_section'>
                     <div className='table_title' style={{display:"flex"}}>
                     {filteredStudents.length === 0 ? (
                         <p></p>
@@ -360,8 +362,6 @@ console.log("Filtered Students:", filteredStudents);
                         <div style={{marginLeft:'8%',marginTop:'1%',fontWeight:'bold'}}>Name</div>
                     )}                    
                     </div>
-
-                    <div className='stu_section'>
                         {filteredStudents.length === 0 ? (
                             <p>No students found in this class.</p>
                         ) : (

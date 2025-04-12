@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './homepage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus,faGear,faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Comman/header';
 import workplace from '../Hompage/workplace.jpg';
 import Add from './Add/add.jsx';
@@ -13,6 +13,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { onSnapshot, collection, query, where } from "firebase/firestore";
 import { db } from "../../Firebase/firebase";
+import { toast } from 'react-toastify';
 
 
 const Homepage = () => {
@@ -57,6 +58,7 @@ const Homepage = () => {
             await signOut(auth); // Sign out from Firebase
             useUserStore.getState().clearUser(); // Clear Zustand store
             navigate("/")
+            toast.success("User Logged Out")
         } catch (error) {
             console.error("Error signing out:", error);
         }
@@ -143,7 +145,15 @@ const getUserRole = (school) => {
   
     return member.userRole || "Unknown";
   };
-  
+  const roles = ['All', 'Admin', 'Teacher', 'Student'];
+const selectedRole = roles[activeIndex];
+const filteredSchools = userSchools?.filter((school) => {
+    if (selectedRole === 'All') return true;
+
+    // Use the currentRole directly from Zustand
+    return school.userRole?.toLowerCase() === selectedRole.toLowerCase();
+});
+
     return (
         <>
         <div className="homepage">            
@@ -168,17 +178,17 @@ const getUserRole = (school) => {
                     </div>
                     <div className="active-underline md-none" style={underlineStyle}/>
                     <FontAwesomeIcon className="plusicon" onClick={() => setShowAddComponent((prev) => !prev)} icon={faPlus} />
-                    <FontAwesomeIcon className="gearicon" onClick={handleLogout} icon={faGear} />
+                    <FontAwesomeIcon className="gearicon" onClick={handleLogout} icon={faRightFromBracket} />
                 </nav>
             {showAddComponent && <Add />}
             <div className="navbar-line"/>
             <div class=" maincon">
             <ul >
-                {(!userSchools || !Array.isArray(userSchools) || userSchools.length === 0) ? (
+            {filteredSchools?.length === 0 ? (
                     <p>No schools joined yet</p>
                 ) : (
-                    userSchools.map((school, index) => (
-                              <li className="card concard" key={index} onClick={() => handleSchoolClick(school)}>                    
+                    filteredSchools.map((school, index) => (
+                        <li className="card concard" key={index} onClick={() => handleSchoolClick(school)}>                    
                                 <img src={schoolImages[index]} className="card-img cardimg d-none d-md-block" alt="..." />                       
                                 <div className="card-img-overlay">
                                   <div className='share_code'>
@@ -201,6 +211,7 @@ const getUserRole = (school) => {
                                       
                       </ul>
             </div>
+            <div className='bgtri'/>
         </div>
         </>
     );

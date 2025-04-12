@@ -1,41 +1,39 @@
 .createpage{
-    background: #F7F5E6;
-    height: 100vh;  
-    font-family: "Montserrat Alternates", serif !important;  
-    overflow: hidden; 
+  background-color:  rgb(255, 255, 255);
+  height: 100vh;  
+  font-family: "Outfit" !important;   
+  overflow: hidden;
 }
 .creatework{
     position: absolute;
     height: 80%;
     width: 70%;
-    background-color: #E8E8E8;
+    background-color:  rgb(220, 228, 230);
     margin-left: 25%;
     margin-top: 2%;
-    box-shadow: 2px 2px 4px  #5252528a;
-    border-radius: 10px;
+    box-shadow: 10px 10px 15px rgb(105, 105, 105);
+    border-radius: 20px;
 }
-.creatework .htcon1{
-  padding-top: 1%;
-  padding-bottom: 1%;
-  margin-top: 3%;
-  font-size: 24px;
-  text-shadow: 1px 1px 2px black;
-  width: 16%;
-  background-color: #007bff;
-  font-family: "Montserrat Alternates", serif !important;  
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  box-shadow:  2px 4px 4px rgba(0, 0, 0, 0.333) !important;
-  justify-content: center;
-  border-bottom: none;
-  text-align: center;
-  color: #fff;
- .createpage .headtext{ 
-      top: 2%;
-      left: 6%;
-      transform: translate(-50%, -50%);
-      font-weight: normal;
-  } 
+.creatework .head{
+  position: relative;
+    margin-top: -0.5%;
+    margin-left: -1%;
+    height: 10%;
+    width: 23%;
+    background-color: #ffffff;
+    justify-content: center;
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+    text-align: center;
+    p{
+        font-size: 26px;
+        position: absolute;
+        top: 20%;
+        left: 35.3%;
+        transform: translate(-50%, -50%);
+        color: rgb(24, 40, 64);
+        text-shadow: 1px 1px 2px rgb(93, 93, 93);
+        font-family: Outfit;
+    } 
 }
 .creatework .subin{
     width: 90%;
@@ -86,12 +84,12 @@
 }
 /* Change calendar width */
 .creatework .react-calendar {
-    margin-top: 15px;
+    margin-top: 40px;
     width: 250px; /* Set the width */
     height: 285px; /* Set the height */
     font-size: 14px; /* Optional: Customize font size */
     background-color: #f8f9fa; /* Optional: Set background color */
-    margin-left: -28%;
+    margin-left: -27%;
     font-family: "Montserrat alternates",serif !important;
     border-top-left-radius: 25px !important;
     border-bottom-right-radius:25px !important;
@@ -132,6 +130,7 @@
     height: 50px;
     margin-left: 4%;
     margin-top: 2%;
+    background-color: rgb(24, 40, 64);
 }
   .creatework .datedis{
     margin-top: 2%;
@@ -148,8 +147,9 @@
   }
   .creatework .Create-Button{
     border: none;
-    background-color: #0d6dfc;
-    color: #fff;
+    background-color: transparent;
+    color: #000000;
+    border:2px solid rgb(24, 40, 64);
     height: 50px;
     width: 120px;
     font-size: 20px;
@@ -157,10 +157,12 @@
     margin-left: 45%;
     margin-top: 6%;
     box-shadow:0.1px 1px 2px 2px  #52525246;
+    p{
+      font-size: 20px !important;
+    }
 }
 .creatework .Create-Button:hover{
-    transform: scale(1.1);
-    transition-duration: 0.2s;
-    font-size: 16px;
-    position: absolute;
+    background-color: rgb(24, 40, 64);
+    border: 2px solid rgb(24, 40, 64);
+    color: white;
 }

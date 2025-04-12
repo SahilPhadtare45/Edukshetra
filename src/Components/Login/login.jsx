@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";  
 import "./login.css";
-import schoolbg1 from "../../images/schoolbg.png";
-import classbg from "../../images/classbg.jpg";
+import schoolbg1 from "../../images/charcoal.jpg";
+import classbg from "../../images/blue.jpg";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../Firebase/firebase";
@@ -119,6 +119,7 @@ const Login = () => {
 
   return (
     <div className="login" style={{ backgroundImage: `url(${currentBg})` }}>
+      <div className="main-name">EDUKSHETRA</div>
       <div className="flip-card-container">
         <div className="tri"></div>
         <div className={`flip-card ${isFlipped ? "flipped" : ""}`}>

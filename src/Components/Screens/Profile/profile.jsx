@@ -227,6 +227,16 @@ const totalValue = presentCount + absentCount;
                     case 2:
                         return (
                             <div>
+                                {(currentRole === 'Admin' || currentRole === 'Teacher') && (
+                                <div className='addmarks_btn'>
+                                    <button className='createbg' onClick={() => navigate(`/addmarks/${viewedUserId}`)}>
+                                        <div className='cricon'>   
+                                            <FontAwesomeIcon className='cal_icon' icon={faFileCirclePlus}/>
+                                        </div>
+                                        <p> Add Marks</p>
+                                    </button>
+                                </div>
+                    )}
                                 <div className='tr_section'>
                                     {loading ? (
                                         <p>Loading...</p>
@@ -251,15 +261,7 @@ const totalValue = presentCount + absentCount;
                                         <p>No marks available.</p>
                                     )}
                                 </div>
-
-                                <div className='addmarks_btn'>
-                                    <button className='createbg' onClick={() => navigate(`/addmarks/${viewedUserId}`)}>
-                                        <div className='cricon'>   
-                                            <FontAwesomeIcon className='cal_icon' icon={faFileCirclePlus}/>
-                                        </div>
-                                        <p> Add Marks</p>
-                                    </button>
-                                </div>
+                                
                             </div>
                         );
                     default:

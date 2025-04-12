@@ -116,8 +116,8 @@ const Addmarks = () => {
         <Header/>
         <Sidebar/>      
             <div className='addmarks'>
-              <div className='htcon'>
-                <div className='headtext'>Add Marks</div>
+              <div className='head'>
+              <p>Add Marks</p>
               </div>
               <label for="formGroupExampleInput" class="form-label lbl "><h3>Enter Examination Title</h3></label>
               <div class="form-floating mb-3 subin  ">               

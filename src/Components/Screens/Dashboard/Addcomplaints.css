@@ -1,6 +1,6 @@
 
 .add-complaint {
-    background-color: rgba(220, 228, 230, 0.923);
+    background-color: rgb(220, 228, 230);
     height: 190px;
     width: 100%;
     z-index: 1000;
