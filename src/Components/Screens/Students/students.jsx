@@ -194,13 +194,16 @@ const Students = () => {
                                     <li className="li-item">
                                         <div className="item-text">{student.username}</div>
                                         <div className="sub_name text-truncate"> {student.email}</div>
-                                        <FontAwesomeIcon className="prof_icon" onClick={() => navigate(`/profile/${student.uid}`)} icon={faUser} />
+                                        
                                         {(currentRole === "Admin" || currentRole === "Teacher") && (
+                                            <>
+                                            <FontAwesomeIcon className="prof_icon" onClick={() => navigate(`/profile/${student.uid}`)} icon={faUser} />
                                             <FontAwesomeIcon
                                                 className="trash_icon"
                                                 icon={faTrash}
                                                 onClick={() => removeStudent(student.memberId)}
                                             />
+                                            </>
                                         )}
                                     </li>
                                 </ul>

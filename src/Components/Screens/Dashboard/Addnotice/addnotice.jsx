@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { db } from "../../../../Firebase/firebase"; // Firebase DB
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useUserStore } from "../../../../Firebase/userstore"; // Import Zustand store
+import { toast } from "react-toastify";
+
 const Addnotice = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [notice, setNotice] = useState("");
@@ -20,7 +22,7 @@ const Addnotice = () => {
         console.log("Current School ID:", currentSchool); // Debugging log
     
         if (!notice.trim()) {
-            alert("Please enter a notice.");
+            toast.warn("Please enter a notice.");
             return;
         }
 
@@ -71,6 +73,7 @@ const Addnotice = () => {
                         placeholder="Type your notice here..."
                         value={notice}
                         onChange={(e) => setNotice(e.target.value)}
+                        required
                     />
             <p>To:</p>
             <div className="To-dropdowns">

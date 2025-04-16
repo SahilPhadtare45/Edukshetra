@@ -10,6 +10,7 @@ import axios from "axios"; // For Cloudinary upload
 import { useUserStore } from '../../../../Firebase/userstore';
 import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Creatework = () => {
     const [title, setTitle] = useState("");
@@ -97,22 +98,22 @@ const Creatework = () => {
 
     const handleCreateClasswork = async () => {
         if (!title.trim()) {
-            alert("⚠️ Title is required!");
+            toast.warn("⚠️ Title is required!");
             return;
         }
     
         if (!content.trim()) {
-            alert("⚠️ Content is required!");
+            toast.warn("⚠️ Content is required!");
             return;
         }
     
         if (!selectedClass) {
-            alert("⚠️ Please select a class!");
+            toast.warn("⚠️ Please select a class!");
             return;
         }
 
         if (allowUploads && !date) {
-            alert("Please select a due date.");
+            toast.warn("Please select a due date.");
             return;
         }
 
@@ -208,7 +209,7 @@ const Creatework = () => {
 
                 <label for="formGroupExampleInput" className="form-label lbl">Enter Title</label>
                 <div class="form-floating mb-3 subin  ">
-                    <input type="text" className="form-control box" placeholder="Enter Subject/Topic" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={50}/>
+                    <input type="text" className="form-control box" placeholder="Enter Subject/Topic" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={50} required/>
                     <label  for="floatingInput ">Enter Subject/Topic</label>
                 </div>
                 
@@ -219,6 +220,7 @@ const Creatework = () => {
                     placeholder="Enter Classwork here..." 
                     value={content} 
                     onChange={(e) => setContent(e.target.value)}
+                    required
                 />
 
                 <div className="input-group upload">

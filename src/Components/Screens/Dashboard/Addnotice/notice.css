@@ -1,5 +1,5 @@
 /* Background overlay */
-.popup-overlay {
+.notice-details{
     height: 1000px;
     width: 1850px;
     background-color: rgba(0, 0, 0, 0.528) !important;
@@ -11,19 +11,20 @@
 }
 
 /* Popup container */
-.popup-content {
-    height: 550px;
-    width: 650px;
+.notice-details .notice-content {
+    height: 520px;
+    width: 650px !important;
     background-color: rgba(255, 255, 255, 255) !important;
     border-radius: 10px !important;
     position: absolute !important;
     margin-left:32%;
-    margin-top: 180px;
-    border: none;
+    margin-top: 240px;
+    border: 1px solid black;
+    font-family: Outfit;
 }
 
 /* Close button */
-.close-btn {
+.notice-details .close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -34,7 +35,7 @@
     color: #555;
 }
 
-.popup-overlay .notice-item{
+.notice-details .notice-item{
     max-width: 93%;
     word-wrap: break-word; /* Break long words if needed */
     white-space: normal; /* Allow the text to wrap */
@@ -42,31 +43,31 @@
     position: relative;
     margin-top: 0%;
 }
-.popup-content h2{
+.notice-details .notice-content h2{
  margin-left: 30%;
  color: black;
 }
-.popup-content .nt-bg{
+.notice-details .notice-content .nt-bg{
     height: 40px;
     width: 198px;
     box-shadow: 1px 4px 15px rgb(105, 105, 105);
     border-top-right-radius:10px ;
     border-bottom-right-radius: 10px;
 }
-.popup-content .notice-date{
+.notice-details .notice-content .notice-date{
     font-size: 14px;
     margin-top: -10px;
     font-weight: bold;
 
 }
-.popup-content .content-area{
-    height: 80%;
+.notice-details .notice-content .content-area{
+    height: 78%;
     width: 90%;
     background-color: #ffffff3b;
     margin-left:5%;
     z-index: 999;
     color: rgb(0, 0, 0);
-    border-radius: 20px;
+    border-radius: 50px;
     overflow: scroll !important;
     overflow-x: hidden !important;
     cursor: pointer !important;
@@ -74,13 +75,13 @@
     margin-top: 3%;
     box-shadow: 1px 4px 15px rgb(105, 105, 105);
 }
-.popup-overlay .content-area::-webkit-scrollbar {
+.notice-details .content-area::-webkit-scrollbar {
     width: 13px !important;
     background-color: transparent !important;
     border-top-left-radius: 10px !important;
 }
-.popup-overlay .content-area::-webkit-scrollbar-thumb {
-    background-color:#667EEA!important;
+.notice-details .content-area::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
     border-radius: 10px !important;
     border: none;
 }

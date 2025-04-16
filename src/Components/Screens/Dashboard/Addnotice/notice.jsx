@@ -6,8 +6,8 @@ const Notice = ({ notice, onClose }) => {
     if (!notice) return null;
 
     return (
-        <div className="popup-overlay">
-            <div className="popup-content">
+        <div className="notice-details">
+            <div className="notice-content">
                     <FontAwesomeIcon className="xicon" onClick={onClose} icon={faCircleXmark} />
                 <div className="nt-bg">
                 <h2>{notice.title || "Notice"}</h2></div>

@@ -194,12 +194,11 @@
 .profilepage .item-text{
     font-size: 20px;
     margin-left: 2%;
-    position: absolute;
-    max-width: 39%;
+    max-width: 50%;
     color: #000000;
 }
 .profilepage .sub_name{
-    margin-left: 75%;
+    margin-left: 68%;
     font-size: 20px;
     color: #827f7f;
     max-width: 22%;

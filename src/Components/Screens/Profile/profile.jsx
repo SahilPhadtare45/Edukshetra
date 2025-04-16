@@ -226,7 +226,7 @@ const totalValue = presentCount + absentCount;
                         );
                     case 2:
                         return (
-                            <div>
+                            <div style={{height:"305px"}}>
                                 {(currentRole === 'Admin' || currentRole === 'Teacher') && (
                                 <div className='addmarks_btn'>
                                     <button className='createbg' onClick={() => navigate(`/addmarks/${viewedUserId}`)}>
@@ -246,7 +246,7 @@ const totalValue = presentCount + absentCount;
                                             const percentage = exam[examTitle][0]?.percentage || "N/A";
 
                                             return (
-                                                <div key={index} className='table_row'>
+                                                <div key={index} className='table_row' onClick={() => navigate(`/viewmarks/${uid}/${examTitle}`)}>
                                                     <ul className="list-group list-group-flush llist">
                                                         <li className="li-item">
                                                             <div className="item-text text-truncate">{examTitle}</div>

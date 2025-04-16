@@ -13,6 +13,7 @@ import Creatework from "./Components/Screens/Classwork/Creatework/creatework";
 import Addmarks from "./Components/Screens/Profile/Addmarks/addmarks";
 import Login from "./Components/Login/login";
 import ClassworkDetails from './Components/Screens/Classwork/classworkDetails';
+import ViewMarks from './Components/Screens/Profile/Addmarks/viewmarks.jsx';
 import { children } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
@@ -63,6 +64,7 @@ function App() {
                         <Route path="/classwork/:classworkId" element={<RequireAuth><ClassworkDetails /></RequireAuth>} />
                         <Route path="/profile/:uid" element={<RequireAuth><Profile /></RequireAuth>} />
                         <Route path="/attendance/:uid" element={<RequireAuth><Attendance /></RequireAuth>} />
+                        <Route path="/viewmarks/:uid/:examTitle" element={<RequireAuth><ViewMarks /></RequireAuth>} />
 
                     </Routes>
         </Router>

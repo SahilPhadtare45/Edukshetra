@@ -380,6 +380,7 @@ const filteredNotices = notices.filter((notice) => {
                                 placeholder="Write a reply..."
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
+                                required
                             />
                             <button className="snd-btn" onClick={handleReply}>Send Reply 
                                             <FontAwesomeIcon

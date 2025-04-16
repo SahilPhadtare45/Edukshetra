@@ -9,6 +9,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useParams } from 'react-router-dom';    
 import { useUserStore } from "../../../../Firebase/userstore"; // ✅ Zustand Store for currentUser
 import { useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
+import { toast } from "react-toastify"; // Make sure this is imported
 
 const Addmarks = () => {
   const navigate = useNavigate(); // ✅ Initialize navigation
@@ -18,8 +19,33 @@ const Addmarks = () => {
 
   const handleAddMarks = async () => {
     if (!examTitle || marksSections.length === 0) {
-      alert("Please enter an exam title and at least one subject.");
+      toast.error("Please enter an exam title and at least one subject.");
       return;
+    }
+  
+    // ✅ Validate marks before proceeding
+    for (let i = 0; i < marksSections.length; i++) {
+      const { subject, marksObtained, totalMarks } = marksSections[i];
+  
+      // Check for empty fields
+      if (!subject || !marksObtained || !totalMarks) {
+        toast.error(`Please fill out all fields for subject ${i + 1}.`);
+        return;
+      }
+  
+      // Check for numeric and non-negative values
+      const isValidMarksObtained = /^\d+(\.\d+)?$/.test(marksObtained);
+      const isValidTotalMarks = /^\d+(\.\d+)?$/.test(totalMarks);
+  
+      if (!isValidMarksObtained || !isValidTotalMarks) {
+        toast.error(`Marks must be valid non-negative numbers (Subject ${i + 1}).`);
+        return;
+      }
+  
+      if (parseFloat(marksObtained) > parseFloat(totalMarks)) {
+        toast.error(`Obtained marks cannot exceed total marks (Subject ${i + 1}).`);
+        return;
+      }
     }
   
     try {
@@ -27,7 +53,7 @@ const Addmarks = () => {
       const schoolSnap = await getDoc(schoolRef);
   
       if (!schoolSnap.exists()) {
-        alert("School not found.");
+        toast.error("School not found.");
         return;
       }
   
@@ -38,7 +64,7 @@ const Addmarks = () => {
       const memberIndex = members.findIndex(member => member.uid === uid);
   
       if (memberIndex === -1) {
-        alert("User does not belong to this school.");
+        toast.warn("User does not belong to this school.");
         return;
       }
   
@@ -79,12 +105,12 @@ const Addmarks = () => {
       members[memberIndex] = member;
       await updateDoc(schoolRef, { members });
   
-      alert("Marks added successfully!");
+      toast.success("Marks added successfully!");
       // ✅ Navigate back to the same user's profile page
       navigate(`/profile/${uid}`);
     } catch (error) {
       console.error("Error adding marks:", error);
-      alert("Failed to add marks.");
+      toast.error("Failed to add marks.");
     }
   };
   
@@ -94,6 +120,15 @@ const Addmarks = () => {
   ]);
   // Function to add a new marks section
   const addMarksSection = () => {
+    if (marksSections.length >= 10) {
+      toast.warn("You can't add more than 10 subjects.", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+      });
+      return;
+    }
+  
     setMarksSections([
       ...marksSections,
       { id: Date.now(), subject: "", marksObtained: "", totalMarks: "" },
@@ -121,8 +156,8 @@ const Addmarks = () => {
               </div>
               <label for="formGroupExampleInput" class="form-label lbl "><h3>Enter Examination Title</h3></label>
               <div class="form-floating mb-3 subin  ">               
-                  <input type="text" class="form-control box " id="floatingInput" placeholder="Enter Title" onChange={(e) => setExamTitle(e.target.value)}
-                  />
+                  <input type="text" class="form-control box " id="floatingInput" placeholder="Enter Title" 
+                  onChange={(e) => setExamTitle(e.target.value)} minLength={3} maxLength={50} />
                   <label  for="floatingInput ">Enter Title</label>
               </div>
               <button type="button" className="add-btn" onClick={addMarksSection}>
@@ -143,7 +178,7 @@ const Addmarks = () => {
                     </div>
                     <div className="form-floating mb-3 subin1">
                       <input type="text" className="form-control box" placeholder="Enter Subject/Topic" value={section.subject} 
-                          onChange={(e) => handleInputChange(section.id, "subject", e.target.value)}/>
+                          onChange={(e) => handleInputChange(section.id, "subject", e.target.value)} minLength={3} maxLength={20}/>
                       <label htmlFor="floatingInput">Enter here</label>
                     </div>         
                     <div className="input-group mb-3 marksin">
@@ -155,7 +190,7 @@ const Addmarks = () => {
                     </div>          
                   </div>
                 ))}
-                <button className="sub1" onClick={handleAddMarks}>Add</button>
+                <button className="sub1" onClick={handleAddMarks} disabled={examTitle.length < 3}>Add</button>
             </div>
         </div>
      );

@@ -42,7 +42,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <NavLink to="/students" className={({ isActive }) => (isActive ? 'active' : '')}>
-                        <FontAwesomeIcon icon={faUsersRectangle} className='sd-icon'/>
+                        <FontAwesomeIcon icon={faUsersRectangle} />
                         <div className='screens'> Students</div>
                     </NavLink>
                 </li>

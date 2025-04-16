@@ -15,6 +15,7 @@ const PageInfo = () => {
     '/attendance': 'Attendance',
     '/people': 'People',
     '/profile': 'Profile',
+    '/leave-school': 'Leave School'
       };
 
   // Get the current page name from the path

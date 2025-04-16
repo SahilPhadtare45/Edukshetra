@@ -18,7 +18,8 @@ const Login = () => {
   const [name, setName] = useState(""); // Added name for Signup
   const [error, setError] = useState(false);
   const { setUser, clearUser, setLoading, fetchUserInfo } = useUserStore(); // Zustand hooks
-
+  const [schoolName, setSchoolName] = useState("");
+  const [nameError, setNameError] = useState("");
   useEffect(() => {
     // Listen for authentication state change (login, logout)
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -87,6 +88,11 @@ const Login = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError(false); // Reset error state
+    if (!/^[A-Za-z\s]+$/.test(name) || name.length > 20) {
+      setNameError("Please enter a valid name (alphabets and spaces only, max 20 chars)");
+      return; // Stop submission
+    }
+    
     // Validate password before proceeding with signup
     if (!validatePassword(password)) {
       toast.error(
@@ -141,6 +147,8 @@ const Login = () => {
                   placeholder="Enter Email"
                   value={email} // Bind to state to reflect pre-fill
                   disabled={isFlipped} // Disable email field if already pre-filled
+                  maxLength={40}
+                  minLength={5}
                   required
                 />
                 <label>Enter Email</label>
@@ -168,16 +176,35 @@ const Login = () => {
           <div className="card-back">
             <div className="middle">SignUp</div>
             <form className="form1" onSubmit={handleSignup}>
-              <div className="form-floating mb-3 subin">
-                <input
-                  type="text"
-                  className="form-control box"
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name"
-                  required
-                />
-                <label>Name</label>
-              </div>
+            <div className="form-floating mb-3 subin">
+              <input
+                type="text"
+                className={`form-control box ${nameError ? 'is-invalid' : ''}`}
+                value={name}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  setName(input);
+
+                  // Check if input is valid (only alphabets and spaces)
+                  const isValid = /^[A-Za-z\s]*$/.test(input);
+                  if (!isValid) {
+                    setNameError("Only alphabets and spaces are allowed");
+                  } else if (input.length > 20) {
+                    setNameError("Maximum 20 characters allowed");
+                  } else {
+                    setNameError(""); // Clear error if valid
+                  }
+                }}
+                maxLength={30} // Allows slightly more input but validation restricts to 20
+                minLength={2}
+                placeholder="Name"
+                required
+              />
+              <label>Name</label>
+              {nameError && <div className="invalid-feedback">{nameError}</div>}
+            </div>
+
+
               <div className="form-floating mb-3 subin">
                 <input
                   type="email"
@@ -185,6 +212,8 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter Email"
                   value={email} // Bind to state to reflect pre-fill
+                  maxLength={40}
+                  minLength={5}
                   required
                 />
                 <label>Enter Email</label>
@@ -196,6 +225,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter Password"
                   value={password} // Bind to state to reflect pre-fill
+                  maxLength={20}
                   required
                 />
                 <label>Enter Password</label>
