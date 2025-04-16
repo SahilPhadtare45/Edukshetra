@@ -51,9 +51,9 @@
   }
   
   .leavepage .confirmation-popup {
-    position: fixed;
-    top: -8% !important;
-    left: 2;
+    position: absolute;
+    top: -4% !important;
+    left: 10%;
     right: 10%;
     bottom: 0;
     display: flex;
@@ -62,7 +62,7 @@
   }
   
   .leavepage .popup-content {
-    padding: 2%;
+    padding: 3%;
     height: 250px;
     background: white;
     border-radius: 10px;
