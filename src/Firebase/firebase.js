@@ -11,6 +11,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyDNDlLP3sU5c8AlFwIP7u_gLfoEDfDB1FU",
   authDomain: "edukshetra-4c5bf.firebaseapp.com",
+  databaseURL: "https://edukshetra-4c5bf-default-rtdb.firebaseio.com",
   projectId: "edukshetra-4c5bf",
   storageBucket: "edukshetra-4c5bf.firebasestorage.app",
   messagingSenderId: "105997735273",

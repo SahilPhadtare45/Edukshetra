@@ -63,10 +63,17 @@
     setUser: (user) => {
         set({ currentUser: user, isLoading: false });
         if (user) {
-          get().fetchUserInfo(user.uid); // Fetch schools for the logged-in user
-          get().fetchUserSchools(user.uid); // Fetch schools for the logged-in user
+            get().fetchUserInfo(user.uid); // Fetch user data
+            get().fetchUserSchools(user.uid); // Fetch schools for the logged-in user
+    
+            // After fetching user info, ensure to fetch and refresh role for the current school
+            const schoolId = get().currentSchool?.schoolId;
+            if (schoolId) {
+                get().refreshUserRole(schoolId, user.uid, get().fetchRoleForSchool);
+            }
         }
-      },
+    },
+    
      // Set current school and fetch role
     setCurrentSchool: (school) => {
     console.log("🏫 Attempting to set Current School:", school);
@@ -109,44 +116,42 @@
             const schoolDocRef = doc(db, "schools", schoolId);
             const schoolDocSnap = await getDoc(schoolDocRef);
     
-            if (schoolDocSnap.exists()) {
-                const schoolData = schoolDocSnap.data();
-                console.log("Fetched School Data:", schoolData);
-    
-                const members = schoolData.members || [];
-                console.log("Members Array:", members);
-    
-                // ✅ Check if user is the creator of the school
-                if (schoolData.createdBy === auth.currentUser?.email) {
-                    console.log("✅ User is the Admin (Creator of School)");
-                    useUserStore.getState().setRole("Admin");
-                    return "Admin";
-                }
-    
-                // ✅ Search for the user in `members` array
-                const userMember = members.find(member => member.uid.trim() === userId.trim());
-    
-                console.log("Matched User Member:", userMember); // Debugging
-    
-                if (userMember) {
-                    const role = userMember.userRole || "No Role Assigned";
-                    useUserStore.getState().setRole(role);
-                    console.log("✅ User Role Found:", role);
-                    return role;
-                } else {
-                    console.warn("⚠️ User not found in members list.");
-                    console.warn("Passed userId:", userId);
-                    console.warn("Member UIDs in DB:", members.map(m => m.uid));
-                }
+            if (!schoolDocSnap.exists()) {
+                console.warn("School not found:", schoolId);
+                return "No Role Assigned";
             }
     
-            console.warn("No role found for user in school:", schoolId);
+            const schoolData = schoolDocSnap.data();
+            const members = Array.isArray(schoolData.members) ? schoolData.members : [];
+    
+            // Normalize email comparison
+            const currentUserEmail = auth.currentUser?.email?.toLowerCase();
+            const creatorEmail = schoolData.createdBy?.toLowerCase();
+    
+            if (creatorEmail === currentUserEmail) {
+                useUserStore.getState().setRole("Admin");
+                return "Admin";
+            }
+    
+            const userMember = members.find(member =>
+                String(member.uid).trim() === String(userId).trim()
+            );
+    
+            if (userMember) {
+                const role = userMember.userRole || "No Role Assigned";
+                useUserStore.getState().setRole(role);
+                return role;
+            }
+    
+            console.warn("User not found in members list:", userId);
             return "No Role Assigned";
+    
         } catch (error) {
             console.error("Error fetching role:", error);
             return "Error";
         }
     },
+    
     
     
     

@@ -6,7 +6,7 @@ import { collection, query, where, getDocs, getDoc, updateDoc, doc } from "fireb
 import { db } from "../../../../Firebase/firebase";
 import acclogo from "../../../../images/acclogo.png";
 import { useUserStore } from "../../../../Firebase/userstore";
-
+import { toast } from "react-toastify";
 const AddTeachers = ({ schoolId }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
@@ -101,17 +101,17 @@ const AddTeachers = ({ schoolId }) => {
         console.log("Selected Classes:", selectedClasses);
     
         if (!selectedUser || !selectedUser.uid) {
-            alert("Please select a user before submitting.");
+            toast.warn("Please select a user before submitting.");
             return;
         }
     
         if (!schoolId) {
-            alert("Error: School ID is missing.");
+            toast.error("Error: School ID is missing.");
             return;
         }
     
         if (!selectedClasses || selectedClasses.length === 0) {
-            alert("Please select at least one class.");
+            toast.warn("Please select at least one class.");
             return;
         }
     
@@ -177,14 +177,14 @@ const AddTeachers = ({ schoolId }) => {
             await updateDoc(userRef, { schoolData: updatedSchoolData });
     
             console.log("Updated school members and user schoolData:", updatedMembers, updatedSchoolData);
-            alert("Teacher assigned successfully!");
+            toast.success("Teacher assigned successfully!");
             setIsVisible(false);
     
             fetchMembers(); // Refresh the data
             
         } catch (error) {
             console.error("Error updating teacher:", error.message);
-            alert(`Error assigning teacher: ${error.message}`);
+            toast.error(`Error assigning teacher: ${error.message}`);
         }
     };
     
