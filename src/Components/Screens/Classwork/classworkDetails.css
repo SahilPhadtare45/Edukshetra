@@ -1,0 +1,205 @@
+.classworkDetailsPage {
+    background-color:  rgba(220, 228, 230, 0.923);
+    height: 100vh;  
+    font-family: "Outfit" !important;   
+    overflow: hidden;
+}
+
+.classworkDetails {
+    width: 70%;
+    height: 75%;
+    margin-left: 23%;    
+    margin-top: 4%;    
+    background-color:  rgba(255, 255, 255, 0.923);
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: hidden;
+}
+
+.classworkDetails .iconbg{
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    background-color: #0056b3;
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+.classworkDetails .clipicon{
+    color: aliceblue;
+    margin-left: 31%;
+    height: 30px;
+}
+.classworkDetails h2 {
+    font-size: 34px;
+    color: #333;
+    margin-bottom: 10px;
+    margin-left: 2%;
+    margin-top: 2.5%;
+    max-width: 90%;
+}
+
+.classworkDetails p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.classworkDetails .due-date{
+    margin-left: 75%;
+    font-weight: bold;
+    margin-top: -1%;
+}
+.classworkDetails .clswork-title{
+    max-width: 900px;
+}
+.classworkDetails .clswrk-con{
+    margin-right: 2%;
+    margin-left: 7%;
+    margin-top: 2%;
+    height: 46% !important;
+    width: 40%;
+    overflow-x: hidden;
+    font-size: larger;
+    white-space: pre-wrap; /* ✅ Maintains spaces and line breaks */
+    word-wrap: break-word;  /* Prevents overflow issues */
+    font-family: Montserrat, sans-serif;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-radius: 10px;
+    position: absolute;
+}
+
+.classworkDetails .clswrk-text{
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom:2%;
+    margin-top: 2%;
+    width: 98%;
+    font-family: Outfit;
+}
+.classworkDetails .attachments {
+    margin-top: 28%;
+    margin-left: 8%;
+    position: absolute;
+    width: 50%;
+    li{
+        float: left;
+        margin-left: 2%;
+    }
+}
+
+.classworkDetails .attachments h3 {
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.classworkDetails .attachments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.classworkDetails .attachments li {
+    margin-bottom: 8px;
+}
+
+.classworkDetails .attachments a {
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.classworkDetails .uploads{
+    margin-top: 16%;
+    margin-left: 0%;
+    height: 76%;
+    background-color: rgb(255, 255, 255);
+    overflow-y: scroll;
+    span{
+        margin-top:20px !important;
+    }
+
+    ul{
+        margin-left: 0%;
+
+    }
+}
+.classworkDetails .uploads::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classworkDetails .uploads::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.classworkDetails .upload-section {
+    margin-top: 10%;
+    display: flex;
+    gap: 10px;
+    margin-left: 8%;
+}
+
+.classworkDetails .upload-section input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 0%;
+    margin-left: 0%;
+    position: relative;
+}
+
+.classworkDetails .upload-section button {
+    padding: 8px;
+    width: 85%;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 25% !important;
+    margin-left: 0%;
+    z-index: 1001;
+    position: absolute;
+}
+
+.classworkDetails .uploads a{
+    margin-top: 2%;
+}
+.classworkDetails .upload-section button:hover {
+    background-color: #b3b3b3;
+}
+
+.classworkDetails .upload-section button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.classworkDetails .upload-no{
+    margin-top: 0%;
+    margin-left: 920px;
+    position: absolute;
+}
+.classworkDetails .upload-sec{
+    position: absolute;
+    height: 58%;
+    width: 20%;
+    background-color: #ffffff;
+    margin-left: 48%;
+    margin-top: 2%;
+    border-radius: 10px;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+}
+.classworkDetails .upload-sec::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classworkDetails .upload-sec::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}

@@ -1,0 +1,183 @@
+.classworkpage{
+    background: white;
+    height: 100vh;  
+    font-family: "Outfit" !important;   
+    overflow-x: hidden;
+}
+.classwork{
+    height: 870px;
+    width: 79%;
+    margin-left: 20%;
+    margin-top: 0.6%;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    margin-bottom: 2%;
+    position: absolute;
+    background-color:  rgba(220, 228, 230, 0.923);
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px rgb(105, 105, 105);
+}   
+    
+.classwork::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.classwork::-webkit-scrollbar-thumb {
+    background-color:#52658F!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.classwork .contain{
+    margin-top: 5%;
+    background-color: transparent;
+    height: 80%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10%;
+    border-radius: 30px;
+
+}
+.work-container{
+    position: absolute;
+    background-color: transparent;
+    width: 90%; /* Full width relative to .classwork */
+    margin-top: 2% !important;
+}
+.work-card{
+    border: 1px ghostwhite solid;
+    margin-top: 2%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    margin-left: 5%;
+}
+.classwork .head{
+    display:flex;
+}
+.classwork .con-title{
+    font-size: 24px;
+    margin-bottom: 8px;
+    word-wrap: break-word; /* Break long words if needed */
+    white-space: normal; /* Allow the text to wrap */
+    overflow: visible; /* Ensure no truncation */
+    max-width:80%;
+    margin-left: 2%;
+    margin-top: 0%;
+}
+.classwork .timeposted{
+    font-size: 12px !important;
+    position: absolute;
+    margin-left: 80%;
+    margin-top: 1%;
+}
+.classwork .content{
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 1%;
+    font-size: 14px;
+    font-weight: 600;
+}
+.classwork .createbg{
+    flex-direction: row;
+    background-color: #A3B1D1;
+    height: 50px;
+    width: 150px;
+    position: absolute;
+    margin-left: 0%;
+    margin-top: -2%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+    border: none;
+    p{
+        font-size: 23px;
+        margin-left: 40%;
+        text-shadow: 1px 1px black;
+    }
+}
+.classwork .createbg:hover{
+    background-color: rgb(24, 40, 64);
+    p{
+        color: white;
+    }
+    .cricon,.createicon{
+        background-color: #A3B1D1;
+        color: black;
+    }  
+}
+.classwork .cricon{
+    height: 50px;
+    width: 50px;
+    background-color: rgb(24, 40, 64);
+   position: absolute;
+    margin-left: -5%;
+    margin-top: -1%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.435);
+}
+.classwork .createicon{
+    height: 30px;
+    margin-left: 2%;
+    margin-top: 20%;
+    color: white;
+}
+.upload-section {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.upload-section input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.upload-section button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-section button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.submissions {
+    margin-top: 15px;
+}
+
+.submissions h4 {
+    font-size: 16px;
+    color: #333;
+}
+
+.submissions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.submissions li {
+    margin-bottom: 5px;
+}
+
+.submissions a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.submissions a:hover {
+    text-decoration: underline;
+}

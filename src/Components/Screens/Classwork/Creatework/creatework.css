@@ -1,0 +1,168 @@
+.createpage{
+  background-color:  rgb(255, 255, 255);
+  height: 100vh;  
+  font-family: "Outfit" !important;   
+  overflow: hidden;
+}
+.creatework{
+    position: absolute;
+    height: 80%;
+    width: 70%;
+    background-color:  rgb(220, 228, 230);
+    margin-left: 25%;
+    margin-top: 2%;
+    box-shadow: 10px 10px 15px rgb(105, 105, 105);
+    border-radius: 20px;
+}
+.creatework .head{
+  position: relative;
+    margin-top: -0.5%;
+    margin-left: -1%;
+    height: 10%;
+    width: 23%;
+    background-color: #ffffff;
+    justify-content: center;
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+    text-align: center;
+    p{
+        font-size: 26px;
+        position: absolute;
+        top: 20%;
+        left: 35.3%;
+        transform: translate(-50%, -50%);
+        color: rgb(24, 40, 64);
+        text-shadow: 1px 1px 2px rgb(93, 93, 93);
+        font-family: Outfit;
+    } 
+}
+.creatework .subin{
+    width: 90%;
+    margin-left: 5%;   
+    border: none !important;
+    .box{
+        box-shadow:0.1px 1px 2px 2px  #525252;
+        border-top-left-radius: 25px;
+        border-bottom-right-radius:25px;
+    }
+}
+.creatework .con_box{
+    height:15%;
+    width: 90%;
+    margin-left: 5%;  
+    box-shadow:0.1px 1px 2px 2px  #525252;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px; 
+    white-space: pre-wrap; /* ✅ Maintains spaces and line breaks */
+    word-wrap: break-word;  /* Prevents overflow issues */
+}
+.creatework .con_box::-webkit-scrollbar {
+    display: none;
+}
+
+.creatework .upload-in{
+    margin-left:70px; 
+    margin-right: 10%;
+    border-radius: 2%;
+    border: none !important;
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    border-top-left-radius: 25px !important;
+    border-bottom-right-radius:25px !important;
+    height: 8%;
+    position: relative;
+}
+.creatework .allow{
+    height: 0px;
+    margin-right:20% ;
+    input{
+        height: 25px;
+        width: 50px;
+        box-shadow:0.1px 1px 2px 2px  #5252528a;
+    }
+    label{
+        font-size: 20px;
+    }
+}
+/* Change calendar width */
+.creatework .react-calendar {
+    margin-top: 40px;
+    width: 250px; /* Set the width */
+    height: 285px; /* Set the height */
+    font-size: 14px; /* Optional: Customize font size */
+    background-color: #f8f9fa; /* Optional: Set background color */
+    margin-left: -27%;
+    font-family: "Montserrat alternates",serif !important;
+    border-top-left-radius: 25px !important;
+    border-bottom-right-radius:25px !important;
+    position: absolute;
+  }
+  /* Adjust the month view header */
+  .creatework .react-calendar__navigation {
+     /* Set background color */
+    color: white; /* Text color */
+    margin-bottom: 0px; 
+    height: 40px !important;
+    font-size: 10px !important;
+  }
+  /* Style the date cells */
+  .creatework .react-calendar__tile {
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    height: 1% !important;  
+  }
+  .creatework .react-calendar__tile:active {
+    background-color: #007bff;
+    color: white;
+    width: 10px;
+  }
+  .creatework .react-calendar__tile--now {
+    background-color: #00000012 !important;
+    color: rgb(0, 0, 0);
+  }
+  .creatework .duedate{
+    display: flex;  
+    p{
+        margin-top:1%;
+        margin-left: 5%;
+        font-size: 16px;
+    }
+  }
+  .creatework .calbtn{
+    height: 50px;
+    margin-left: 4%;
+    margin-top: 2%;
+    background-color: rgb(24, 40, 64);
+}
+  .creatework .datedis{
+    margin-top: 2%;
+  }
+  .creatework .classselection{
+    position: absolute;
+    margin-left: 60%;
+  }
+  .creatework .classdropdowns{
+        margin-top: 1%;
+        margin-left: 1px;
+        width: 50px;  
+
+  }
+  .creatework .Create-Button{
+    border: none;
+    background-color: transparent;
+    color: #000000;
+    border:2px solid rgb(24, 40, 64);
+    height: 50px;
+    width: 120px;
+    font-size: 20px;
+    border-radius: 50px;
+    margin-left: 45%;
+    margin-top: 6%;
+    box-shadow:0.1px 1px 2px 2px  #52525246;
+    p{
+      font-size: 20px !important;
+    }
+}
+.creatework .Create-Button:hover{
+    background-color: rgb(24, 40, 64);
+    border: 2px solid rgb(24, 40, 64);
+    color: white;
+}

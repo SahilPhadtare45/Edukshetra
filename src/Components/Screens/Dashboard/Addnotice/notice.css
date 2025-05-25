@@ -1,0 +1,87 @@
+/* Background overlay */
+.notice-details{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.528) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -750px;
+    margin-left: -770px;
+    z-index: 1;
+}
+
+/* Popup container */
+.notice-details .notice-content {
+    height: 520px;
+    width: 650px !important;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 240px;
+    border: 1px solid black;
+    font-family: Outfit;
+}
+
+/* Close button */
+.notice-details .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+
+.notice-details .notice-item{
+    max-width: 93%;
+    word-wrap: break-word; /* Break long words if needed */
+    white-space: normal; /* Allow the text to wrap */
+    overflow: visible; /* Ensure no truncation */
+    position: relative;
+    margin-top: 0%;
+}
+.notice-details .notice-content h2{
+ margin-left: 30%;
+ color: black;
+}
+.notice-details .notice-content .nt-bg{
+    height: 40px;
+    width: 198px;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-top-right-radius:10px ;
+    border-bottom-right-radius: 10px;
+}
+.notice-details .notice-content .notice-date{
+    font-size: 14px;
+    margin-top: -10px;
+    font-weight: bold;
+
+}
+.notice-details .notice-content .content-area{
+    height: 78%;
+    width: 90%;
+    background-color: #ffffff3b;
+    margin-left:5%;
+    z-index: 999;
+    color: rgb(0, 0, 0);
+    border-radius: 50px;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    border: none;
+    margin-top: 3%;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+}
+.notice-details .content-area::-webkit-scrollbar {
+    width: 13px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.notice-details .content-area::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
+    border-radius: 10px !important;
+    border: none;
+}

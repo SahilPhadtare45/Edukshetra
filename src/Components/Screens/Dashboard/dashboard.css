@@ -1,0 +1,484 @@
+
+.dashboard{
+    background: white;
+    height: 100vh;  
+    font-family: "Outfit" !important;   
+    overflow-x: hidden;
+}
+.dashboard .bg-con{
+    height: 870px;
+    width: 79%;
+    margin-left: 20%;
+    margin-top: 0.6%;
+    position: absolute;
+    background-color:  rgba(220, 228, 230, 0.923);
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px rgb(105, 105, 105);
+
+}
+
+.dashboard .classes{
+    background: rgb(24, 40, 64);
+    height: 24%;
+    width: 20%;
+    margin-left: 5%;
+    margin-top: 10%;
+    border-radius: 30px;
+    z-index: 1;
+    color: white;
+
+}
+.dashboard .classes .classes-title{
+    font-size: 25px;  
+    margin-left: 7%;
+    padding: 5%;
+    font-weight: light;
+}
+.dashboard .class-dropdowns{
+    position: relative;
+    display: block;
+    width: 15em;
+    height: 3.5em;
+    line-height: 3;
+    overflow: hidden;
+    border-radius: .25em;
+    padding-bottom: 10px; 
+    margin-left: 10%;
+}
+.dashboard .class-dropdowns select{  
+    outline: 0;
+    background: transparent;
+    background-image: none;
+    width: 100%;
+    height: 100%;
+    color: white !important;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 35px;
+    font-weight: bold;
+}
+.dashboard .custom-dropdown {
+    background-color: transparent; /* Background color for dropdown */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+ 
+}
+
+.custom-dropdown option {
+    background-color: white;  /* Background color for dropdown options */
+    color: black;
+}
+
+/* Makes selected option transparent */
+.custom-dropdown option:checked {
+    background-color: transparent !important;
+    color: black !important;
+}
+.dashboard .class-dropdowns option:checked{
+    color: white;
+}
+.dashboard .teachers{
+    background: rgb(24, 40, 64);
+    height: 24%;
+    width: 20%;
+    margin-left: 5%;
+    margin-top: 2%;
+    border-radius: 30px;
+    color: white;
+
+}
+.dashboard .teachers-title{
+    font-size: 25px;  
+    margin-left: 7%;
+    padding: 5%;
+    font-weight: light;
+}
+.dashboard .teachers-no{
+    font-size: 35px;
+    font-weight: 300;
+    margin-left: 12%;
+    font-weight: bold;
+}
+.dashboard .students-title{
+    font-size: 25px;  
+    margin-left: 7%;
+    padding: 5%;
+    font-weight: light;
+}
+.dashboard .students-no{
+    font-size: 35px;
+    font-weight: 300;
+    margin-left: 12%;
+    font-weight: bold;
+}
+
+.dashboard .students{
+    background: rgb(24, 40, 64);
+    height: 24%;
+    width: 20%;
+    margin-left: 5%;
+    margin-top: 2%;
+    border-radius: 30px;
+
+    color: white;
+}
+
+
+
+.dashboard .complaints:hover {
+    transform: scale(1.02);
+}
+
+
+.dashboard .complaints-no {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff5733;
+}
+
+.dashboard .complaint-bg{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.528) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -970px;
+    margin-left: -350px;
+    z-index: 102;
+}
+/* Complaints List Popup */
+.dashboard .complaints-popup {
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    top: 35%;
+    left: 61%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 1000px;
+    height: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    min-height: 300px;
+    max-height: 90vh;
+    overflow: auto;
+    overflow-y: hidden;
+}
+
+.dashboard .complaints-popup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dashboard .popup-header1{
+    height: 40px;
+    width: 300px;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-top-right-radius:10px ;
+    border-bottom-right-radius: 10px;
+    margin-top: 4%;
+   
+}
+
+.dashboard .popup-header1 .pop-title{
+margin-right: 20%;
+position: absolute;
+font-size: 28px;
+font-weight: 500;
+margin-left: 4%;
+}
+.dashboard .close-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+    margin-left: 95%;
+    margin-top: 2%;
+    position: absolute;
+}
+.dashboard .complaint-bg-con{
+    height: 82%;
+    width: 90%;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-radius: 20px;
+    margin-left: 5%;
+    margin-top: 3%;
+    margin-bottom: 2%;
+    overflow-y: scroll;
+}
+.dashboard .complaints-list {
+    list-style: none;
+    padding: 0;
+    width: 92%;
+    height: 170px;
+    margin-left: 5%;
+    margin-top: 2%;
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 200px;
+}
+.dashboard .addcomplaint{
+    margin-left: 80%;
+}
+.dashboard .complaints-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #000000;
+    width: 95%;
+}
+.dashboard .complaints-list::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+
+}
+.dashboard .complaints-list::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
+    border-radius: 10px !important;
+    border: 1px black !important;
+}
+
+.dashboard .complaint-row.selected {
+    background-color: #f0f0f0;
+}
+
+.dashboard .complaint-text{
+    max-width: 80%;
+}
+.dashboard .complaint-number {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.dashboard .complaint-date {
+    font-size: 12px;
+    color: gray;
+}
+
+.dashboard .complaint-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+
+.dashboard .complaint-item:hover {
+    background: #f9f9f9;
+}
+
+.dashboard .complaint-details-popup {
+    height: 650px;
+    width: 800px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-top: -290px;
+    z-index: 999;
+    position: absolute;
+    top: 50%;
+    left: 29.2%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    p{
+        margin-top: 10px;
+    }
+
+    h3,h5{
+        margin-left: 2%;
+        margin-top: 2%;
+    }
+}
+
+.dashboard .replies{
+    width: 90%;
+    height: 35%;
+    margin-bottom: 10% !important;
+    max-width: 85%;
+    margin-left: 8%;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    box-shadow: 1px 4px 15px rgb(105, 105, 105);
+    border-radius: 10px;
+
+}
+.dashboard .replies::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+    margin-left: 2%;
+}
+.dashboard .replies::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c !important;
+    border-radius: 10px !important;
+    border: none;
+}
+/* Reply Section */
+.dashboard .reply-box {
+    margin-top: 15px;
+    margin-left: 5%;
+    width: 90%;
+    height: 100px;
+    box-shadow:0.1px 1px 4px 1px  #3f3f3f;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius:10px; 
+}
+
+.dashboard .reply{
+    max-width: 95%;
+    word-wrap: break-word; /* Break long words if needed */
+    white-space: normal; /* Allow the text to wrap */
+    overflow: visible; /* Ensure no truncation */
+    margin-bottom: 2%;
+    
+}
+.dashboard .btm-line{
+    position: static;
+    width: 25%;
+    height: 1px;
+    margin-left: 40%;
+    margin-bottom: 5%;
+    background-color: #000000;
+    margin-top: 5%; /* Add spacing between navbar and static line */  
+}
+.dashboard .snd-btn{
+    background: none;
+    border: none;
+    color: #667EEA;
+    margin-left: 5%;
+}
+.dashboard .snd-btn:hover{
+    color: #a92323;
+}
+.dashboard .reply-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #a92323;
+    border-radius: 5px;
+    resize: none;
+}
+
+.dashboard .reply-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.dashboard .reply-btn:hover {
+    background: #e14b2b;
+}
+
+.dashboard .notice{
+    left: 28%;
+    z-index: 100;
+    margin-top: -23%;   
+    border-radius: 10px !important;
+    position: absolute;
+    height: 350px;
+    width: 1000px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    
+}
+.dashboard .notice-list::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+
+}
+.dashboard .notice-list::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.dashboard .notice-header{
+    margin-left: 0%;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    gap: 85%;
+    font-size:30px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+}
+.dashboard .notice-title{
+    margin-left: 20px;
+    margin-top: 1%;
+}
+.dashboard .nicon{
+    margin-top: 1%;
+}
+.dashboard .notice-list{
+    background-color: #fff;
+    max-height:280px ;
+    width: 95%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+
+}
+.dashboard .item{
+    display : flex;
+    font-size : 25px;
+    margin-left:2%;
+    margin-top: 1%;
+    width: 95%;
+    border: none;
+}
+.dashboard .item-text{
+    max-width: 80% !important;
+    font-size: 20px;
+    margin-top: 1.5%;
+    margin-left: 2%;
+}
+.dashboard .icon{
+    position:absolute;  
+    margin-left: 95%;
+    height: 20px;
+    margin-top: 1%;
+}
+.dashboard .icon:hover{
+    color: red;
+}
+
+.dashboard .class-display{
+    z-index: 3;
+    font-size: 35px;  
+    margin-left: 7%;
+}
+.dashboard .under-line{
+    position: static;
+    width: 95%;
+    height: 1px;
+    margin-left: 3%;
+    background-color: #000000;
+    margin-top: 1px; /* Add spacing between navbar and static line */     
+}
+.dashboard .notice-time{
+    position: absolute;
+    font-size: small;
+    margin-top: 0px;
+    margin-left: 1%;
+    color: #a4a4a4;
+}
+
+.dashboard .addcomp-compo{
+    position: absolute;
+    margin-top: -20%;
+    width: 95%;
+}

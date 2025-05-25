@@ -1,0 +1,401 @@
+.attendancepage{
+  background: #ffffff;
+  height: 100vh;  
+  font-family: Outfit;  
+  overflow: hidden; 
+}
+.attendancepage .contain{
+  height: 870px;
+  width: 79%;
+  margin-left: 20%;
+  margin-top: 0.6%;
+  position: absolute;
+  background-color:  rgba(220, 228, 230, 0.923);
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px rgb(105, 105, 105);
+}
+.attendancepage .navbar {
+  position: relative;
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  padding: 10px 0; /* Add vertical padding for spacing */
+  margin-left: 2%; 
+  margin-top: 10%;
+}
+.attendancepage .navdiv{
+  width: 95%;
+  height: 9.2%;
+  background-color: white;
+  margin-left: 2.5%;
+  border-radius: 15px;
+  box-shadow: 1px 4px 25px rgb(105, 105, 105);
+  font-family:"Montserrat Alternates", serif !important
+}
+.attendancepage .navbar-nav {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  position: relative; /* Set position relative for underline alignment */
+  color: rgb(0, 0, 0);
+}
+/* Nav items */
+.attendancepage .nav-item {
+  position: relative; /* Allows the underline to align with this element */
+  margin: 0 30px; /* Uniform horizontal spacing between nav items */   
+  margin-left: 5%;
+}
+.attendancepage .nav-item.active .nav-link {
+    color: #667EEA; /* Highlight active nav item */
+    font-family: "Montserrat Alternates", serif !important;
+}
+/* Nav links */
+.attendancepage .nav-link {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 25px;  
+    padding: 8px 0; /* Add vertical padding for better alignment */
+    display: inline-block; /* Ensure consistent sizing */
+    text-align: center; /* Center text inside nav items */   
+}
+/* Sliding underline */
+.attendancepage .active-underline {
+    position: absolute;
+    bottom: -6px; /* Position the underline just below the nav items */
+    height: 6px;
+    background-color: #667EEA; /* Underline color */
+    transition: all 0.3s ease-in-out;
+    left: 0; /* Default left value (will be dynamically updated) */
+    width: 0; /* Default width value (will be dynamically updated) */
+    margin-left: 10px;
+    border-radius: 5px;
+}
+/* Static underline below the navbar */
+.attendancepage .navbar-line {
+    position: static;
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin-top: 5px; /* Add spacing between navbar and static line */
+    clip-path: polygon(0% 0%,100% 0%, 0% 100%, 00% 100%);  
+}
+.attendancepage .tr{
+  position: relative;
+    margin-top: 2%;
+    height: 8%;
+    width: 15%;
+    background-color: #ffffff;
+    font-family: "Montserrat Alternates", serif !important;    
+    box-shadow: 1px 4px 25px rgb(105, 105, 105);
+    justify-content: center;
+    border-bottom: none;
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+    text-align: center;
+  p{
+    font-size: 30px;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    color: rgb(24, 40, 64);
+    text-shadow: 1px 1px 2px rgb(93, 93, 93);
+    font-family: Outfit;
+  } 
+}
+
+.attendancepage .li-item{
+    display: flex;
+    margin-top: 2%;
+}
+.attendancepage .item-text{
+    font-size: 20px;
+    margin-left: 6%;
+    max-width: 38%;
+    color: #000000;
+}
+.attendancepage .sub_name{
+    margin-left: 52.5%;
+    font-size: 20px;
+    color: #827f7f;
+    max-width: 20%;
+}
+.attendancepage .list-group {
+    background-color: transparent;
+  }
+.attendancepage .list-group-item {
+    background-color: transparent;  
+  }
+  .attendancepage .createbg{
+    flex-direction: row;
+    background-color: #fff;
+    height: 50px;
+    width: 170px;
+    position: absolute;
+    margin-left: 81%;
+    margin-top: -4%;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+    border: none;
+    p{
+        font-size: 12px;
+        margin-left: 35%;
+        margin-top: 8%;
+    }
+}
+.attendancepage .createbg:hover{
+    background-color: #7EDEB6;
+    p{
+        color: #fff;
+    }
+    .cricon{
+        background-color: #fff;
+    }    
+}
+/* .attendancepage .cricon{
+    height: 50px;
+    width: 65px;
+    background-color: #5FB9A2;
+   position: absolute;
+    margin-left: -5%;
+    margin-top: -1.1%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;   
+    clip-path: polygon(0% 0%,100% 0%, 70% 100%, 00% 100%);    
+}
+.attendancepage .cal_icon{
+    height: 20px;
+    margin-left: -20%;
+    margin-top: 20%;
+}
+.attendancepage .calendar-container {
+    position: relative;
+    z-index: 1000;   
+    width: 300px !important; 
+}
+.attendancepage .react-calendar{
+    margin-top: 30px;
+    height:290px; 
+    font-size: 14px; 
+    background-color: #f8f9fa; 
+    margin-left: 300% !important;
+    font-family: "Montserrat alternates",serif !important;
+    border-top-left-radius: 25px !important;
+    border-bottom-right-radius:25px !important;
+    position: absolute;
+    z-index: 1;
+   }
+ 
+  .attendancepage .react-calendar__navigation {
+    color: white !important; 
+    height: 40px !important; 
+    margin: 0 !important; 
+    padding: 0 !important;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    width: 100% !important; 
+    border-radius: 25px 25px 0 0; 
+  }
+  .attendancepage .react-calendar__navigation__arrow,
+.attendancepage .react-calendar__navigation__label {
+    flex: 1; 
+    height: 20px;
+    font-size: 12px !important;
+}
+  .attendancepage .react-calendar__navigation__arrow:hover {
+    background-color: #0056b3 !important;
+  }
+
+  .attendancepage .react-calendar__tile {
+    width: auto !important; 
+    height: auto !important; 
+    padding: 10px !important; /* Adjust spacing 
+    text-align: center;
+    border-radius: 50% !important; /* Keep circular style 
+    transition: background-color 0.3s ease;    
+  }
+  .attendancepage .react-calendar__tile:active {
+    background-color: #007bff !important;
+    color: white !important;
+    width: 10px !important;
+  }
+  .attendancepage .react-calendar__tile--now {
+    background-color: #00000012 !important;
+    color: rgb(0, 0, 0) !important;
+  }
+  .attendancepage .datedis{
+    margin-top: 2%;
+    font-weight: lighter;
+    font-size: 16px;
+    position: absolute;
+    margin-left: 75%;
+  } */
+  .attendancepage .radiobtn{
+    padding: 5px;
+    border-radius: 30px;
+    width: 220px;
+    text-align: center;
+    color: #000000;
+    transition: background-color 0.3s ease;
+    background-color: getBgColor();
+    margin-left: 80%; 
+    margin-top: -0.5%;
+    position: absolute;
+  }
+  .attendancepage .lab{
+    font-size: 12px;
+    margin-left: 2px;
+    cursor: pointer;
+  }
+  
+  .attendancepage input[type="radio"] {
+    margin-right: 5px;
+    cursor: pointer;
+    height: 10px;
+  }
+  .attendancepage .stu{
+    position: absolute;
+    background-color: transparent;
+    height: 33%;
+    width: 100%;
+    margin-top: 2%;
+    border-radius: 10px;
+  }
+  .attendancepage .sub_name1{
+    margin-left: 54%;
+    font-size: 20px;
+    color: #827f7f;
+    max-width: 20%;
+  }
+  .attendancepage .stu_section{
+    height: 155%;
+    width: 90%;
+    margin-top: 2%;
+    margin-left: 5%;
+    border-radius: 30px;
+    background-color: white !important;
+    position:absolute !important;  
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+    cursor: pointer !important;
+    box-shadow: 1px 4px 35px rgb(105, 105, 105);
+}
+.attendancepage .stu_section::-webkit-scrollbar {
+    width: 10px !important;
+    background-color: transparent !important;
+    border-top-left-radius: 10px !important;
+}
+.attendancepage .stu_section::-webkit-scrollbar-thumb {
+    background-color:#8c8c8c!important;
+    border-radius: 10px !important;
+    border: none;
+}
+.attendancepage .navbarline1{
+  position: static;
+  width: 95%;
+  height: 1px;
+  background-color: #000000;
+  margin-left: 3%;
+  margin-right: 5%;
+  margin-top: 10px;
+}
+.attendancepage .attendance-marked-message{
+  position: absolute;
+  font-weight: bold;
+  margin-left: 40%;
+}
+.attendancepage .attendance-submit{
+  height: 40px;
+  width: 200px;
+  position: absolute;
+  border: none;
+  color: #ffffff;
+  background-color: #52658F;
+  margin-left: 80%;
+  margin-top: 0%;
+  border-radius: 30px;
+
+  p{
+    margin-left: 10px;
+  }
+}
+.attendancepage .attendance-submit:disabled{
+  color: #7d7d7db4;
+  background-color: #A3B1D1;
+}
+
+.attendancepage .contain1{
+  position: absolute;
+  background-color: #E8E8E8;
+  height: 70%;
+  width: 70%;
+  margin-left: 25%;
+  margin-top: 8%;
+  border-radius: 20px;
+  border: 1px solid rgba(128, 128, 128, 0.435);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.544);
+  display: flex;
+}
+.attendancepage .attendance-data{
+  height: 700px;
+  width: 400px;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  margin-left: 69%;
+  margin-top: 0.7%;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  overflow-x: hidden;
+  h4{
+    margin-left: 20%;
+    margin-top: 2%;
+  }
+  
+}
+
+.attendancepage .attendance-data .tb-header{
+  margin-left: 10% !important;
+  position: absolute;
+  font-size: 20px;
+  background-color:#ffffff;
+  width: 180px;
+}
+.attendancepage .attendance-data .tb-header1{
+  margin-left: 70% !important;
+  font-size: 20px;
+}
+.attendance-data .data-row{
+  width: 395px;
+  margin-top: 10%;
+}
+.attendance-data .line{
+  position: static;
+  width: 95%;
+  height: 1px;
+  background-color: #000000;
+  margin-left: 3%;
+  margin-right: 5%;
+  margin-top: 10px;
+}
+.attendance-data .row1{
+ margin-left: 10% !important;
+ position: absolute;
+ margin-top: 1%;
+}
+.attendance-data .row2{
+  margin-left: 70% !important;
+  position: absolute;
+  margin-top: 1%;
+ }
+ .attendancepage .pie{
+  position: absolute;
+  margin-top: 13%;
+  margin-left: 15%;
+ }
+ .contain1 .OV-txt{
+  margin-left: 2%;
+  margin-top: 2%;
+ }

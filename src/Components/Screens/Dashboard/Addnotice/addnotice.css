@@ -1,0 +1,96 @@
+.addnoticebg{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.528) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -680px;
+    margin-left: -770px;
+    z-index: 1;
+    font-family: Outfit;
+}
+.addnotice{
+    height: 550px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 180px;
+    border: 1px solid black;
+}
+.addnotice .addnoticetitle{
+    font-size: 30px;
+    margin-left: 250px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+.addnotice .xicon{
+    height: 25px;
+    margin-top: 1% !important;
+    margin-left: 95%;
+    display: flex;
+}
+.addnotice .lbl{
+    margin-left: 5%;
+    font-size: larger;
+}
+.addnotice .btn-sub1{
+    width: 20%;
+    height: 8%;
+    font-size: 15px;
+    margin-top: 6%;
+    margin-left: 40%;
+    border-radius: 50px !important;
+    border: 2px solid rgb(24, 40, 64) !important;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(0, 0, 0) !important;
+    position: absolute;
+}
+.addnotice .btn-sub1:hover {
+    background-color: rgb(24, 40, 64) !important; 
+    border-color: rgb(24, 40, 64) !important; 
+    color: white !important;
+    transition: 200ms ease;
+}
+.addnotice .name{  
+    margin-left: 5%;
+    width: 90%; 
+    height: 180px; 
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    border: none !important;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;
+}
+.addnotice .namein{  
+    border-radius: 2%;
+    border: none !important;
+    box-shadow:0.1px 1px 4px 2px  #525252;   
+}
+p{
+    font-size: larger;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+.addnotice .To-dropdowns{
+    box-shadow:0.1px 1px 4px 2px  #525252; 
+    width: 50%;
+    height: 10%;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;
+    margin-top: -5%;
+    margin-left: 12%;
+    border: none;
+}
+.addnotice .To-dropdowns select{
+    outline: 0;
+    background: transparent;
+    background-image: none;
+    width: 100%;
+    height: 100%;
+    color: black !important;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 20px;
+}

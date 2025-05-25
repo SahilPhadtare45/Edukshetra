@@ -1,0 +1,27 @@
+.page-info {
+    position: fixed;
+    margin-top: 0%;
+    margin-left: 19%;
+    height: 10%;
+    width: 19%;
+    background-color: white;
+    font-family: "Montserrat Alternates", serif !important;  
+    clip-path: polygon(0% 0%,100% 0%, 80% 100%, 00% 100%);   
+    z-index: 1;
+}
+.page-info .current-page {
+    margin-top: 4%;
+    font-size: 35px;
+    color: black;
+    margin-left: 23%;
+}
+.page-info .breadcrumb {
+    font-size: 14px;
+    color: gray;
+    margin: 5px 0 0;
+    margin-left: 23%;
+}
+.page-info .breadcrumb span {
+    color: gray;
+}
+    

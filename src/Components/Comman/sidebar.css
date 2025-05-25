@@ -1,0 +1,79 @@
+.sidebar {
+   
+    width: 350px;
+    background: rgb(24, 40, 64);
+    height: 90%;
+    position: fixed;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    font-family: "Outfit" !important;   
+    border-top-right-radius: 80px;    
+    z-index: 1;
+    
+
+}
+.sidebar .sclimg{
+    margin-left: 25%;
+    height: 18%;
+    width: 48%;
+    border-radius: 50%;
+}
+.sidebar .sclname{
+    margin-top: 1%;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+.sidebar .home{
+    margin-top: 10%;
+    font-size: 25px;
+    font-weight:500;
+    margin-left: 5%;
+}
+.sidebar ul {
+    margin-left: 5%;
+    list-style-type: none;
+    padding: 0;
+    
+}
+.sidebar li {
+    padding: 5px 30px;
+    
+}
+.sidebar a {
+    margin-top: 8%;
+    text-decoration: none;
+    color: #333;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-right: 10%;
+    font-weight: 500;
+    color: white;
+}
+.sidebar a:hover {
+    color: #007bff;
+    .sd-icon{
+        color: white;
+    }
+}
+.sidebar a.active {
+    font-weight: bold;  
+    color: #000000;
+    height: 50px;
+    width: 111%;
+    background-color: #A3B1D1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+.sidebar .line {
+    position: static;
+    width: 90%;
+    height: 1px;
+    background-color: #ffffff;
+    margin-top: 6%; /* Add spacing between navbar and static line */
+}

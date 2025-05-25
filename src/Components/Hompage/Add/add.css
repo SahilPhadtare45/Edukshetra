@@ -1,0 +1,36 @@
+.addcontainer{
+    margin-top: -1%;
+    z-index: 1;
+    height: 10%;
+    width: 5.5%;
+    position: absolute;
+    background-color: rgb(230, 230, 230);
+    margin-left: 68%;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;  
+}
+.bts{
+    font-family: "Montserrat Alternates", serif !important;
+    font-size: 17px;
+    height: 100%;
+    .createbtn{
+        border: 0cap;
+        height: 49px;
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 1%;
+        background-color: aquamarine;   
+        border-top-left-radius: 25px;
+        box-shadow: 1px 4px 4px  #525252;
+    }
+    .joinbtn{        
+            border: 0cap;
+            height: 49px;
+            width: 80%;
+            margin-left: 10%;   
+            margin-top: 1%;  
+            background-color: aqua;  
+            border-bottom-right-radius:25px;
+            box-shadow: 1px 4px 4px  #525252;
+    }
+}

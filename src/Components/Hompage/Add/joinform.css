@@ -1,0 +1,51 @@
+.joinfrombg{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.34) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -265px;
+    margin-left: -1270px;
+}
+.joinform{
+    height: 460px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 240px;
+    border: 1px solid black;
+    font-family: Outfit;
+
+}
+.jointitle{
+    font-size: 30px;
+    margin-left: 215px;
+    margin-top: 10px;
+   
+}
+.xicon{
+    height: 25px;
+    margin-top: 1% !important;
+    margin-left: 95%;
+    display: flex;
+}
+.joinform .btn-sub1{
+    width: 20% !important;
+    height: 10% !important;
+    font-size: 15px !important;
+    margin-top: 6% !important;
+    margin-left: 40% !important;
+    border-radius: 50px !important;
+    border: 2px solid rgb(24, 40, 64) !important;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(0, 0, 0) !important;
+    position: absolute;
+}
+.joinform .btn-sub1:hover {
+    background-color: rgb(24, 40, 64) !important; 
+    border-color: rgb(24, 40, 64) !important; 
+    color: white !important;
+    transition: 200ms ease;
+}

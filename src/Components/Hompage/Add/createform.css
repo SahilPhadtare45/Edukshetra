@@ -1,0 +1,113 @@
+
+.createfrombg{
+    height: 1000px;
+    width: 1850px;
+    background-color: rgba(0, 0, 0, 0.34) !important;
+    border-radius: 10px !important;
+    position:absolute !important;
+    margin-top: -265px;
+    margin-left: -1270px;
+    font-family: Outfit;
+}
+.createform{
+    height: 750px;
+    width: 650px;
+    background-color: rgba(255, 255, 255, 255) !important;
+    border-radius: 10px !important;
+    position: absolute !important;
+    margin-left:32%;
+    margin-top: 100px;
+    border: 1px solid black;
+
+}
+.createtitle{
+    font-size: 30px;
+    margin-left: 165px;
+    margin-top: 20px;
+   
+}
+.xicon{
+    height: 25px;
+    margin-top: 1% !important;
+    margin-left: 95%;
+    display: flex;
+}
+.lbl1{
+    margin-top: 1% ;
+    font-size: larger;
+    margin-left: 3%;
+    color:rgb(0, 0, 0);
+    margin-right: 3%;
+}
+.upload{
+    margin-top: 4%;
+}
+.uploadin{
+    gap: 10%;
+    margin-left:2%; 
+    margin-right: 5%;
+    border-radius: 2%;
+    border: none !important;
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    border-top-left-radius: 25px !important;
+    border-bottom-right-radius:25px;
+    height: 8%;
+}
+.lbl{
+    margin-top: 1% ;
+    font-size: larger;
+    margin-left: 3%;
+    color:rgb(0, 0, 0);
+}
+.name{  
+    margin-left: 5%;
+    width: 90%;  
+}
+
+.namein{
+    border-radius: 2%;
+    border: none !important;
+    box-shadow:0.1px 1px 4px 2px  #525252;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;
+}
+
+.eg{
+    width: 20%;
+    border-radius: 2%;
+    margin-top: -10%;
+    margin-left: 80%;
+    height: 58px;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;
+    
+}
+
+.no{
+    width: 20%;
+    border-radius: 2%;
+    margin-top: -10%;
+    margin-left: 80%;
+    height: 58px;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius:25px;
+    
+}
+.createform .btn-submit{
+    width: 20%;
+    height: 6% !important;
+    font-size: 15px;
+    margin-top: 3%;
+    margin-left: 40%;
+    border-radius: 50px !important;
+    border: 2px solid rgb(24, 40, 64) !important;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(0, 0, 0) !important;
+    position: absolute;
+}
+.createform .btn-submit:hover {
+    background-color: rgb(24, 40, 64) !important; 
+    border-color: rgb(24, 40, 64) !important; 
+    color: white !important;
+    transition: 200ms ease;
+}
